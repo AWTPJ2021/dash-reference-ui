@@ -5,3 +5,9 @@
 
  - settings: https://github.com/Dash-Industry-Forum/dash.js/blob/development/src/core/Settings.js
  - API calls: http://cdn.dashjs.org/latest/jsdoc/module-MediaPlayer.html
+
+
+Maybe use: 
+ - https://github.com/apexcharts/stencil-apexcharts
+ - stencil.js
+ - https://www.duetds.com/components/
