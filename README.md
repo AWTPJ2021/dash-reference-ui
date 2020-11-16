@@ -8,9 +8,13 @@
 
 Maybe use:
 
+- https://www.npmjs.com/package/@stencil/sass
 - https://github.com/apexcharts/stencil-apexcharts
 - stencil.js
+
 - https://www.duetds.com/components/
+  We cant use duet because of its terms:
+  https://github.com/material-components/material-components-web-components
 
 # Stencil
 
