@@ -1,0 +1,1 @@
+import{p as e,b as r}from"./p-5461f3be.js";(()=>{const r=import.meta.url,s={};return""!==r&&(s.resourcesUrl=new URL(".",r).href),e(s)})().then((e=>r([["p-480c0f93",[[1,"dashjs-reference-ui"],[1,"dashjs-player"]]]],e)));
