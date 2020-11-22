@@ -21,8 +21,16 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./www
+          name: app
+          path: ./www/dash-reference-ui/
+          
+      - name: Publish to blob storage
+        uses: bacongobbler/azure-blob-storage-upload@v1.0.0
+        with:
+          source_dir: ./www/dash-reference-ui/
+          container_name: $web
+          connection_string: ${{ secrets.ConnectionString }}
+          extra_args: ""
