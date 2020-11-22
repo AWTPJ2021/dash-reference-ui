@@ -25,12 +25,12 @@ jobs:
         uses: actions/upload-artifact@v1.0.0
         with:
           name: app
-          path: ./www/dash-reference-ui/
+          path: ./www
           
       - name: Publish to blob storage
         uses: bacongobbler/azure-blob-storage-upload@v1.0.0
         with:
-          source_dir: ./www/dash-reference-ui/
+          source_dir: ./www
           container_name: $web
           connection_string: ${{ secrets.ConnectionString }}
           extra_args: ""
