@@ -25,4 +25,4 @@ jobs:
       if: github.event.action == 'opened' && github.event_name == 'issues'
       with:
         project: 'https://github.com/AWTPJ2021/dash-reference-ui/projects/1'
-        column_name: 'To do'
+        column_name: 'Backlog'
