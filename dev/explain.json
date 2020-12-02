@@ -1,0 +1,3849 @@
+[
+  {
+    "comment": "/** @module Settings\n * @description Define the configuration parameters of Dash.js MediaPlayer.\n * @see {@link module:Settings~PlayerSettings PlayerSettings} for further information about the supported configuration properties\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 37,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "module",
+    "name": "Settings",
+    "description": "Define the configuration parameters of Dash.js MediaPlayer.",
+    "see": [
+      "{@link module:Settings~PlayerSettings PlayerSettings} for further information about the supported configuration properties"
+    ],
+    "longname": "module:Settings"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} PlayerSettings\n * @property {module:Settings~DebugSettings} [debug] Debug related settings\n * @property {module:Settings~StreamingSettings} [streaming] Streaming related settings\n * @example\n *\n * // Full settings object\n * settings = {\n *      debug: {\n *          logLevel: Debug.LOG_LEVEL_WARNING\n *      },\n *      streaming: {\n *          metricsMaxListDepth: 1000,\n *          abandonLoadTimeout: 10000,\n *          liveDelayFragmentCount: NaN,\n *          liveDelay: null,\n *          scheduleWhilePaused: true,\n *          fastSwitchEnabled: false,\n *          flushBufferAtTrackSwitch: false,\n *          bufferPruningInterval: 10,\n *          bufferToKeep: 20,\n *          jumpGaps: true,\n *          jumpLargeGaps: true,\n *          smallGapLimit: 1.5,\n *          stableBufferTime: 12,\n *          bufferTimeAtTopQuality: 30,\n *          bufferTimeAtTopQualityLongForm: 60,\n *          longFormContentDurationThreshold: 600,\n *          wallclockTimeUpdateInterval: 50,\n *          lowLatencyEnabled: false,\n *          keepProtectionMediaKeys: false,\n *          useManifestDateHeaderTimeSource: true,\n *          useSuggestedPresentationDelay: true,\n *          useAppendWindow: true,\n *          manifestUpdateRetryInterval: 100,\n *          liveCatchup: {\n *               minDrift: 0.02,\n *               maxDrift: 0,\n *               playbackRate: 0.5,\n *               latencyThreshold: NaN,\n *               enabled: false\n *           },\n *          lastBitrateCachingInfo: { enabled: true, ttl: 360000 },\n *          lastMediaSettingsCachingInfo: { enabled: true, ttl: 360000 },\n *          cacheLoadThresholds: { video: 50, audio: 5 },\n *          fragmentRequestTimeout: 0,\n *          retryIntervals: {\n *              MPD: 500,\n *              XLinkExpansion: 500,\n *              InitializationSegment: 1000,\n *              IndexSegment: 1000,\n *              MediaSegment: 1000,\n *              BitstreamSwitchingSegment: 1000,\n *              other: 1000,\n *              lowLatencyReductionFactor: 10\n *          },\n *          retryAttempts: {\n *              MPD: 3,\n *              XLinkExpansion: 1,\n *              InitializationSegment: 3,\n *              IndexSegment: 3,\n *              MediaSegment: 3,\n *              BitstreamSwitchingSegment: 3,\n *              other: 3,\n *              lowLatencyMultiplyFactor: 5\n *          },\n *          abr: {\n *              movingAverageMethod: Constants.MOVING_AVERAGE_SLIDING_WINDOW,\n *              ABRStrategy: Constants.ABR_STRATEGY_DYNAMIC,\n *              bandwidthSafetyFactor: 0.9,\n *              useDefaultABRRules: true,\n *              useBufferOccupancyABR: false,\n *              useDeadTimeLatency: true,\n *              limitBitrateByPortal: false,\n *              usePixelRatioInLimitBitrateByPortal: false,\n *              maxBitrate: { audio: -1, video: -1 },\n *              minBitrate: { audio: -1, video: -1 },\n *              maxRepresentationRatio: { audio: 1, video: 1 },\n *              initialBitrate: { audio: -1, video: -1 },\n *              initialRepresentationRatio: { audio: -1, video: -1 },\n *              autoSwitchBitrate: { audio: true, video: true }\n *          },\n *          cmcd: {\n *              enabled: false,\n *              sid: null,\n *              cid: null,\n *              did: null\n *          }\n *      }\n * }\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 43,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "PlayerSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "module:Settings~DebugSettings"
+          ]
+        },
+        "optional": true,
+        "description": "Debug related settings",
+        "name": "debug"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~StreamingSettings"
+          ]
+        },
+        "optional": true,
+        "description": "Streaming related settings",
+        "name": "streaming"
+      }
+    ],
+    "examples": [
+      "// Full settings object\nsettings = {\n     debug: {\n         logLevel: Debug.LOG_LEVEL_WARNING\n     },\n     streaming: {\n         metricsMaxListDepth: 1000,\n         abandonLoadTimeout: 10000,\n         liveDelayFragmentCount: NaN,\n         liveDelay: null,\n         scheduleWhilePaused: true,\n         fastSwitchEnabled: false,\n         flushBufferAtTrackSwitch: false,\n         bufferPruningInterval: 10,\n         bufferToKeep: 20,\n         jumpGaps: true,\n         jumpLargeGaps: true,\n         smallGapLimit: 1.5,\n         stableBufferTime: 12,\n         bufferTimeAtTopQuality: 30,\n         bufferTimeAtTopQualityLongForm: 60,\n         longFormContentDurationThreshold: 600,\n         wallclockTimeUpdateInterval: 50,\n         lowLatencyEnabled: false,\n         keepProtectionMediaKeys: false,\n         useManifestDateHeaderTimeSource: true,\n         useSuggestedPresentationDelay: true,\n         useAppendWindow: true,\n         manifestUpdateRetryInterval: 100,\n         liveCatchup: {\n              minDrift: 0.02,\n              maxDrift: 0,\n              playbackRate: 0.5,\n              latencyThreshold: NaN,\n              enabled: false\n          },\n         lastBitrateCachingInfo: { enabled: true, ttl: 360000 },\n         lastMediaSettingsCachingInfo: { enabled: true, ttl: 360000 },\n         cacheLoadThresholds: { video: 50, audio: 5 },\n         fragmentRequestTimeout: 0,\n         retryIntervals: {\n             MPD: 500,\n             XLinkExpansion: 500,\n             InitializationSegment: 1000,\n             IndexSegment: 1000,\n             MediaSegment: 1000,\n             BitstreamSwitchingSegment: 1000,\n             other: 1000,\n             lowLatencyReductionFactor: 10\n         },\n         retryAttempts: {\n             MPD: 3,\n             XLinkExpansion: 1,\n             InitializationSegment: 3,\n             IndexSegment: 3,\n             MediaSegment: 3,\n             BitstreamSwitchingSegment: 3,\n             other: 3,\n             lowLatencyMultiplyFactor: 5\n         },\n         abr: {\n             movingAverageMethod: Constants.MOVING_AVERAGE_SLIDING_WINDOW,\n             ABRStrategy: Constants.ABR_STRATEGY_DYNAMIC,\n             bandwidthSafetyFactor: 0.9,\n             useDefaultABRRules: true,\n             useBufferOccupancyABR: false,\n             useDeadTimeLatency: true,\n             limitBitrateByPortal: false,\n             usePixelRatioInLimitBitrateByPortal: false,\n             maxBitrate: { audio: -1, video: -1 },\n             minBitrate: { audio: -1, video: -1 },\n             maxRepresentationRatio: { audio: 1, video: 1 },\n             initialBitrate: { audio: -1, video: -1 },\n             initialRepresentationRatio: { audio: -1, video: -1 },\n             autoSwitchBitrate: { audio: true, video: true }\n         },\n         cmcd: {\n             enabled: false,\n             sid: null,\n             cid: null,\n             did: null\n         }\n     }\n}"
+    ],
+    "longname": "module:Settings~PlayerSettings",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} DebugSettings\n * @property {number} [logLevel=dashjs.Debug.LOG_LEVEL_WARNING]\n * Sets up the log level. The levels are cumulative. For example, if you set the log level\n * to dashjs.Debug.LOG_LEVEL_WARNING all warnings, errors and fatals will be logged. Possible values.\n *\n * <ul>\n * <li>dashjs.Debug.LOG_LEVEL_NONE<br/>\n * No message is written in the browser console.\n *\n * <li>dashjs.Debug.LOG_LEVEL_FATAL<br/>\n * Log fatal errors. An error is considered fatal when it causes playback to fail completely.\n *\n * <li>dashjs.Debug.LOG_LEVEL_ERROR<br/>\n * Log error messages.\n *\n * <li>dashjs.Debug.LOG_LEVEL_WARNING<br/>\n * Log warning messages.\n *\n * <li>dashjs.Debug.LOG_LEVEL_INFO<br/>\n * Log info messages.\n *\n * <li>dashjs.Debug.LOG_LEVEL_DEBUG<br/>\n * Log debug messages.\n * </ul>\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 136,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "DebugSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "dashjs.Debug.LOG_LEVEL_WARNING",
+        "description": "Sets up the log level. The levels are cumulative. For example, if you set the log level\nto dashjs.Debug.LOG_LEVEL_WARNING all warnings, errors and fatals will be logged. Possible values.\n\n<ul>\n<li>dashjs.Debug.LOG_LEVEL_NONE<br/>\nNo message is written in the browser console.\n\n<li>dashjs.Debug.LOG_LEVEL_FATAL<br/>\nLog fatal errors. An error is considered fatal when it causes playback to fail completely.\n\n<li>dashjs.Debug.LOG_LEVEL_ERROR<br/>\nLog error messages.\n\n<li>dashjs.Debug.LOG_LEVEL_WARNING<br/>\nLog warning messages.\n\n<li>dashjs.Debug.LOG_LEVEL_INFO<br/>\nLog info messages.\n\n<li>dashjs.Debug.LOG_LEVEL_DEBUG<br/>\nLog debug messages.\n</ul>",
+        "name": "logLevel"
+      }
+    ],
+    "longname": "module:Settings~DebugSettings",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} AbrSettings\n * @property {string} [movingAverageMethod=\"slidingWindow\"]\n * Sets the moving average method used for smoothing throughput estimates. Valid methods are\n * \"slidingWindow\" and \"ewma\". The call has no effect if an invalid method is passed.\n *\n * The sliding window moving average method computes the average throughput using the last four segments downloaded.\n * If the stream is live (as opposed to VOD), then only the last three segments are used.\n * If wide variations in throughput are detected, the number of segments can be dynamically increased to avoid oscillations.\n *\n * The exponentially weighted moving average (EWMA) method computes the average using exponential smoothing.\n * Two separate estimates are maintained, a fast one with a three-second half life and a slow one with an eight-second half life.\n * The throughput estimate at any time is the minimum of the fast and slow estimates.\n * This allows a fast reaction to a bandwidth drop and prevents oscillations on bandwidth spikes.\n * @property {string} [ABRStrategy=\"abrDynamic\"] Returns the current ABR strategy being used: \"abrDynamic\", \"abrBola\" or \"abrThroughput\".\n * @property {number} [bandwidthSafetyFactor=0.9]\n * Standard ABR throughput rules multiply the throughput by this value. It should be between 0 and 1,\n * with lower values giving less rebuffering (but also lower quality).\n * @property {boolean} [useDefaultABRRules=true] Should the default ABR rules be used, or the custom ones added.\n * @property {boolean} [useDeadTimeLatency=true]\n * If true, only the download portion will be considered part of the download bitrate\n * and latency will be regarded as static. If false, the reciprocal of the whole\n * transfer time will be used.\n * @property {boolean} [limitBitrateByPortal=false] If true, the size of the video portal will limit the max chosen video resolution.\n * @property {boolean} [usePixelRatioInLimitBitrateByPortal=false]\n * Sets whether to take into account the device's pixel ratio when defining the portal dimensions.\n * Useful on, for example, retina displays.\n * @property {module:Settings~AudioVideoSettings} [maxBitrate={audio: -1, video: -1}] The maximum bitrate that the ABR algorithms will choose. Use NaN for no limit.\n * @property {module:Settings~AudioVideoSettings} [minBitrate={audio: -1, video: -1}] The minimum bitrate that the ABR algorithms will choose. Use NaN for no limit.\n * @property {module:Settings~AudioVideoSettings} [maxRepresentationRatio={audio: 1, video: 1}]\n * When switching multi-bitrate content (auto or manual mode) this property specifies the maximum representation allowed,\n * as a proportion of the size of the representation set.\n *\n * You can set or remove this cap at anytime before or during playback. To clear this setting you set the value to 1.\n *\n * If both this and maxAllowedBitrate are defined, maxAllowedBitrate is evaluated first, then maxAllowedRepresentation,\n * i.e. the lowest value from executing these rules is used.\n *\n * This feature is typically used to reserve higher representations for playback only when connected over a fast connection.\n * @property {module:Settings~AudioVideoSettings} [initialBitrate={audio: -1, video: -1}] Explicitly set the starting bitrate for audio or video\n * @property {module:Settings~AudioVideoSettings} [initialRepresentationRatio={audio: -1, video: -1}] Explicitly set the initial representation ratio. If initalBitrate is specified, this is ignored.\n * @property {module:Settings~AudioVideoSettings} [autoSwitchBitrate={audio: true, video: true}] Indicates whether the player should enable ABR algorithms to switch the bitrate.\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 163,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "AbrSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "\"slidingWindow\"",
+        "description": "Sets the moving average method used for smoothing throughput estimates. Valid methods are\n\"slidingWindow\" and \"ewma\". The call has no effect if an invalid method is passed.\n\nThe sliding window moving average method computes the average throughput using the last four segments downloaded.\nIf the stream is live (as opposed to VOD), then only the last three segments are used.\nIf wide variations in throughput are detected, the number of segments can be dynamically increased to avoid oscillations.\n\nThe exponentially weighted moving average (EWMA) method computes the average using exponential smoothing.\nTwo separate estimates are maintained, a fast one with a three-second half life and a slow one with an eight-second half life.\nThe throughput estimate at any time is the minimum of the fast and slow estimates.\nThis allows a fast reaction to a bandwidth drop and prevents oscillations on bandwidth spikes.",
+        "name": "movingAverageMethod"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "\"abrDynamic\"",
+        "description": "Returns the current ABR strategy being used: \"abrDynamic\", \"abrBola\" or \"abrThroughput\".",
+        "name": "ABRStrategy"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 0.9,
+        "description": "Standard ABR throughput rules multiply the throughput by this value. It should be between 0 and 1,\nwith lower values giving less rebuffering (but also lower quality).",
+        "name": "bandwidthSafetyFactor"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "Should the default ABR rules be used, or the custom ones added.",
+        "name": "useDefaultABRRules"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "If true, only the download portion will be considered part of the download bitrate\nand latency will be regarded as static. If false, the reciprocal of the whole\ntransfer time will be used.",
+        "name": "useDeadTimeLatency"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "If true, the size of the video portal will limit the max chosen video resolution.",
+        "name": "limitBitrateByPortal"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "Sets whether to take into account the device's pixel ratio when defining the portal dimensions.\nUseful on, for example, retina displays.",
+        "name": "usePixelRatioInLimitBitrateByPortal"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~AudioVideoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{audio: -1, video: -1}",
+        "description": "The maximum bitrate that the ABR algorithms will choose. Use NaN for no limit.",
+        "name": "maxBitrate"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~AudioVideoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{audio: -1, video: -1}",
+        "description": "The minimum bitrate that the ABR algorithms will choose. Use NaN for no limit.",
+        "name": "minBitrate"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~AudioVideoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{audio: 1, video: 1}",
+        "description": "When switching multi-bitrate content (auto or manual mode) this property specifies the maximum representation allowed,\nas a proportion of the size of the representation set.\n\nYou can set or remove this cap at anytime before or during playback. To clear this setting you set the value to 1.\n\nIf both this and maxAllowedBitrate are defined, maxAllowedBitrate is evaluated first, then maxAllowedRepresentation,\ni.e. the lowest value from executing these rules is used.\n\nThis feature is typically used to reserve higher representations for playback only when connected over a fast connection.",
+        "name": "maxRepresentationRatio"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~AudioVideoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{audio: -1, video: -1}",
+        "description": "Explicitly set the starting bitrate for audio or video",
+        "name": "initialBitrate"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~AudioVideoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{audio: -1, video: -1}",
+        "description": "Explicitly set the initial representation ratio. If initalBitrate is specified, this is ignored.",
+        "name": "initialRepresentationRatio"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~AudioVideoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{audio: true, video: true}",
+        "description": "Indicates whether the player should enable ABR algorithms to switch the bitrate.",
+        "name": "autoSwitchBitrate"
+      }
+    ],
+    "longname": "module:Settings~AbrSettings",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} StreamingSettings\n * @property {number} [metricsMaxListDepth=1000] Maximum list depth of metrics.\n * @property {number} [abandonLoadTimeout=10000]\n * A timeout value in seconds, which during the ABRController will block switch-up events.\n * This will only take effect after an abandoned fragment event occurs.\n * @property {number} [liveDelayFragmentCount=NaN]\n * Changing this value will lower or increase live stream latency.  The detected segment duration will be multiplied by this value\n * to define a time in seconds to delay a live stream from the live edge. Lowering this value will lower latency but may decrease\n * the player's ability to build a stable buffer.\n * @property {number} [liveDelay]\n * <p>Equivalent in seconds of setLiveDelayFragmentCount</p>\n * <p>Lowering this value will lower latency but may decrease the player's ability to build a stable buffer.</p>\n * <p>This value should be less than the manifest duration by a couple of segment durations to avoid playback issues</p>\n * <p>If set, this parameter will take precedence over setLiveDelayFragmentCount and manifest info</p>\n * @property {boolean} [scheduleWhilePaused=true]\n * Set to true if you would like dash.js to keep downloading fragments in the background\n * when the video element is paused.\n * @property {boolean} [fastSwitchEnabled=false]\n * When enabled, after an ABR up-switch in quality, instead of requesting and appending the next fragment\n * at the end of the current buffer range it is requested and appended closer to the current time\n * When enabled, The maximum time to render a higher quality is current time + (1.5 * fragment duration).\n *\n * Note, When ABR down-switch is detected, we appended the lower quality at the end of the buffer range to preserve the\n * higher quality media for as long as possible.\n *\n * If enabled, it should be noted there are a few cases when the client will not replace inside buffer range but rather\n * just append at the end.  1. When the buffer level is less than one fragment duration 2.  The client\n * is in an Abandonment State due to recent fragment abandonment event.\n *\n * Known issues:\n * 1. In IE11 with auto switching off, if a user switches to a quality they can not download in time the\n * fragment may be appended in the same range as the playhead or even in the past, in IE11 it may cause a stutter\n * or stall in playback.\n * @property {boolean} [flushBufferAtTrackSwitch=false]\n * When enabled, after a track switch and in case buffer is being replaced (see MEdiaPlayer.setTrackSwitchModeFor(Constants.TRACK_SWITCH_MODE_ALWAYS_REPLACE)),\n * the video element is flushed (seek at current playback time) once a segment of the new track is appended in buffer in order to force video decoder to play new track.\n * This can be required on some devices like GoogleCast devices to make track switching functional. Otherwise track switching will be effective only once after previous\n * buffered track is fully consumed.\n * @property {boolean} [calcSegmentAvailabilityRangeFromTimeline=true] Enable calculation of the DVR window for SegmentTimeline manifests based on the entries in <SegmentTimeline>\n * @property {number} [bufferPruningInterval=10] The interval of pruning buffer in sconds.\n * @property {number} [bufferToKeep=20]\n * This value influences the buffer pruning logic.\n * Allows you to modify the buffer that is kept in source buffer in seconds.\n *  0|-----------bufferToPrune-----------|-----bufferToKeep-----|currentTime|\n * @property {boolean} [jumpGaps=true] Sets whether player should jump small gaps (discontinuities) in the buffer.\n * @property {boolean} [jumpLargeGaps=true] Sets whether player should jump large gaps (discontinuities) in the buffer.\n * @property {number} [smallGapLimit=1.8] Time in seconds for a gap to be considered small.\n * @property {number} [stableBufferTime=12]\n * The time that the internal buffer target will be set to post startup/seeks (NOT top quality).\n *\n * When the time is set higher than the default you will have to wait longer\n * to see automatic bitrate switches but will have a larger buffer which\n * will increase stability.\n * @property {number} [bufferTimeAtTopQuality=30]\n * The time that the internal buffer target will be set to once playing the top quality.\n * If there are multiple bitrates in your adaptation, and the media is playing at the highest\n * bitrate, then we try to build a larger buffer at the top quality to increase stability\n * and to maintain media quality.\n * @property {number} [bufferTimeAtTopQualityLongForm=60] The time that the internal buffer target will be set to once playing the top quality for long form content.\n * @property {number} [longFormContentDurationThreshold=600]\n * The threshold which defines if the media is considered long form content.\n * This will directly affect the buffer targets when playing back at the top quality.\n * @property {number} [wallclockTimeUpdateInterval=50] How frequently the wallclockTimeUpdated internal event is triggered (in milliseconds).\n * @property {boolean} [lowLatencyEnabled=false] Enable or disable low latency mode\n * @property {boolean} [keepProtectionMediaKeys=false]\n * Set the value for the ProtectionController and MediaKeys life cycle. If true, the\n * ProtectionController and then created MediaKeys and MediaKeySessions will be preserved during\n * the MediaPlayer lifetime.\n * @property {boolean} [useManifestDateHeaderTimeSource=true]\n * <p>Allows you to enable the use of the Date Header, if exposed with CORS, as a timing source for live edge detection. The\n * use of the date header will happen only after the other timing source that take precedence fail or are omitted as described.\n * @property {boolean} [useSuggestedPresentationDelay=true]\n * <p>Set to true if you would like to override the default live delay and honor the SuggestedPresentationDelay attribute in by the manifest.</p>\n * @property {boolean} [useAppendWindow=true]\n * Specifies if the appendWindow attributes of the MSE SourceBuffers should be set according to content duration from manifest.\n * @property {number} [manifestUpdateRetryInterval=100]\n * For live streams, set the interval-frequency in milliseconds at which\n * dash.js will check if the current manifest is still processed before\n * downloading the next manifest once the minimumUpdatePeriod time has\n * @property {module:Settings~CachingInfoSettings} [lastBitrateCachingInfo={enabled: true, ttl: 360000}]\n * Set to false if you would like to disable the last known bit rate from being stored during playback and used\n * to set the initial bit rate for subsequent playback within the expiration window.\n *\n * The default expiration is one hour, defined in milliseconds. If expired, the default initial bit rate (closest to 1000 kbps) will be used\n * for that session and a new bit rate will be stored during that session.\n * @property {module:Settings~CachingInfoSettings} [lastMediaSettingsCachingInfo={enabled: true, ttl: 360000}]\n * Set to false if you would like to disable the last known lang for audio (or camera angle for video) from being stored during playback and used\n * to set the initial settings for subsequent playback within the expiration window.\n *\n * The default expiration is one hour, defined in milliseconds. If expired, the default settings will be used\n * for that session and a new settings will be stored during that session.\n * @property {module:Settings~AudioVideoSettings} [cacheLoadThresholds={video: 50, audio: 5}]\n * For a given media type, the threshold which defines if the response to a fragment\n * request is coming from browser cache or not.\n * @property {module:Settings~RequestTypeSettings} [fragmentRequestTimeout] Time in milliseconds before timing out on loading a media fragment. Fragments that timeout are retried as if they failed.\n * @property {module:Settings~RequestTypeSettings} [retryIntervals] Time in milliseconds of which to reload a failed file load attempt. For low latency mode these values are divided by lowLatencyReductionFactor.\n * @property {module:Settings~RequestTypeSettings} [retryAttempts] Total number of retry attempts that will occur on a file load before it fails. For low latency mode these values are multiplied by lowLatencyMultiplyFactor.\n * @property {module:Settings~AbrSettings} abr Adaptive Bitrate algorithm related settings.\n * @property {module:Settings~CmcdSettings} cmcd  Settings related to Common Media Client Data reporting.\n * @property {module:Settings~LiveCatchupSettings} liveCatchup  Settings related to live catchup.\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 207,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "StreamingSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 1000,
+        "description": "Maximum list depth of metrics.",
+        "name": "metricsMaxListDepth"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 10000,
+        "description": "A timeout value in seconds, which during the ABRController will block switch-up events.\nThis will only take effect after an abandoned fragment event occurs.",
+        "name": "abandonLoadTimeout"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": null,
+        "description": "Changing this value will lower or increase live stream latency.  The detected segment duration will be multiplied by this value\nto define a time in seconds to delay a live stream from the live edge. Lowering this value will lower latency but may decrease\nthe player's ability to build a stable buffer.",
+        "name": "liveDelayFragmentCount"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "<p>Equivalent in seconds of setLiveDelayFragmentCount</p>\n<p>Lowering this value will lower latency but may decrease the player's ability to build a stable buffer.</p>\n<p>This value should be less than the manifest duration by a couple of segment durations to avoid playback issues</p>\n<p>If set, this parameter will take precedence over setLiveDelayFragmentCount and manifest info</p>",
+        "name": "liveDelay"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "Set to true if you would like dash.js to keep downloading fragments in the background\nwhen the video element is paused.",
+        "name": "scheduleWhilePaused"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "When enabled, after an ABR up-switch in quality, instead of requesting and appending the next fragment\nat the end of the current buffer range it is requested and appended closer to the current time\nWhen enabled, The maximum time to render a higher quality is current time + (1.5 * fragment duration).\n\nNote, When ABR down-switch is detected, we appended the lower quality at the end of the buffer range to preserve the\nhigher quality media for as long as possible.\n\nIf enabled, it should be noted there are a few cases when the client will not replace inside buffer range but rather\njust append at the end.  1. When the buffer level is less than one fragment duration 2.  The client\nis in an Abandonment State due to recent fragment abandonment event.\n\nKnown issues:\n1. In IE11 with auto switching off, if a user switches to a quality they can not download in time the\nfragment may be appended in the same range as the playhead or even in the past, in IE11 it may cause a stutter\nor stall in playback.",
+        "name": "fastSwitchEnabled"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "When enabled, after a track switch and in case buffer is being replaced (see MEdiaPlayer.setTrackSwitchModeFor(Constants.TRACK_SWITCH_MODE_ALWAYS_REPLACE)),\nthe video element is flushed (seek at current playback time) once a segment of the new track is appended in buffer in order to force video decoder to play new track.\nThis can be required on some devices like GoogleCast devices to make track switching functional. Otherwise track switching will be effective only once after previous\nbuffered track is fully consumed.",
+        "name": "flushBufferAtTrackSwitch"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "Enable calculation of the DVR window for SegmentTimeline manifests based on the entries in <SegmentTimeline>",
+        "name": "calcSegmentAvailabilityRangeFromTimeline"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 10,
+        "description": "The interval of pruning buffer in sconds.",
+        "name": "bufferPruningInterval"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 20,
+        "description": "This value influences the buffer pruning logic.\nAllows you to modify the buffer that is kept in source buffer in seconds.\n 0|-----------bufferToPrune-----------|-----bufferToKeep-----|currentTime|",
+        "name": "bufferToKeep"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "Sets whether player should jump small gaps (discontinuities) in the buffer.",
+        "name": "jumpGaps"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "Sets whether player should jump large gaps (discontinuities) in the buffer.",
+        "name": "jumpLargeGaps"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 1.8,
+        "description": "Time in seconds for a gap to be considered small.",
+        "name": "smallGapLimit"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 12,
+        "description": "The time that the internal buffer target will be set to post startup/seeks (NOT top quality).\n\nWhen the time is set higher than the default you will have to wait longer\nto see automatic bitrate switches but will have a larger buffer which\nwill increase stability.",
+        "name": "stableBufferTime"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 30,
+        "description": "The time that the internal buffer target will be set to once playing the top quality.\nIf there are multiple bitrates in your adaptation, and the media is playing at the highest\nbitrate, then we try to build a larger buffer at the top quality to increase stability\nand to maintain media quality.",
+        "name": "bufferTimeAtTopQuality"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 60,
+        "description": "The time that the internal buffer target will be set to once playing the top quality for long form content.",
+        "name": "bufferTimeAtTopQualityLongForm"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 600,
+        "description": "The threshold which defines if the media is considered long form content.\nThis will directly affect the buffer targets when playing back at the top quality.",
+        "name": "longFormContentDurationThreshold"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 50,
+        "description": "How frequently the wallclockTimeUpdated internal event is triggered (in milliseconds).",
+        "name": "wallclockTimeUpdateInterval"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "Enable or disable low latency mode",
+        "name": "lowLatencyEnabled"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "Set the value for the ProtectionController and MediaKeys life cycle. If true, the\nProtectionController and then created MediaKeys and MediaKeySessions will be preserved during\nthe MediaPlayer lifetime.",
+        "name": "keepProtectionMediaKeys"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "<p>Allows you to enable the use of the Date Header, if exposed with CORS, as a timing source for live edge detection. The\nuse of the date header will happen only after the other timing source that take precedence fail or are omitted as described.",
+        "name": "useManifestDateHeaderTimeSource"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "<p>Set to true if you would like to override the default live delay and honor the SuggestedPresentationDelay attribute in by the manifest.</p>",
+        "name": "useSuggestedPresentationDelay"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": true,
+        "description": "Specifies if the appendWindow attributes of the MSE SourceBuffers should be set according to content duration from manifest.",
+        "name": "useAppendWindow"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 100,
+        "description": "For live streams, set the interval-frequency in milliseconds at which\ndash.js will check if the current manifest is still processed before\ndownloading the next manifest once the minimumUpdatePeriod time has",
+        "name": "manifestUpdateRetryInterval"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~CachingInfoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{enabled: true, ttl: 360000}",
+        "description": "Set to false if you would like to disable the last known bit rate from being stored during playback and used\nto set the initial bit rate for subsequent playback within the expiration window.\n\nThe default expiration is one hour, defined in milliseconds. If expired, the default initial bit rate (closest to 1000 kbps) will be used\nfor that session and a new bit rate will be stored during that session.",
+        "name": "lastBitrateCachingInfo"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~CachingInfoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{enabled: true, ttl: 360000}",
+        "description": "Set to false if you would like to disable the last known lang for audio (or camera angle for video) from being stored during playback and used\nto set the initial settings for subsequent playback within the expiration window.\n\nThe default expiration is one hour, defined in milliseconds. If expired, the default settings will be used\nfor that session and a new settings will be stored during that session.",
+        "name": "lastMediaSettingsCachingInfo"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~AudioVideoSettings"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "{video: 50, audio: 5}",
+        "description": "For a given media type, the threshold which defines if the response to a fragment\nrequest is coming from browser cache or not.",
+        "name": "cacheLoadThresholds"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~RequestTypeSettings"
+          ]
+        },
+        "optional": true,
+        "description": "Time in milliseconds before timing out on loading a media fragment. Fragments that timeout are retried as if they failed.",
+        "name": "fragmentRequestTimeout"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~RequestTypeSettings"
+          ]
+        },
+        "optional": true,
+        "description": "Time in milliseconds of which to reload a failed file load attempt. For low latency mode these values are divided by lowLatencyReductionFactor.",
+        "name": "retryIntervals"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~RequestTypeSettings"
+          ]
+        },
+        "optional": true,
+        "description": "Total number of retry attempts that will occur on a file load before it fails. For low latency mode these values are multiplied by lowLatencyMultiplyFactor.",
+        "name": "retryAttempts"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~AbrSettings"
+          ]
+        },
+        "description": "Adaptive Bitrate algorithm related settings.",
+        "name": "abr"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~CmcdSettings"
+          ]
+        },
+        "description": "Settings related to Common Media Client Data reporting.",
+        "name": "cmcd"
+      },
+      {
+        "type": {
+          "names": [
+            "module:Settings~LiveCatchupSettings"
+          ]
+        },
+        "description": "Settings related to live catchup.",
+        "name": "liveCatchup"
+      }
+    ],
+    "longname": "module:Settings~StreamingSettings",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} CachingInfoSettings\n * @property {boolean} [enable] Enable or disable the caching feature.\n * @property {number} [ttl] Time to live. A value defined in milliseconds representing how log to cache the settings for.\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 310,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "CachingInfoSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "description": "Enable or disable the caching feature.",
+        "name": "enable"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "Time to live. A value defined in milliseconds representing how log to cache the settings for.",
+        "name": "ttl"
+      }
+    ],
+    "longname": "module:Settings~CachingInfoSettings",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} module:Settings~AudioVideoSettings\n * @property {number|boolean} [audio] Configuration for audio media type of tracks.\n * @property {number|boolean} [video] Configuration for video media type of tracks.\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 316,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "AudioVideoSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "number",
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "description": "Configuration for audio media type of tracks.",
+        "name": "audio"
+      },
+      {
+        "type": {
+          "names": [
+            "number",
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "description": "Configuration for video media type of tracks.",
+        "name": "video"
+      }
+    ],
+    "memberof": "module:Settings",
+    "longname": "module:Settings~AudioVideoSettings",
+    "scope": "inner"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} RequestTypeSettings\n * @property {number} [MPD] Manifest type of requests\n * @property {number} [XLinkExpansion] XLink expansion type of requests\n * @property {number} [InitializationSegment] Request to retrieve an initialization segment\n * @property {number} [IndexSegment] Request to retrieve an index segment (SegmentBase)\n * @property {number} [MediaSegment] Request to retrieve a media segment (video/audio/image/text chunk)\n * @property {number} [BitstreamSwitchingSegment] Bitrate stream switching type of request\n * @property {number} [other] Other type of request\n *\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 322,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "RequestTypeSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "Manifest type of requests",
+        "name": "MPD"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "XLink expansion type of requests",
+        "name": "XLinkExpansion"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "Request to retrieve an initialization segment",
+        "name": "InitializationSegment"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "Request to retrieve an index segment (SegmentBase)",
+        "name": "IndexSegment"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "Request to retrieve a media segment (video/audio/image/text chunk)",
+        "name": "MediaSegment"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "Bitrate stream switching type of request",
+        "name": "BitstreamSwitchingSegment"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "description": "Other type of request",
+        "name": "other"
+      }
+    ],
+    "longname": "module:Settings~RequestTypeSettings",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} module:Settings~CmcdSettings\n * @property {boolean} [enable=false] Enable or disable the CMCD reporting.\n * @property {string} [sid] GUID identifying the current playback session. Should be in UUID format. If not specified a UUID will be automatically generated.\n * @property {string} [cid] A unique string to identify the current content. If not specified it will be a hash of the MPD url.\n * @property {string} [did=dash.js-cmcd-default-id] A unique string identifying the current device.\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 334,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "CmcdSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "Enable or disable the CMCD reporting.",
+        "name": "enable"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "optional": true,
+        "description": "GUID identifying the current playback session. Should be in UUID format. If not specified a UUID will be automatically generated.",
+        "name": "sid"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "optional": true,
+        "description": "A unique string to identify the current content. If not specified it will be a hash of the MPD url.",
+        "name": "cid"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": "dash.js-cmcd-default-id",
+        "description": "A unique string identifying the current device.",
+        "name": "did"
+      }
+    ],
+    "memberof": "module:Settings",
+    "longname": "module:Settings~CmcdSettings",
+    "scope": "inner"
+  },
+  {
+    "comment": "/**\n * @typedef {Object} module:Settings~LiveCatchupSettings\n @property {number} [minDrift=0.02]\n * Use this method to set the minimum latency deviation allowed before activating catch-up mechanism. In low latency mode,\n * when the difference between the measured latency and the target one,\n * as an absolute number, is higher than the one sets with this method, then dash.js increases/decreases\n * playback rate until target latency is reached.\n *\n * LowLatencyMinDrift should be provided in seconds, and it uses values between 0.0 and 0.5.\n *\n * Note: Catch-up mechanism is only applied when playing low latency live streams.\n * @property {number} [maxDrift=0]\n * Use this method to set the maximum latency deviation allowed before dash.js to do a seeking to live position. In low latency mode,\n * when the difference between the measured latency and the target one,\n * as an absolute number, is higher than the one sets with this method, then dash.js does a seek to live edge position minus\n * the target live delay.\n *\n * LowLatencyMaxDriftBeforeSeeking should be provided in seconds. If 0, then seeking operations won't be used for\n * fixing latency deviations.\n *\n * Note: Catch-up mechanism is only applied when playing low latency live streams.\n * @property {number} [playbackRate=0.5]\n * Use this parameter to set the maximum catch up rate, as a percentage, for low latency live streams. In low latency mode,\n * when measured latency is higher/lower than the target one,\n * dash.js increases/decreases playback rate respectively up to (+/-) the percentage defined with this method until target is reached.\n *\n * Valid values for catch up rate are in range 0-0.5 (0-50%). Set it to 0 to turn off live catch up feature.\n *\n * Note: Catch-up mechanism is only applied when playing low latency live streams.\n * @property {number} [latencyThreshold=NaN]\n * Use this parameter to set the maximum threshold for which live catch up is applied. For instance, if this value is set to 8 seconds,\n * then live catchup is only applied if the current live latency is equal or below 8 seconds. The reason behind this parameter is to avoid an increase\n * of the playback rate if the user seeks within the DVR window.\n *\n * If no value is specified this will be twice the maximum live delay. The maximum live delay is either specified in the manifest as part of a ServiceDescriptor or calculated the following:\n * maximumLiveDelay = targetDelay + liveCatchupMinDrift\n *\n * @property {boolean} [enabled=false]\n * Use this parameter to enable the catchup mode for non low-latency streams\n *\n * Note: Catch-up mechanism is automatically applied when playing low latency live streams.\n */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 342,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "typedef",
+    "name": "LiveCatchupSettings",
+    "type": {
+      "names": [
+        "Object"
+      ]
+    },
+    "properties": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 0.02,
+        "description": "Use this method to set the minimum latency deviation allowed before activating catch-up mechanism. In low latency mode,\nwhen the difference between the measured latency and the target one,\nas an absolute number, is higher than the one sets with this method, then dash.js increases/decreases\nplayback rate until target latency is reached.\n\nLowLatencyMinDrift should be provided in seconds, and it uses values between 0.0 and 0.5.\n\nNote: Catch-up mechanism is only applied when playing low latency live streams.",
+        "name": "minDrift"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 0,
+        "description": "Use this method to set the maximum latency deviation allowed before dash.js to do a seeking to live position. In low latency mode,\nwhen the difference between the measured latency and the target one,\nas an absolute number, is higher than the one sets with this method, then dash.js does a seek to live edge position minus\nthe target live delay.\n\nLowLatencyMaxDriftBeforeSeeking should be provided in seconds. If 0, then seeking operations won't be used for\nfixing latency deviations.\n\nNote: Catch-up mechanism is only applied when playing low latency live streams.",
+        "name": "maxDrift"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": 0.5,
+        "description": "Use this parameter to set the maximum catch up rate, as a percentage, for low latency live streams. In low latency mode,\nwhen measured latency is higher/lower than the target one,\ndash.js increases/decreases playback rate respectively up to (+/-) the percentage defined with this method until target is reached.\n\nValid values for catch up rate are in range 0-0.5 (0-50%). Set it to 0 to turn off live catch up feature.\n\nNote: Catch-up mechanism is only applied when playing low latency live streams.",
+        "name": "playbackRate"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": null,
+        "description": "Use this parameter to set the maximum threshold for which live catch up is applied. For instance, if this value is set to 8 seconds,\nthen live catchup is only applied if the current live latency is equal or below 8 seconds. The reason behind this parameter is to avoid an increase\nof the playback rate if the user seeks within the DVR window.\n\nIf no value is specified this will be twice the maximum live delay. The maximum live delay is either specified in the manifest as part of a ServiceDescriptor or calculated the following:\nmaximumLiveDelay = targetDelay + liveCatchupMinDrift",
+        "name": "latencyThreshold"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "defaultvalue": false,
+        "description": "Use this parameter to enable the catchup mode for non low-latency streams\n\nNote: Catch-up mechanism is automatically applied when playing low latency live streams.",
+        "name": "enabled"
+      }
+    ],
+    "memberof": "module:Settings",
+    "longname": "module:Settings~LiveCatchupSettings",
+    "scope": "inner"
+  },
+  {
+    "comment": "/**\n * @class\n * @ignore\n */",
+    "meta": {
+      "range": [
+        23056,
+        28893
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 390,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000022",
+        "name": "Settings",
+        "type": "FunctionDeclaration",
+        "paramnames": []
+      },
+      "vars": {
+        "instance": "module:Settings~instance",
+        "defaultSettings": "module:Settings~Settings~defaultSettings",
+        "settings": "module:Settings~Settings~settings",
+        "mixinSettings": "module:Settings~Settings~mixinSettings",
+        "get": "module:Settings~Settings~get",
+        "update": "module:Settings~Settings~update",
+        "reset": "module:Settings~Settings~reset"
+      }
+    },
+    "kind": "class",
+    "ignore": true,
+    "name": "Settings",
+    "longname": "module:Settings~Settings",
+    "scope": "inner",
+    "memberof": "module:Settings",
+    "params": []
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23086,
+        23094
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 391,
+      "columnno": 8,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000026",
+        "name": "instance"
+      }
+    },
+    "undocumented": true,
+    "name": "instance",
+    "longname": "module:Settings~Settings~instance",
+    "kind": "member",
+    "memberof": "module:Settings~Settings",
+    "scope": "inner",
+    "params": []
+  },
+  {
+    "comment": "/**\n     * @const {PlayerSettings} defaultSettings\n     * @ignore\n     */",
+    "meta": {
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 393,
+      "columnno": 4,
+      "path": "/tmp",
+      "code": {}
+    },
+    "kind": "constant",
+    "name": "defaultSettings",
+    "type": {
+      "names": [
+        "PlayerSettings"
+      ]
+    },
+    "ignore": true,
+    "longname": "module:Settings~defaultSettings",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23185,
+        26827
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 397,
+      "columnno": 10,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000029",
+        "name": "defaultSettings",
+        "type": "ObjectExpression",
+        "value": "{\"debug\":\"\",\"streaming\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "defaultSettings",
+    "longname": "module:Settings~Settings~defaultSettings",
+    "kind": "constant",
+    "memberof": "module:Settings~Settings",
+    "scope": "inner",
+    "params": []
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23213,
+        23277
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 398,
+      "columnno": 8,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000032",
+        "name": "debug",
+        "type": "ObjectExpression",
+        "value": "{\"logLevel\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "debug",
+    "longname": "module:Settings~Settings~defaultSettings.debug",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23234,
+        23267
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 399,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000034",
+        "name": "logLevel",
+        "type": "MemberExpression",
+        "value": "Debug.LOG_LEVEL_WARNING"
+      }
+    },
+    "undocumented": true,
+    "name": "logLevel",
+    "longname": "module:Settings~Settings~defaultSettings.debug.logLevel",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.debug",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23287,
+        26821
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 401,
+      "columnno": 8,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000038",
+        "name": "streaming",
+        "type": "ObjectExpression",
+        "value": "{\"metricsMaxListDepth\":1000,\"abandonLoadTimeout\":10000,\"liveDelayFragmentCount\":\"\",\"liveDelay\":null,\"scheduleWhilePaused\":true,\"fastSwitchEnabled\":false,\"flushBufferAtTrackSwitch\":false,\"calcSegmentAvailabilityRangeFromTimeline\":false,\"bufferPruningInterval\":10,\"bufferToKeep\":20,\"jumpGaps\":true,\"jumpLargeGaps\":true,\"smallGapLimit\":1.5,\"stableBufferTime\":12,\"bufferTimeAtTopQuality\":30,\"bufferTimeAtTopQualityLongForm\":60,\"longFormContentDurationThreshold\":600,\"wallclockTimeUpdateInterval\":50,\"lowLatencyEnabled\":false,\"keepProtectionMediaKeys\":false,\"useManifestDateHeaderTimeSource\":true,\"useSuggestedPresentationDelay\":true,\"useAppendWindow\":true,\"manifestUpdateRetryInterval\":100,\"liveCatchup\":\"\",\"lastBitrateCachingInfo\":\"\",\"lastMediaSettingsCachingInfo\":\"\",\"cacheLoadThresholds\":\"\",\"trackSwitchMode\":\"\",\"selectionModeForInitialTrack\":\"\",\"fragmentRequestTimeout\":0,\"retryIntervals\":\"\",\"retryAttempts\":\"\",\"abr\":\"\",\"cmcd\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "streaming",
+    "longname": "module:Settings~Settings~defaultSettings.streaming",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23312,
+        23337
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 402,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000040",
+        "name": "metricsMaxListDepth",
+        "type": "Literal",
+        "value": 1000
+      }
+    },
+    "undocumented": true,
+    "name": "metricsMaxListDepth",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.metricsMaxListDepth",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23351,
+        23376
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 403,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000042",
+        "name": "abandonLoadTimeout",
+        "type": "Literal",
+        "value": 10000
+      }
+    },
+    "undocumented": true,
+    "name": "abandonLoadTimeout",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abandonLoadTimeout",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23390,
+        23417
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 404,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000044",
+        "name": "liveDelayFragmentCount",
+        "type": "Identifier",
+        "value": "NaN"
+      }
+    },
+    "undocumented": true,
+    "name": "liveDelayFragmentCount",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.liveDelayFragmentCount",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23431,
+        23446
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 405,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000046",
+        "name": "liveDelay",
+        "type": "Literal",
+        "value": null
+      }
+    },
+    "undocumented": true,
+    "name": "liveDelay",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.liveDelay",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23460,
+        23485
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 406,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000048",
+        "name": "scheduleWhilePaused",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "scheduleWhilePaused",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.scheduleWhilePaused",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23499,
+        23523
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 407,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000050",
+        "name": "fastSwitchEnabled",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "fastSwitchEnabled",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.fastSwitchEnabled",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23537,
+        23568
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 408,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000052",
+        "name": "flushBufferAtTrackSwitch",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "flushBufferAtTrackSwitch",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.flushBufferAtTrackSwitch",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23582,
+        23629
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 409,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000054",
+        "name": "calcSegmentAvailabilityRangeFromTimeline",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "calcSegmentAvailabilityRangeFromTimeline",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.calcSegmentAvailabilityRangeFromTimeline",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23643,
+        23668
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 410,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000056",
+        "name": "bufferPruningInterval",
+        "type": "Literal",
+        "value": 10
+      }
+    },
+    "undocumented": true,
+    "name": "bufferPruningInterval",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.bufferPruningInterval",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23682,
+        23698
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 411,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000058",
+        "name": "bufferToKeep",
+        "type": "Literal",
+        "value": 20
+      }
+    },
+    "undocumented": true,
+    "name": "bufferToKeep",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.bufferToKeep",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23712,
+        23726
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 412,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000060",
+        "name": "jumpGaps",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "jumpGaps",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.jumpGaps",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23740,
+        23759
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 413,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000062",
+        "name": "jumpLargeGaps",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "jumpLargeGaps",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.jumpLargeGaps",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23773,
+        23791
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 414,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000064",
+        "name": "smallGapLimit",
+        "type": "Literal",
+        "value": 1.5
+      }
+    },
+    "undocumented": true,
+    "name": "smallGapLimit",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.smallGapLimit",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23805,
+        23825
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 415,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000066",
+        "name": "stableBufferTime",
+        "type": "Literal",
+        "value": 12
+      }
+    },
+    "undocumented": true,
+    "name": "stableBufferTime",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.stableBufferTime",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23839,
+        23865
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 416,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000068",
+        "name": "bufferTimeAtTopQuality",
+        "type": "Literal",
+        "value": 30
+      }
+    },
+    "undocumented": true,
+    "name": "bufferTimeAtTopQuality",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.bufferTimeAtTopQuality",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23879,
+        23913
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 417,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000070",
+        "name": "bufferTimeAtTopQualityLongForm",
+        "type": "Literal",
+        "value": 60
+      }
+    },
+    "undocumented": true,
+    "name": "bufferTimeAtTopQualityLongForm",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.bufferTimeAtTopQualityLongForm",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23927,
+        23964
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 418,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000072",
+        "name": "longFormContentDurationThreshold",
+        "type": "Literal",
+        "value": 600
+      }
+    },
+    "undocumented": true,
+    "name": "longFormContentDurationThreshold",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.longFormContentDurationThreshold",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        23978,
+        24009
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 419,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000074",
+        "name": "wallclockTimeUpdateInterval",
+        "type": "Literal",
+        "value": 50
+      }
+    },
+    "undocumented": true,
+    "name": "wallclockTimeUpdateInterval",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.wallclockTimeUpdateInterval",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24023,
+        24047
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 420,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000076",
+        "name": "lowLatencyEnabled",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "lowLatencyEnabled",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.lowLatencyEnabled",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24061,
+        24091
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 421,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000078",
+        "name": "keepProtectionMediaKeys",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "keepProtectionMediaKeys",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.keepProtectionMediaKeys",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24105,
+        24142
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 422,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000080",
+        "name": "useManifestDateHeaderTimeSource",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "useManifestDateHeaderTimeSource",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.useManifestDateHeaderTimeSource",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24156,
+        24191
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 423,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000082",
+        "name": "useSuggestedPresentationDelay",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "useSuggestedPresentationDelay",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.useSuggestedPresentationDelay",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24205,
+        24226
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 424,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000084",
+        "name": "useAppendWindow",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "useAppendWindow",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.useAppendWindow",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24240,
+        24272
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 425,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000086",
+        "name": "manifestUpdateRetryInterval",
+        "type": "Literal",
+        "value": 100
+      }
+    },
+    "undocumented": true,
+    "name": "manifestUpdateRetryInterval",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.manifestUpdateRetryInterval",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24286,
+        24480
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 426,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000088",
+        "name": "liveCatchup",
+        "type": "ObjectExpression",
+        "value": "{\"minDrift\":0.02,\"maxDrift\":0,\"playbackRate\":0.5,\"latencyThreshold\":\"\",\"enabled\":false}"
+      }
+    },
+    "undocumented": true,
+    "name": "liveCatchup",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.liveCatchup",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24317,
+        24331
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 427,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000090",
+        "name": "minDrift",
+        "type": "Literal",
+        "value": 0.02
+      }
+    },
+    "undocumented": true,
+    "name": "minDrift",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.liveCatchup.minDrift",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.liveCatchup",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24349,
+        24360
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 428,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000092",
+        "name": "maxDrift",
+        "type": "Literal",
+        "value": 0
+      }
+    },
+    "undocumented": true,
+    "name": "maxDrift",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.liveCatchup.maxDrift",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.liveCatchup",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24378,
+        24395
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 429,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000094",
+        "name": "playbackRate",
+        "type": "Literal",
+        "value": 0.5
+      }
+    },
+    "undocumented": true,
+    "name": "playbackRate",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.liveCatchup.playbackRate",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.liveCatchup",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24413,
+        24434
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 430,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000096",
+        "name": "latencyThreshold",
+        "type": "Identifier",
+        "value": "NaN"
+      }
+    },
+    "undocumented": true,
+    "name": "latencyThreshold",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.liveCatchup.latencyThreshold",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.liveCatchup",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24452,
+        24466
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 431,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000098",
+        "name": "enabled",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "enabled",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.liveCatchup.enabled",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.liveCatchup",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24494,
+        24548
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 433,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000100",
+        "name": "lastBitrateCachingInfo",
+        "type": "ObjectExpression",
+        "value": "{\"enabled\":true,\"ttl\":360000}"
+      }
+    },
+    "undocumented": true,
+    "name": "lastBitrateCachingInfo",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.lastBitrateCachingInfo",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24520,
+        24533
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 433,
+      "columnno": 38,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000102",
+        "name": "enabled",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "enabled",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.lastBitrateCachingInfo.enabled",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.lastBitrateCachingInfo",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24535,
+        24546
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 433,
+      "columnno": 53,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000104",
+        "name": "ttl",
+        "type": "Literal",
+        "value": 360000
+      }
+    },
+    "undocumented": true,
+    "name": "ttl",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.lastBitrateCachingInfo.ttl",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.lastBitrateCachingInfo",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24562,
+        24622
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 434,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000106",
+        "name": "lastMediaSettingsCachingInfo",
+        "type": "ObjectExpression",
+        "value": "{\"enabled\":true,\"ttl\":360000}"
+      }
+    },
+    "undocumented": true,
+    "name": "lastMediaSettingsCachingInfo",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.lastMediaSettingsCachingInfo",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24594,
+        24607
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 434,
+      "columnno": 44,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000108",
+        "name": "enabled",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "enabled",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.lastMediaSettingsCachingInfo.enabled",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.lastMediaSettingsCachingInfo",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24609,
+        24620
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 434,
+      "columnno": 59,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000110",
+        "name": "ttl",
+        "type": "Literal",
+        "value": 360000
+      }
+    },
+    "undocumented": true,
+    "name": "ttl",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.lastMediaSettingsCachingInfo.ttl",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.lastMediaSettingsCachingInfo",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24636,
+        24680
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 435,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000112",
+        "name": "cacheLoadThresholds",
+        "type": "ObjectExpression",
+        "value": "{\"video\":50,\"audio\":5}"
+      }
+    },
+    "undocumented": true,
+    "name": "cacheLoadThresholds",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.cacheLoadThresholds",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24659,
+        24668
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 435,
+      "columnno": 35,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000114",
+        "name": "video",
+        "type": "Literal",
+        "value": 50
+      }
+    },
+    "undocumented": true,
+    "name": "video",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.cacheLoadThresholds.video",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.cacheLoadThresholds",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24670,
+        24678
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 435,
+      "columnno": 46,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000116",
+        "name": "audio",
+        "type": "Literal",
+        "value": 5
+      }
+    },
+    "undocumented": true,
+    "name": "audio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.cacheLoadThresholds.audio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.cacheLoadThresholds",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24694,
+        24858
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 436,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000118",
+        "name": "trackSwitchMode",
+        "type": "ObjectExpression",
+        "value": "{\"audio\":\"\",\"video\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "trackSwitchMode",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.trackSwitchMode",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24729,
+        24778
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 437,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000120",
+        "name": "audio",
+        "type": "MemberExpression",
+        "value": "Constants.TRACK_SWITCH_MODE_ALWAYS_REPLACE"
+      }
+    },
+    "undocumented": true,
+    "name": "audio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.trackSwitchMode.audio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.trackSwitchMode",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24796,
+        24844
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 438,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000124",
+        "name": "video",
+        "type": "MemberExpression",
+        "value": "Constants.TRACK_SWITCH_MODE_NEVER_REPLACE"
+      }
+    },
+    "undocumented": true,
+    "name": "video",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.trackSwitchMode.video",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.trackSwitchMode",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24872,
+        24948
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 440,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000128",
+        "name": "selectionModeForInitialTrack",
+        "type": "MemberExpression",
+        "value": "Constants.TRACK_SELECTION_MODE_HIGHEST_BITRATE"
+      }
+    },
+    "undocumented": true,
+    "name": "selectionModeForInitialTrack",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.selectionModeForInitialTrack",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        24962,
+        24987
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 441,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000132",
+        "name": "fragmentRequestTimeout",
+        "type": "Literal",
+        "value": 0
+      }
+    },
+    "undocumented": true,
+    "name": "fragmentRequestTimeout",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.fragmentRequestTimeout",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25001,
+        25465
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 442,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000134",
+        "name": "retryIntervals",
+        "type": "ObjectExpression",
+        "value": "{\"undefined\":1000,\"lowLatencyReductionFactor\":10}"
+      }
+    },
+    "undocumented": true,
+    "name": "retryIntervals",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25035,
+        25062
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 443,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000136",
+        "name": "\"HTTPRequest.MPD_TYPE\"",
+        "type": "Literal",
+        "value": 500
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.MPD_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals.\"HTTPRequest.MPD_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25080,
+        25119
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 444,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000138",
+        "name": "\"HTTPRequest.XLINK_EXPANSION_TYPE\"",
+        "type": "Literal",
+        "value": 500
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.XLINK_EXPANSION_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals.\"HTTPRequest.XLINK_EXPANSION_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25137,
+        25175
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 445,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000140",
+        "name": "\"HTTPRequest.MEDIA_SEGMENT_TYPE\"",
+        "type": "Literal",
+        "value": 1000
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.MEDIA_SEGMENT_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals.\"HTTPRequest.MEDIA_SEGMENT_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25193,
+        25230
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 446,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000142",
+        "name": "\"HTTPRequest.INIT_SEGMENT_TYPE\"",
+        "type": "Literal",
+        "value": 1000
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.INIT_SEGMENT_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals.\"HTTPRequest.INIT_SEGMENT_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25248,
+        25300
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 447,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000144",
+        "name": "\"HTTPRequest.BITSTREAM_SWITCHING_SEGMENT_TYPE\"",
+        "type": "Literal",
+        "value": 1000
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.BITSTREAM_SWITCHING_SEGMENT_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals.\"HTTPRequest.BITSTREAM_SWITCHING_SEGMENT_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25318,
+        25356
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 448,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000146",
+        "name": "\"HTTPRequest.INDEX_SEGMENT_TYPE\"",
+        "type": "Literal",
+        "value": 1000
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.INDEX_SEGMENT_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals.\"HTTPRequest.INDEX_SEGMENT_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25374,
+        25404
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 449,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000148",
+        "name": "\"HTTPRequest.OTHER_TYPE\"",
+        "type": "Literal",
+        "value": 1000
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.OTHER_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals.\"HTTPRequest.OTHER_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25422,
+        25451
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 450,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000150",
+        "name": "lowLatencyReductionFactor",
+        "type": "Literal",
+        "value": 10
+      }
+    },
+    "undocumented": true,
+    "name": "lowLatencyReductionFactor",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryIntervals.lowLatencyReductionFactor",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryIntervals",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25479,
+        25921
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 452,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000152",
+        "name": "retryAttempts",
+        "type": "ObjectExpression",
+        "value": "{\"undefined\":3,\"lowLatencyMultiplyFactor\":5}"
+      }
+    },
+    "undocumented": true,
+    "name": "retryAttempts",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25512,
+        25537
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 453,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000154",
+        "name": "\"HTTPRequest.MPD_TYPE\"",
+        "type": "Literal",
+        "value": 3
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.MPD_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts.\"HTTPRequest.MPD_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25555,
+        25592
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 454,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000156",
+        "name": "\"HTTPRequest.XLINK_EXPANSION_TYPE\"",
+        "type": "Literal",
+        "value": 1
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.XLINK_EXPANSION_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts.\"HTTPRequest.XLINK_EXPANSION_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25610,
+        25645
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 455,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000158",
+        "name": "\"HTTPRequest.MEDIA_SEGMENT_TYPE\"",
+        "type": "Literal",
+        "value": 3
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.MEDIA_SEGMENT_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts.\"HTTPRequest.MEDIA_SEGMENT_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25663,
+        25697
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 456,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000160",
+        "name": "\"HTTPRequest.INIT_SEGMENT_TYPE\"",
+        "type": "Literal",
+        "value": 3
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.INIT_SEGMENT_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts.\"HTTPRequest.INIT_SEGMENT_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25715,
+        25764
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 457,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000162",
+        "name": "\"HTTPRequest.BITSTREAM_SWITCHING_SEGMENT_TYPE\"",
+        "type": "Literal",
+        "value": 3
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.BITSTREAM_SWITCHING_SEGMENT_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts.\"HTTPRequest.BITSTREAM_SWITCHING_SEGMENT_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25782,
+        25817
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 458,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000164",
+        "name": "\"HTTPRequest.INDEX_SEGMENT_TYPE\"",
+        "type": "Literal",
+        "value": 3
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.INDEX_SEGMENT_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts.\"HTTPRequest.INDEX_SEGMENT_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25835,
+        25862
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 459,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000166",
+        "name": "\"HTTPRequest.OTHER_TYPE\"",
+        "type": "Literal",
+        "value": 3
+      }
+    },
+    "undocumented": true,
+    "name": "\"HTTPRequest.OTHER_TYPE\"",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts.\"HTTPRequest.OTHER_TYPE\"",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25880,
+        25907
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 460,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000168",
+        "name": "lowLatencyMultiplyFactor",
+        "type": "Literal",
+        "value": 5
+      }
+    },
+    "undocumented": true,
+    "name": "lowLatencyMultiplyFactor",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.retryAttempts.lowLatencyMultiplyFactor",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.retryAttempts",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25935,
+        26691
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 462,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000170",
+        "name": "abr",
+        "type": "ObjectExpression",
+        "value": "{\"movingAverageMethod\":\"\",\"ABRStrategy\":\"\",\"bandwidthSafetyFactor\":0.9,\"useDefaultABRRules\":true,\"useDeadTimeLatency\":true,\"limitBitrateByPortal\":false,\"usePixelRatioInLimitBitrateByPortal\":false,\"maxBitrate\":\"\",\"minBitrate\":\"\",\"maxRepresentationRatio\":\"\",\"initialBitrate\":\"\",\"initialRepresentationRatio\":\"\",\"autoSwitchBitrate\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "abr",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        25958,
+        26018
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 463,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000172",
+        "name": "movingAverageMethod",
+        "type": "MemberExpression",
+        "value": "Constants.MOVING_AVERAGE_SLIDING_WINDOW"
+      }
+    },
+    "undocumented": true,
+    "name": "movingAverageMethod",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.movingAverageMethod",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26036,
+        26079
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 464,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000176",
+        "name": "ABRStrategy",
+        "type": "MemberExpression",
+        "value": "Constants.ABR_STRATEGY_DYNAMIC"
+      }
+    },
+    "undocumented": true,
+    "name": "ABRStrategy",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.ABRStrategy",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26097,
+        26123
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 465,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000180",
+        "name": "bandwidthSafetyFactor",
+        "type": "Literal",
+        "value": 0.9
+      }
+    },
+    "undocumented": true,
+    "name": "bandwidthSafetyFactor",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.bandwidthSafetyFactor",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26141,
+        26165
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 466,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000182",
+        "name": "useDefaultABRRules",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "useDefaultABRRules",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.useDefaultABRRules",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26183,
+        26207
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 467,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000184",
+        "name": "useDeadTimeLatency",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "useDeadTimeLatency",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.useDeadTimeLatency",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26225,
+        26252
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 468,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000186",
+        "name": "limitBitrateByPortal",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "limitBitrateByPortal",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.limitBitrateByPortal",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26270,
+        26312
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 469,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000188",
+        "name": "usePixelRatioInLimitBitrateByPortal",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "usePixelRatioInLimitBitrateByPortal",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.usePixelRatioInLimitBitrateByPortal",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26330,
+        26366
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 470,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000190",
+        "name": "maxBitrate",
+        "type": "ObjectExpression",
+        "value": "{\"audio\":\"\",\"video\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "maxBitrate",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.maxBitrate",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26344,
+        26353
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 470,
+      "columnno": 30,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000192",
+        "name": "audio",
+        "type": "UnaryExpression",
+        "value": -1
+      }
+    },
+    "undocumented": true,
+    "name": "audio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.maxBitrate.audio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.maxBitrate",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26355,
+        26364
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 470,
+      "columnno": 41,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000195",
+        "name": "video",
+        "type": "UnaryExpression",
+        "value": -1
+      }
+    },
+    "undocumented": true,
+    "name": "video",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.maxBitrate.video",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.maxBitrate",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26384,
+        26420
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 471,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000198",
+        "name": "minBitrate",
+        "type": "ObjectExpression",
+        "value": "{\"audio\":\"\",\"video\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "minBitrate",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.minBitrate",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26398,
+        26407
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 471,
+      "columnno": 30,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000200",
+        "name": "audio",
+        "type": "UnaryExpression",
+        "value": -1
+      }
+    },
+    "undocumented": true,
+    "name": "audio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.minBitrate.audio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.minBitrate",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26409,
+        26418
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 471,
+      "columnno": 41,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000203",
+        "name": "video",
+        "type": "UnaryExpression",
+        "value": -1
+      }
+    },
+    "undocumented": true,
+    "name": "video",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.minBitrate.video",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.minBitrate",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26438,
+        26484
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 472,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000206",
+        "name": "maxRepresentationRatio",
+        "type": "ObjectExpression",
+        "value": "{\"audio\":1,\"video\":1}"
+      }
+    },
+    "undocumented": true,
+    "name": "maxRepresentationRatio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.maxRepresentationRatio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26464,
+        26472
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 472,
+      "columnno": 42,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000208",
+        "name": "audio",
+        "type": "Literal",
+        "value": 1
+      }
+    },
+    "undocumented": true,
+    "name": "audio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.maxRepresentationRatio.audio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.maxRepresentationRatio",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26474,
+        26482
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 472,
+      "columnno": 52,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000210",
+        "name": "video",
+        "type": "Literal",
+        "value": 1
+      }
+    },
+    "undocumented": true,
+    "name": "video",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.maxRepresentationRatio.video",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.maxRepresentationRatio",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26502,
+        26542
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 473,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000212",
+        "name": "initialBitrate",
+        "type": "ObjectExpression",
+        "value": "{\"audio\":\"\",\"video\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "initialBitrate",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.initialBitrate",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26520,
+        26529
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 473,
+      "columnno": 34,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000214",
+        "name": "audio",
+        "type": "UnaryExpression",
+        "value": -1
+      }
+    },
+    "undocumented": true,
+    "name": "audio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.initialBitrate.audio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.initialBitrate",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26531,
+        26540
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 473,
+      "columnno": 45,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000217",
+        "name": "video",
+        "type": "UnaryExpression",
+        "value": -1
+      }
+    },
+    "undocumented": true,
+    "name": "video",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.initialBitrate.video",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.initialBitrate",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26560,
+        26612
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 474,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000220",
+        "name": "initialRepresentationRatio",
+        "type": "ObjectExpression",
+        "value": "{\"audio\":\"\",\"video\":\"\"}"
+      }
+    },
+    "undocumented": true,
+    "name": "initialRepresentationRatio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.initialRepresentationRatio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26590,
+        26599
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 474,
+      "columnno": 46,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000222",
+        "name": "audio",
+        "type": "UnaryExpression",
+        "value": -1
+      }
+    },
+    "undocumented": true,
+    "name": "audio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.initialRepresentationRatio.audio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.initialRepresentationRatio",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26601,
+        26610
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 474,
+      "columnno": 57,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000225",
+        "name": "video",
+        "type": "UnaryExpression",
+        "value": -1
+      }
+    },
+    "undocumented": true,
+    "name": "video",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.initialRepresentationRatio.video",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.initialRepresentationRatio",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26630,
+        26677
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 475,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000228",
+        "name": "autoSwitchBitrate",
+        "type": "ObjectExpression",
+        "value": "{\"audio\":true,\"video\":true}"
+      }
+    },
+    "undocumented": true,
+    "name": "autoSwitchBitrate",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.autoSwitchBitrate",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26651,
+        26662
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 475,
+      "columnno": 37,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000230",
+        "name": "audio",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "audio",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.autoSwitchBitrate.audio",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.autoSwitchBitrate",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26664,
+        26675
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 475,
+      "columnno": 50,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000232",
+        "name": "video",
+        "type": "Literal",
+        "value": true
+      }
+    },
+    "undocumented": true,
+    "name": "video",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.abr.autoSwitchBitrate.video",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.abr.autoSwitchBitrate",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26705,
+        26811
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 477,
+      "columnno": 12,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000234",
+        "name": "cmcd",
+        "type": "ObjectExpression",
+        "value": "{\"enabled\":false,\"sid\":null,\"cid\":null}"
+      }
+    },
+    "undocumented": true,
+    "name": "cmcd",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.cmcd",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26729,
+        26743
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 478,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000236",
+        "name": "enabled",
+        "type": "Literal",
+        "value": false
+      }
+    },
+    "undocumented": true,
+    "name": "enabled",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.cmcd.enabled",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.cmcd",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26761,
+        26770
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 479,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000238",
+        "name": "sid",
+        "type": "Literal",
+        "value": null
+      }
+    },
+    "undocumented": true,
+    "name": "sid",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.cmcd.sid",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.cmcd",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26788,
+        26797
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 480,
+      "columnno": 16,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000240",
+        "name": "cid",
+        "type": "Literal",
+        "value": null
+      }
+    },
+    "undocumented": true,
+    "name": "cid",
+    "longname": "module:Settings~Settings~defaultSettings.streaming.cmcd.cid",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~defaultSettings.streaming.cmcd",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        26838,
+        26877
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 485,
+      "columnno": 8,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000243",
+        "name": "settings",
+        "type": "CallExpression",
+        "value": ""
+      }
+    },
+    "undocumented": true,
+    "name": "settings",
+    "longname": "module:Settings~Settings~settings",
+    "kind": "member",
+    "memberof": "module:Settings~Settings",
+    "scope": "inner",
+    "params": []
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        27044,
+        27529
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 489,
+      "columnno": 4,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000250",
+        "name": "mixinSettings",
+        "type": "FunctionDeclaration",
+        "paramnames": [
+          "source",
+          "dest",
+          "path"
+        ]
+      },
+      "vars": {
+        "n": "module:Settings~Settings~mixinSettings~n",
+        "dest[undefined]": "module:Settings~dest[undefined]"
+      }
+    },
+    "undocumented": true,
+    "name": "mixinSettings",
+    "longname": "module:Settings~Settings~mixinSettings",
+    "kind": "function",
+    "memberof": "module:Settings~Settings",
+    "scope": "inner",
+    "params": []
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        27106,
+        27107
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 490,
+      "columnno": 17,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000258",
+        "name": "n"
+      }
+    },
+    "undocumented": true,
+    "name": "n",
+    "longname": "module:Settings~Settings~mixinSettings~n",
+    "kind": "member",
+    "memberof": "module:Settings~Settings~mixinSettings",
+    "scope": "inner",
+    "params": []
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        27426,
+        27458
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 496,
+      "columnno": 24,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000309",
+        "name": "dest[undefined]",
+        "type": "CallExpression",
+        "value": "",
+        "paramnames": []
+      }
+    },
+    "undocumented": true,
+    "name": "dest[undefined]",
+    "longname": "module:Settings~dest[undefined]",
+    "kind": "member",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "/**\n     * Return the settings object. Don't copy/store this object, you won't get updates.\n     * @func\n     * @instance\n     */",
+    "meta": {
+      "range": [
+        27669,
+        27716
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 508,
+      "columnno": 4,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000320",
+        "name": "get",
+        "type": "FunctionDeclaration",
+        "paramnames": []
+      }
+    },
+    "description": "Return the settings object. Don't copy/store this object, you won't get updates.",
+    "kind": "function",
+    "scope": "inner",
+    "name": "get",
+    "longname": "module:Settings~Settings~get",
+    "memberof": "module:Settings~Settings",
+    "params": []
+  },
+  {
+    "comment": "/**\n     * @func\n     * @instance\n     * @param {object} settingsObj - This should be a partial object of the Settings.Schema type. That is, fields defined should match the path (e.g.\n     * settingsObj.streaming.abr.autoSwitchBitrate.audio -> defaultSettings.streaming.abr.autoSwitchBitrate.audio). Where an element's path does\n     * not match it is ignored, and a warning is logged.\n     *\n     * Use to change the settings object. Any new values defined will overwrite the settings and anything undefined will not change.\n     * Implementers of new settings should add it in an approriate namespace to the defaultSettings object and give it a default value (that is not undefined).\n     *\n     */",
+    "meta": {
+      "range": [
+        28427,
+        28574
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 523,
+      "columnno": 4,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000325",
+        "name": "update",
+        "type": "FunctionDeclaration",
+        "paramnames": [
+          "settingsObj"
+        ]
+      }
+    },
+    "kind": "function",
+    "scope": "inner",
+    "params": [
+      {
+        "type": {
+          "names": [
+            "object"
+          ]
+        },
+        "description": "This should be a partial object of the Settings.Schema type. That is, fields defined should match the path (e.g.\nsettingsObj.streaming.abr.autoSwitchBitrate.audio -> defaultSettings.streaming.abr.autoSwitchBitrate.audio). Where an element's path does\nnot match it is ignored, and a warning is logged.\n\nUse to change the settings object. Any new values defined will overwrite the settings and anything undefined will not change.\nImplementers of new settings should add it in an approriate namespace to the defaultSettings object and give it a default value (that is not undefined).",
+        "name": "settingsObj"
+      }
+    ],
+    "name": "update",
+    "longname": "module:Settings~Settings~update",
+    "memberof": "module:Settings~Settings"
+  },
+  {
+    "comment": "/**\n     * Resets the settings object. Everything is set to its default value.\n     * @func\n     * @instance\n     *\n     */",
+    "meta": {
+      "range": [
+        28708,
+        28781
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 535,
+      "columnno": 4,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000341",
+        "name": "reset",
+        "type": "FunctionDeclaration",
+        "paramnames": []
+      },
+      "vars": {
+        "settings": "module:Settings~settings"
+      }
+    },
+    "description": "Resets the settings object. Everything is set to its default value.",
+    "kind": "function",
+    "scope": "inner",
+    "name": "reset",
+    "longname": "module:Settings~Settings~reset",
+    "memberof": "module:Settings~Settings",
+    "params": []
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        28735,
+        28774
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 536,
+      "columnno": 8,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000345",
+        "name": "settings",
+        "type": "CallExpression",
+        "funcscope": "module:Settings~Settings~reset",
+        "value": "",
+        "paramnames": []
+      }
+    },
+    "undocumented": true,
+    "name": "settings",
+    "longname": "module:Settings~settings",
+    "kind": "member",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        28787,
+        28868
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 539,
+      "columnno": 4,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000353",
+        "name": "instance",
+        "type": "ObjectExpression",
+        "funcscope": "module:Settings~Settings",
+        "value": "{\"get\":\"\",\"update\":\"\",\"reset\":\"\"}",
+        "paramnames": []
+      }
+    },
+    "undocumented": true,
+    "name": "instance",
+    "longname": "module:Settings~instance",
+    "kind": "member",
+    "scope": "inner",
+    "memberof": "module:Settings"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        28808,
+        28816
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 540,
+      "columnno": 8,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000356",
+        "name": "get",
+        "type": "Identifier",
+        "value": "get"
+      }
+    },
+    "undocumented": true,
+    "name": "get",
+    "longname": "module:Settings~instance.get",
+    "kind": "member",
+    "memberof": "module:Settings~instance",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        28826,
+        28840
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 541,
+      "columnno": 8,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000358",
+        "name": "update",
+        "type": "Identifier",
+        "value": "update"
+      }
+    },
+    "undocumented": true,
+    "name": "update",
+    "longname": "module:Settings~instance.update",
+    "kind": "member",
+    "memberof": "module:Settings~instance",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        28850,
+        28862
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 542,
+      "columnno": 8,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000360",
+        "name": "reset",
+        "type": "Identifier",
+        "value": "reset"
+      }
+    },
+    "undocumented": true,
+    "name": "reset",
+    "longname": "module:Settings~instance.reset",
+    "kind": "member",
+    "memberof": "module:Settings~instance",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        28896,
+        28939
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 549,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000365",
+        "name": "Settings.__dashjs_factory_name",
+        "type": "Literal",
+        "value": "Settings",
+        "paramnames": []
+      }
+    },
+    "undocumented": true,
+    "name": "__dashjs_factory_name",
+    "longname": "module:Settings~Settings.__dashjs_factory_name",
+    "kind": "member",
+    "memberof": "module:Settings~Settings",
+    "scope": "static"
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        28945,
+        28997
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 550,
+      "columnno": 4,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000371",
+        "name": "factory",
+        "type": "CallExpression",
+        "value": ""
+      }
+    },
+    "undocumented": true,
+    "name": "factory",
+    "longname": "module:Settings~factory",
+    "kind": "member",
+    "scope": "inner",
+    "memberof": "module:Settings",
+    "params": []
+  },
+  {
+    "comment": "",
+    "meta": {
+      "range": [
+        28999,
+        29022
+      ],
+      "filename": "mqr81nzab9fgk5igwxs57.js",
+      "lineno": 551,
+      "columnno": 0,
+      "path": "/tmp",
+      "code": {
+        "id": "astnode100000378",
+        "name": "module.exports",
+        "type": "Identifier"
+      }
+    },
+    "undocumented": true,
+    "name": "module:Settings",
+    "longname": "module:Settings",
+    "kind": "member"
+  },
+  {
+    "kind": "package",
+    "longname": "package:undefined",
+    "files": [
+      "/tmp/mqr81nzab9fgk5igwxs57.js"
+    ]
+  }
+]
