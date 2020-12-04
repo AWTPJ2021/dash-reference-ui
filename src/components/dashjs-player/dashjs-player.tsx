@@ -4,7 +4,7 @@ import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 @Component({
   tag: 'dashjs-player',
   styleUrl: 'dashjs-player.css',
-  shadow: true,
+  shadow: false,
 })
 export class DashjsPlayer {
   @Element() 

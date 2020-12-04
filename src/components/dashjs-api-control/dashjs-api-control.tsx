@@ -4,7 +4,7 @@ import { Component, Host, h, Prop, Listen } from '@stencil/core';
   tag: 'dashjs-api-control',
   styleUrl: 'dashjs-api-control.css',
   assetsDirs: ["sources"],
-  shadow: true,
+  shadow: false,
 })
 export class DashjsApiControl {
   @Prop()
@@ -43,7 +43,7 @@ export class DashjsApiControl {
             <ion-col size="2">
               <ion-item class="noBorder">
                 <ion-button color="dark" slot="end">Stop</ion-button>
-                <ion-button class="reduced_margin" slot="end" id="load">Load</ion-button>
+                <ion-button slot="end">Load</ion-button>
                 <ion-toggle checked slot="end"></ion-toggle>
               </ion-item>
             </ion-col>

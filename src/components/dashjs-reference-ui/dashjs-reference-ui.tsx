@@ -3,7 +3,7 @@ import { Component, Host, h, Prop, Method} from '@stencil/core';
 @Component({
   tag: 'dashjs-reference-ui',
   styleUrl: 'dashjs-reference-ui.css',
-  shadow: true,
+  shadow: false,
 })
 export class DashjsReferenceUi {
   @Prop() url : string;

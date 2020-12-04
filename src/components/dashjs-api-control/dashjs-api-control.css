@@ -9,7 +9,3 @@ ion-button {
 .noBorder{
 --inner-border-width: 0 0 0 0;
 }
-
-.reduced_margin{
-margin-left: 5px;
-}
