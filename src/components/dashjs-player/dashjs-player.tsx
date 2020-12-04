@@ -1,5 +1,5 @@
-import { Component, Host, h, Element } from '@stencil/core';
-import { MediaPlayer } from 'dashjs';
+import { Component, Host, h, Element, Prop, Watch, Method } from '@stencil/core';
+import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 
 @Component({
   tag: 'dashjs-player',
@@ -7,22 +7,35 @@ import { MediaPlayer } from 'dashjs';
   shadow: true,
 })
 export class DashjsPlayer {
-  @Element() private element: HTMLElement;
+  @Element() 
+  private element: HTMLElement;
+  private player : MediaPlayerClass;
+
+  @Prop() url : string;
+
+  @Watch('url')
+	protected url_watcher(newUrl: string): void {
+    console.log("Changed value: " + newUrl);
+    this.url = newUrl;
+	  this.player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), this.url, true);
+	}
 
   connectedCallback() {}
 
   componentDidLoad() {
     console.log(this.element);
-    let url = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
-    let player = MediaPlayer().create();
-    player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), url, true);
+    this.url = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
+    this.player = MediaPlayer().create();
+    this.player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), this.url, true);
   }
 
   render() {
     return (
       <Host>
         <slot>
-          <video controls={true} width="400" height="200" id="myMainVideoPlayer"></video>
+          <ion-card>
+            <video controls={true} id="myMainVideoPlayer"></video>
+            </ion-card>
         </slot>
       </Host>
     );

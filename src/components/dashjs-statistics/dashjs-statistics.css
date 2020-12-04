@@ -1,3 +1,32 @@
 :host {
   display: block;
 }
+:root {
+  --ion-safe-area-top: 20px;
+  --ion-safe-area-bottom: 22px;
+}
+ion-item{
+  display: inline-block;
+  max-width: 50%;
+  --inner-border-width: 0 0 0 0;
+}
+
+ion-col:first-child {
+  border-right: 1px solid #E9E9E9;
+}
+
+ion-card-title {
+  text-align:center;
+  border-bottom: 1px solid #E9E9E9;
+  padding-bottom: 12px;
+}
+
+ion-label {
+  border-bottom: 0;
+}
+
+.display {
+  display: block;
+  width: 100%;
+  min-height: 500px;
+}

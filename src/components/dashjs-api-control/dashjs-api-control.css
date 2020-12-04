@@ -1,3 +1,15 @@
 :host {
   display: block;
 }
+
+ion-button {
+  text-transform:none;
+}
+
+.noBorder{
+--inner-border-width: 0 0 0 0;
+}
+
+.reduced_margin{
+margin-left: 5px;
+}

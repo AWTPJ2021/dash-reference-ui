@@ -7,14 +7,20 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface DashjsApiControl {
+        "json": string;
     }
     interface DashjsPlayer {
+        "url": string;
     }
     interface DashjsReferenceUi {
+        "url": string;
     }
     interface DashjsSettingsControl {
     }
     interface DashjsStatistics {
+        "audio_data": any;
+        "isServer": boolean;
+        "video_data": any;
     }
 }
 declare global {
@@ -58,14 +64,20 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DashjsApiControl {
+        "json"?: string;
     }
     interface DashjsPlayer {
+        "url"?: string;
     }
     interface DashjsReferenceUi {
+        "url"?: string;
     }
     interface DashjsSettingsControl {
     }
     interface DashjsStatistics {
+        "audio_data"?: any;
+        "isServer"?: boolean;
+        "video_data"?: any;
     }
     interface IntrinsicElements {
         "dashjs-api-control": DashjsApiControl;
