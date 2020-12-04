@@ -16,8 +16,7 @@ export class DashjsPlayer {
   @Watch('url')
 	protected url_watcher(newUrl: string): void {
     console.log("Changed value: " + newUrl);
-    this.url = newUrl;
-	  this.player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), this.url, true);
+	  this.player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), newUrl, true);
 	}
 
   connectedCallback() {}

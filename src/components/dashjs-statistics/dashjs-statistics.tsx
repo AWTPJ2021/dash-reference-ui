@@ -5,7 +5,7 @@ const { Chart } = chartjs.default.Chart;
 @Component({
   tag: 'dashjs-statistics',
   styleUrl: 'dashjs-statistics.css',
-  shadow: true,
+  shadow: false,
 })
 
 export class DashjsStatistics {
@@ -56,8 +56,8 @@ export class DashjsStatistics {
 	protected componentDidLoad(): void {
   
 	  if (!this.isServer) {
-		this.video_canvas = this.el.shadowRoot.querySelector('#video_canvas');
-		this.audio_canvas = this.el.shadowRoot.querySelector('#audio_canvas');
+		this.video_canvas = this.el.querySelector('#video_canvas');
+		this.audio_canvas = this.el.querySelector('#audio_canvas');
 
 		this.video_context = this.video_canvas.getContext('2d');
 		this.audio_context = this.audio_canvas.getContext('2d');
@@ -157,12 +157,12 @@ export class DashjsStatistics {
 					</ion-row>
 					<ion-row>
 						<div class="display">
-							<canvas id="video_canvas" width='1000' height='500'>a chart</canvas>
+							<canvas id="video_canvas" width='1000' height='300'>a chart</canvas>
 						</div>
 					</ion-row>
 					<ion-row>
 						<div class="display">
-							<canvas id="audio_canvas" width='1000' height='500'>another chart</canvas>
+							<canvas id="audio_canvas" width='1000' height='300'>another chart</canvas>
 						</div>
 					</ion-row>
 				</ion-grid>
