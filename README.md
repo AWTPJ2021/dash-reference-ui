@@ -12,7 +12,7 @@ Maybe use:
 - https://github.com/apexcharts/stencil-apexcharts
 - stencil.js
 
-- https://www.duetds.com/components/
+- https://ionicframework.com/docs/api/
   We cant use duet because of its terms:
   https://github.com/material-components/material-components-web-components
 

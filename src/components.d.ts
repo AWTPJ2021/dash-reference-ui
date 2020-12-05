@@ -6,12 +6,24 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface DashjsApiControl {
+    }
     interface DashjsPlayer {
     }
     interface DashjsReferenceUi {
     }
+    interface DashjsSettingsControl {
+    }
+    interface DashjsStatistics {
+    }
 }
 declare global {
+    interface HTMLDashjsApiControlElement extends Components.DashjsApiControl, HTMLStencilElement {
+    }
+    var HTMLDashjsApiControlElement: {
+        prototype: HTMLDashjsApiControlElement;
+        new (): HTMLDashjsApiControlElement;
+    };
     interface HTMLDashjsPlayerElement extends Components.DashjsPlayer, HTMLStencilElement {
     }
     var HTMLDashjsPlayerElement: {
@@ -24,27 +36,54 @@ declare global {
         prototype: HTMLDashjsReferenceUiElement;
         new (): HTMLDashjsReferenceUiElement;
     };
+    interface HTMLDashjsSettingsControlElement extends Components.DashjsSettingsControl, HTMLStencilElement {
+    }
+    var HTMLDashjsSettingsControlElement: {
+        prototype: HTMLDashjsSettingsControlElement;
+        new (): HTMLDashjsSettingsControlElement;
+    };
+    interface HTMLDashjsStatisticsElement extends Components.DashjsStatistics, HTMLStencilElement {
+    }
+    var HTMLDashjsStatisticsElement: {
+        prototype: HTMLDashjsStatisticsElement;
+        new (): HTMLDashjsStatisticsElement;
+    };
     interface HTMLElementTagNameMap {
+        "dashjs-api-control": HTMLDashjsApiControlElement;
         "dashjs-player": HTMLDashjsPlayerElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
+        "dashjs-settings-control": HTMLDashjsSettingsControlElement;
+        "dashjs-statistics": HTMLDashjsStatisticsElement;
     }
 }
 declare namespace LocalJSX {
+    interface DashjsApiControl {
+    }
     interface DashjsPlayer {
     }
     interface DashjsReferenceUi {
     }
+    interface DashjsSettingsControl {
+    }
+    interface DashjsStatistics {
+    }
     interface IntrinsicElements {
+        "dashjs-api-control": DashjsApiControl;
         "dashjs-player": DashjsPlayer;
         "dashjs-reference-ui": DashjsReferenceUi;
+        "dashjs-settings-control": DashjsSettingsControl;
+        "dashjs-statistics": DashjsStatistics;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "dashjs-api-control": LocalJSX.DashjsApiControl & JSXBase.HTMLAttributes<HTMLDashjsApiControlElement>;
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;
+            "dashjs-settings-control": LocalJSX.DashjsSettingsControl & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElement>;
+            "dashjs-statistics": LocalJSX.DashjsStatistics & JSXBase.HTMLAttributes<HTMLDashjsStatisticsElement>;
         }
     }
 }

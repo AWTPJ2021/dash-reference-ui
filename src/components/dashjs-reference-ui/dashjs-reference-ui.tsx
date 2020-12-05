@@ -9,9 +9,10 @@ export class DashjsReferenceUi {
   render() {
     return (
       <Host>
+      <dashjs-api-control></dashjs-api-control>
+      <dashjs-settings-control></dashjs-settings-control>
         <dashjs-player></dashjs-player>
-        <duet-input label="Your name" placeholder="John Doe"></duet-input>
-        <slot>Reference ui</slot>
+        <dashjs-statistics></dashjs-statistics>
       </Host>
     );
   }
