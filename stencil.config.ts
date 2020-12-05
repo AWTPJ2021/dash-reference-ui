@@ -4,11 +4,15 @@ import nodePolyfills from 'rollup-plugin-node-polyfills';
 export const config: Config = {
   namespace: 'dashjs',
   plugins: [
-    sass()
+    sass({
+      includePaths: ['./node_modules/'],
+      injectGlobalPaths: ['src/app.scss'],
+    }),
   ],
   rollupPlugins: {
     after: [nodePolyfills()],
   },
+  globalStyle: 'src/app.scss',
   outputTargets: [
     {
       type: 'dist',
