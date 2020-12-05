@@ -17,6 +17,7 @@ export const config: Config = {
     {
       type: 'dist',
       esmLoaderPath: '../loader',
+      copy: [{ src: 'static', warn: true }],
     },
     {
       type: 'dist-custom-elements-bundle',
@@ -28,6 +29,7 @@ export const config: Config = {
     {
       type: 'www',
       serviceWorker: null, // disable service workers
+      copy: [{ src: 'static', warn: true }],
     },
   ],
 };
