@@ -13,6 +13,10 @@ export namespace Components {
     interface DashjsReferenceUi {
     }
     interface DashjsSettingsControl {
+        "defaultSettings": Object;
+        "resetSettings": () => Promise<void>;
+    }
+    interface DashjsSettingsControlModal {
     }
     interface DashjsStatistics {
     }
@@ -42,6 +46,12 @@ declare global {
         prototype: HTMLDashjsSettingsControlElement;
         new (): HTMLDashjsSettingsControlElement;
     };
+    interface HTMLDashjsSettingsControlModalElement extends Components.DashjsSettingsControlModal, HTMLStencilElement {
+    }
+    var HTMLDashjsSettingsControlModalElement: {
+        prototype: HTMLDashjsSettingsControlModalElement;
+        new (): HTMLDashjsSettingsControlModalElement;
+    };
     interface HTMLDashjsStatisticsElement extends Components.DashjsStatistics, HTMLStencilElement {
     }
     var HTMLDashjsStatisticsElement: {
@@ -53,6 +63,7 @@ declare global {
         "dashjs-player": HTMLDashjsPlayerElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
         "dashjs-settings-control": HTMLDashjsSettingsControlElement;
+        "dashjs-settings-control-modal": HTMLDashjsSettingsControlModalElement;
         "dashjs-statistics": HTMLDashjsStatisticsElement;
     }
 }
@@ -64,6 +75,10 @@ declare namespace LocalJSX {
     interface DashjsReferenceUi {
     }
     interface DashjsSettingsControl {
+        "defaultSettings"?: Object;
+        "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
+    }
+    interface DashjsSettingsControlModal {
     }
     interface DashjsStatistics {
     }
@@ -72,6 +87,7 @@ declare namespace LocalJSX {
         "dashjs-player": DashjsPlayer;
         "dashjs-reference-ui": DashjsReferenceUi;
         "dashjs-settings-control": DashjsSettingsControl;
+        "dashjs-settings-control-modal": DashjsSettingsControlModal;
         "dashjs-statistics": DashjsStatistics;
     }
 }
@@ -83,6 +99,7 @@ declare module "@stencil/core" {
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;
             "dashjs-settings-control": LocalJSX.DashjsSettingsControl & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElement>;
+            "dashjs-settings-control-modal": LocalJSX.DashjsSettingsControlModal & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlModalElement>;
             "dashjs-statistics": LocalJSX.DashjsStatistics & JSXBase.HTMLAttributes<HTMLDashjsStatisticsElement>;
         }
     }
