@@ -13,10 +13,10 @@ export namespace Components {
     interface DashjsReferenceUi {
     }
     interface DashjsSettingsControl {
-        "defaultSettings": Object;
         "resetSettings": () => Promise<void>;
     }
     interface DashjsSettingsControlModal {
+        "allSettings": any[];
     }
     interface DashjsStatistics {
     }
@@ -75,10 +75,10 @@ declare namespace LocalJSX {
     interface DashjsReferenceUi {
     }
     interface DashjsSettingsControl {
-        "defaultSettings"?: Object;
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
     }
     interface DashjsSettingsControlModal {
+        "allSettings"?: any[];
     }
     interface DashjsStatistics {
     }

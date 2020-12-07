@@ -50,7 +50,24 @@ console.log(allprops.length);
 allprops = allprops.filter(a => !a.undocumented);
 console.log(allprops.length);
 
-fs.writeFileSync('./dev/out.json', JSON.stringify(annotate(schema, 'Settings'), null, 2));
+// tree to ast
+let ast = treeToAST(annotate(schema, 'Settings'), 'settings', null);
+
+fs.writeFileSync('./dev/out.json', JSON.stringify(ast, null, 2));
+
+function treeToAST(tree: any, name: string, parent: string, path: string[] = []) {
+  let ast = [];
+  if (tree.properties) {
+    path = [...path, name];
+    Object.keys(tree.properties).forEach(o => {
+      ast = ast.concat(treeToAST(tree.properties[o], o, name, path));
+    });
+  } else {
+    ast = ast.concat({ ...tree, path, name, parent });
+  }
+  console.log(ast);
+  return ast;
+}
 
 function annotate(jsonSchemaObject: any, name: string): any {
   if (jsonSchemaObject.properties) {
@@ -61,8 +78,8 @@ function annotate(jsonSchemaObject: any, name: string): any {
   }
   let match = allprops.find(e => e.name === name);
   if (match) {
-    console.log(name);
-    console.log(match);
+    // console.log(name);
+    // console.log(match);
     jsonSchemaObject.description = match.description;
     jsonSchemaObject.required = !match.optional;
     jsonSchemaObject.example = match.defaultvalue;

@@ -1,29 +1,85 @@
-import { Component, Host, h } from '@stencil/core';
+import { modalController } from '@ionic/core';
+import { Component, h, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'dashjs-settings-control-modal',
-  styleUrl: 'dashjs-settings-control-modal.css',
-  shadow: true,
+  styleUrl: 'dashjs-settings-control-modal.scss',
+  shadow: false,
 })
 export class DashjsSettingsControlModal {
-  array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 5, 6, 7, 8, 89, 0];
+  componentWillLoad() {
+    this.viewedSettings = this.allSettings;
+  }
+  @Prop() allSettings = [];
+  @Watch('allSettings') test(newI: any, old: any) {
+    console.log(this.allSettings);
+  }
+  @State() viewedSettings = [];
+
+  filterSettings(str: string) {
+    if (str === '') {
+      this.viewedSettings = this.allSettings;
+      return;
+    }
+    this.viewedSettings = this.allSettings.filter(s => (s.name as string).includes(str));
+  }
+
+  save() {
+    modalController.dismiss(this.viewedSettings);
+  }
+
+  cancel() {
+    modalController.dismiss();
+  }
   render() {
-    return (
+    return [
+      <ion-searchbar
+        onIonChange={e => {
+          this.filterSettings(e.detail.value!);
+          console.log(e.detail.value!);
+        }}
+      ></ion-searchbar>,
       <ion-content>
-        <ion-searchbar></ion-searchbar>
         <ion-grid>
-          {this.array.map((item: any) => (
+          {this.viewedSettings.map((item: any) => (
             <ion-row>
-              <ion-col>{item}</ion-col>
-              <ion-col>ion-col</ion-col>
-              <ion-col>ion-col</ion-col>
-              <ion-col>ion-col</ion-col>
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    {item.path.map(p => (
+                      <span style={{ fontSize: '12px' }}>
+                        {p} {'> '}
+                      </span>
+                    ))}
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="1">
+                    <ion-checkbox
+                      checked={item.selected}
+                      onIonChange={change => {
+                        item.selected = change.detail.checked;
+                        // console.log(change.detail.checked);
+                      }}
+                    ></ion-checkbox>
+                  </ion-col>
+                  <ion-col>{item.selected}</ion-col>
+                  <ion-col>{item.name}</ion-col>
+                  <ion-col innerHTML={item.description}></ion-col>
+                </ion-row>
+              </ion-grid>
             </ion-row>
           ))}
         </ion-grid>
-        <ion-button>Save</ion-button>
-        <ion-button>Cancel</ion-button>
-      </ion-content>
-    );
+      </ion-content>,
+      <ion-toolbar>
+        <ion-button shape="round" fill="outline" onClick={() => this.cancel()}>
+          Cancel
+        </ion-button>
+        <ion-button shape="round" slot="end" onClick={() => this.save()}>
+          Save
+        </ion-button>
+      </ion-toolbar>,
+    ];
   }
 }

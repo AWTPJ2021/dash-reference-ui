@@ -1,5 +1,5 @@
 import { modalController } from '@ionic/core';
-import { Component, Host, h, Prop, Watch, Method, Event, EventEmitter } from '@stencil/core';
+import { Component, Host, h, Prop, Watch, Method, Event, EventEmitter, State } from '@stencil/core';
 
 @Component({
   tag: 'dashjs-settings-control',
@@ -7,14 +7,15 @@ import { Component, Host, h, Prop, Watch, Method, Event, EventEmitter } from '@s
   shadow: false,
 })
 export class DashjsSettingsControl {
-  @Prop() defaultSettings: Object;
-  @Watch('defaultSettings')
-  updateSettings(newValue, oldValue) {
-    // Update the settings
-  }
+  @State() defaultSettings: any[] = [];
+
+  // @Watch('defaultSettings')
+  // updateSettings(newValue, oldValue) {
+  //   // Update the settings
+  // }
 
   @Method()
-  resetSettings() {
+  async resetSettings() {
     // Resets the Settings
   }
 
@@ -23,33 +24,57 @@ export class DashjsSettingsControl {
   async openSettings() {
     const modal = await modalController.create({
       component: 'dashjs-settings-control-modal',
+      cssClass: 'browse-settings-modal',
+      componentProps: {
+        allSettings: [...this.allSettings],
+      },
     });
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+      this.allSettings = data;
+      console.log(this.allSettings);
+    }
   }
   componentWillLoad() {
     fetch('/static/out.json')
       .then((response: Response) => response.json())
       .then(response => {
-        console.log(response);
+        this.defaultSettings = response.map(s => {
+          return { ...s, selected: false };
+        });
+        this.allSettings = this.defaultSettings;
       });
   }
+  @State() allSettings: any[] = [];
+
+  @Watch('allSettings')
+  settingsUpdate(newVal: any, oldVal: any) {
+    this.settingsUpdated.emit(newVal);
+  }
+
   render() {
     return (
       <Host>
         <ion-card>
           <ion-card-header>
-            <ion-card-title onClick={event => this.settingsUpdated.emit('test')}>Settings</ion-card-title>
+            <ion-card-title>Settings</ion-card-title>
           </ion-card-header>
 
           <ion-card-content>
-            <ion-chip>
-              <ion-label>Setting 1</ion-label>
-              <ion-icon name="close-circle"></ion-icon>
-            </ion-chip>
-            <ion-chip color="secondary">
+            {this.allSettings
+              .filter(s => s.selected)
+              .map(s => (
+                <ion-chip>
+                  <ion-label>{s.name}</ion-label>
+                  <ion-icon name="close-circle"></ion-icon>
+                </ion-chip>
+              ))}
+            {/* <ion-chip color="secondary">
               <ion-label color="secondary">Secondary Label</ion-label>
               <ion-icon name="close-circle"></ion-icon>
-            </ion-chip>
+            </ion-chip> */}
+            <ion-input placeholder="Add more settings..."></ion-input>
             <ion-button shape="round" color="dark" onClick={() => this.openSettings()}>
               Browse Settings
               <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>

@@ -11,3 +11,7 @@
 
 // Add global styles here (which should be applied to the page.
 // DO NOT add styles which apply to components!
+.browse-settings-modal .modal-wrapper {
+  min-height: 90vh;
+  min-width: 90vw;
+}
