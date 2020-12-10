@@ -11,8 +11,8 @@ export class DashjsSettingsControlModal {
     this.viewedSettings = this.allSettings;
   }
   @Prop() allSettings = [];
-  @Watch('allSettings') test(newI: any, old: any) {
-    console.log(this.allSettings);
+  @Watch('allSettings') test(newSettings: any) {
+    console.log(newSettings);
   }
   @State() viewedSettings = [];
 

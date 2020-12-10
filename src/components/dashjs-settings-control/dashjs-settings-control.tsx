@@ -1,5 +1,5 @@
 import { modalController } from '@ionic/core';
-import { Component, Host, h, Prop, Watch, Method, Event, EventEmitter, State } from '@stencil/core';
+import { Component, Host, h, Watch, Method, Event, EventEmitter, State } from '@stencil/core';
 
 @Component({
   tag: 'dashjs-settings-control',
@@ -49,7 +49,7 @@ export class DashjsSettingsControl {
   @State() allSettings: any[] = [];
 
   @Watch('allSettings')
-  settingsUpdate(newVal: any, oldVal: any) {
+  settingsUpdate(newVal: any) {
     this.settingsUpdated.emit(newVal);
   }
 
