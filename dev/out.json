@@ -1,0 +1,945 @@
+[
+  {
+    "enum": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "type": "number",
+    "description": "Sets up the log level. The levels are cumulative. For example, if you set the log level\nto dashjs.Debug.LOG_LEVEL_WARNING all warnings, errors and fatals will be logged. Possible values.\n\n<ul>\n<li>dashjs.Debug.LOG_LEVEL_NONE<br/>\nNo message is written in the browser console.\n\n<li>dashjs.Debug.LOG_LEVEL_FATAL<br/>\nLog fatal errors. An error is considered fatal when it causes playback to fail completely.\n\n<li>dashjs.Debug.LOG_LEVEL_ERROR<br/>\nLog error messages.\n\n<li>dashjs.Debug.LOG_LEVEL_WARNING<br/>\nLog warning messages.\n\n<li>dashjs.Debug.LOG_LEVEL_INFO<br/>\nLog info messages.\n\n<li>dashjs.Debug.LOG_LEVEL_DEBUG<br/>\nLog debug messages.\n</ul>",
+    "required": false,
+    "example": "dashjs.Debug.LOG_LEVEL_WARNING",
+    "path": [
+      "settings",
+      "debug"
+    ],
+    "name": "logLevel",
+    "parent": "debug"
+  },
+  {
+    "type": "number",
+    "description": "Maximum list depth of metrics.",
+    "required": false,
+    "example": 1000,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "metricsMaxListDepth",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "A timeout value in seconds, which during the ABRController will block switch-up events.\nThis will only take effect after an abandoned fragment event occurs.",
+    "required": false,
+    "example": 10000,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "abandonLoadTimeout",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "Changing this value will lower or increase live stream latency.  The detected segment duration will be multiplied by this value\nto define a time in seconds to delay a live stream from the live edge. Lowering this value will lower latency but may decrease\nthe player's ability to build a stable buffer.",
+    "required": false,
+    "example": null,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "liveDelayFragmentCount",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "<p>Equivalent in seconds of setLiveDelayFragmentCount</p>\n<p>Lowering this value will lower latency but may decrease the player's ability to build a stable buffer.</p>\n<p>This value should be less than the manifest duration by a couple of segment durations to avoid playback issues</p>\n<p>If set, this parameter will take precedence over setLiveDelayFragmentCount and manifest info</p>",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "liveDelay",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Set to true if you would like dash.js to keep downloading fragments in the background\nwhen the video element is paused.",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "scheduleWhilePaused",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "When enabled, after an ABR up-switch in quality, instead of requesting and appending the next fragment\nat the end of the current buffer range it is requested and appended closer to the current time\nWhen enabled, The maximum time to render a higher quality is current time + (1.5 * fragment duration).\n\nNote, When ABR down-switch is detected, we appended the lower quality at the end of the buffer range to preserve the\nhigher quality media for as long as possible.\n\nIf enabled, it should be noted there are a few cases when the client will not replace inside buffer range but rather\njust append at the end.  1. When the buffer level is less than one fragment duration 2.  The client\nis in an Abandonment State due to recent fragment abandonment event.\n\nKnown issues:\n1. In IE11 with auto switching off, if a user switches to a quality they can not download in time the\nfragment may be appended in the same range as the playhead or even in the past, in IE11 it may cause a stutter\nor stall in playback.",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "fastSwitchEnabled",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "When enabled, after a track switch and in case buffer is being replaced (see MEdiaPlayer.setTrackSwitchModeFor(Constants.TRACK_SWITCH_MODE_ALWAYS_REPLACE)),\nthe video element is flushed (seek at current playback time) once a segment of the new track is appended in buffer in order to force video decoder to play new track.\nThis can be required on some devices like GoogleCast devices to make track switching functional. Otherwise track switching will be effective only once after previous\nbuffered track is fully consumed.",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "flushBufferAtTrackSwitch",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Enable calculation of the DVR window for SegmentTimeline manifests based on the entries in <SegmentTimeline>",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "calcSegmentAvailabilityRangeFromTimeline",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "The interval of pruning buffer in sconds.",
+    "required": false,
+    "example": 10,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "bufferPruningInterval",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "This value influences the buffer pruning logic.\nAllows you to modify the buffer that is kept in source buffer in seconds.\n 0|-----------bufferToPrune-----------|-----bufferToKeep-----|currentTime|",
+    "required": false,
+    "example": 20,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "bufferToKeep",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "bufferAheadToKeep",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Sets whether player should jump small gaps (discontinuities) in the buffer.",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "jumpGaps",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Sets whether player should jump large gaps (discontinuities) in the buffer.",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "jumpLargeGaps",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "Time in seconds for a gap to be considered small.",
+    "required": false,
+    "example": 1.8,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "smallGapLimit",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "The time that the internal buffer target will be set to post startup/seeks (NOT top quality).\n\nWhen the time is set higher than the default you will have to wait longer\nto see automatic bitrate switches but will have a larger buffer which\nwill increase stability.",
+    "required": false,
+    "example": 12,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "stableBufferTime",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "The time that the internal buffer target will be set to once playing the top quality.\nIf there are multiple bitrates in your adaptation, and the media is playing at the highest\nbitrate, then we try to build a larger buffer at the top quality to increase stability\nand to maintain media quality.",
+    "required": false,
+    "example": 30,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "bufferTimeAtTopQuality",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "The time that the internal buffer target will be set to once playing the top quality for long form content.",
+    "required": false,
+    "example": 60,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "bufferTimeAtTopQualityLongForm",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "The threshold which defines if the media is considered long form content.\nThis will directly affect the buffer targets when playing back at the top quality.",
+    "required": false,
+    "example": 600,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "longFormContentDurationThreshold",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "How frequently the wallclockTimeUpdated internal event is triggered (in milliseconds).",
+    "required": false,
+    "example": 50,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "wallclockTimeUpdateInterval",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Enable or disable low latency mode",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "lowLatencyEnabled",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Set the value for the ProtectionController and MediaKeys life cycle. If true, the\nProtectionController and then created MediaKeys and MediaKeySessions will be preserved during\nthe MediaPlayer lifetime.",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "keepProtectionMediaKeys",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "<p>Allows you to enable the use of the Date Header, if exposed with CORS, as a timing source for live edge detection. The\nuse of the date header will happen only after the other timing source that take precedence fail or are omitted as described.",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "useManifestDateHeaderTimeSource",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "<p>Set to true if you would like to override the default live delay and honor the SuggestedPresentationDelay attribute in by the manifest.</p>",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "useSuggestedPresentationDelay",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Specifies if the appendWindow attributes of the MSE SourceBuffers should be set according to content duration from manifest.",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "useAppendWindow",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "For live streams, set the interval-frequency in milliseconds at which\ndash.js will check if the current manifest is still processed before\ndownloading the next manifest once the minimumUpdatePeriod time has",
+    "required": false,
+    "example": 100,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "manifestUpdateRetryInterval",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "liveCatchUpMinDrift",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "liveCatchUpMaxDrift",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "liveCatchUpPlaybackRate",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Use this parameter to enable the catchup mode for non low-latency streams\n\nNote: Catch-up mechanism is automatically applied when playing low latency live streams.",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming",
+      "lastBitrateCachingInfo"
+    ],
+    "name": "enabled",
+    "parent": "lastBitrateCachingInfo"
+  },
+  {
+    "type": "number",
+    "description": "Time to live. A value defined in milliseconds representing how log to cache the settings for.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "lastBitrateCachingInfo"
+    ],
+    "name": "ttl",
+    "parent": "lastBitrateCachingInfo"
+  },
+  {
+    "type": "boolean",
+    "description": "Use this parameter to enable the catchup mode for non low-latency streams\n\nNote: Catch-up mechanism is automatically applied when playing low latency live streams.",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming",
+      "lastMediaSettingsCachingInfo"
+    ],
+    "name": "enabled",
+    "parent": "lastMediaSettingsCachingInfo"
+  },
+  {
+    "type": "number",
+    "description": "Time to live. A value defined in milliseconds representing how log to cache the settings for.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "lastMediaSettingsCachingInfo"
+    ],
+    "name": "ttl",
+    "parent": "lastMediaSettingsCachingInfo"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for video media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "cacheLoadThresholds"
+    ],
+    "name": "video",
+    "parent": "cacheLoadThresholds"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for audio media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "cacheLoadThresholds"
+    ],
+    "name": "audio",
+    "parent": "cacheLoadThresholds"
+  },
+  {
+    "enum": [
+      "alwaysReplace",
+      "neverReplace"
+    ],
+    "type": "string",
+    "description": "Configuration for video media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "trackSwitchMode"
+    ],
+    "name": "video",
+    "parent": "trackSwitchMode"
+  },
+  {
+    "enum": [
+      "alwaysReplace",
+      "neverReplace"
+    ],
+    "type": "string",
+    "description": "Configuration for audio media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "trackSwitchMode"
+    ],
+    "name": "audio",
+    "parent": "trackSwitchMode"
+  },
+  {
+    "enum": [
+      "highestBitrate",
+      "widestRange"
+    ],
+    "type": "string",
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "selectionModeForInitialTrack",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "Time in milliseconds before timing out on loading a media fragment. Fragments that timeout are retried as if they failed.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "fragmentRequestTimeout",
+    "parent": "streaming"
+  },
+  {
+    "type": "number",
+    "description": "Manifest type of requests",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryIntervals"
+    ],
+    "name": "MPD",
+    "parent": "retryIntervals"
+  },
+  {
+    "type": "number",
+    "description": "XLink expansion type of requests",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryIntervals"
+    ],
+    "name": "XLinkExpansion",
+    "parent": "retryIntervals"
+  },
+  {
+    "type": "number",
+    "description": "Request to retrieve a media segment (video/audio/image/text chunk)",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryIntervals"
+    ],
+    "name": "MediaSegment",
+    "parent": "retryIntervals"
+  },
+  {
+    "type": "number",
+    "description": "Request to retrieve an initialization segment",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryIntervals"
+    ],
+    "name": "InitializationSegment",
+    "parent": "retryIntervals"
+  },
+  {
+    "type": "number",
+    "description": "Bitrate stream switching type of request",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryIntervals"
+    ],
+    "name": "BitstreamSwitchingSegment",
+    "parent": "retryIntervals"
+  },
+  {
+    "type": "number",
+    "description": "Request to retrieve an index segment (SegmentBase)",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryIntervals"
+    ],
+    "name": "IndexSegment",
+    "parent": "retryIntervals"
+  },
+  {
+    "type": "number",
+    "description": "Other type of request",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryIntervals"
+    ],
+    "name": "other",
+    "parent": "retryIntervals"
+  },
+  {
+    "type": "number",
+    "description": "Manifest type of requests",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryAttempts"
+    ],
+    "name": "MPD",
+    "parent": "retryAttempts"
+  },
+  {
+    "type": "number",
+    "description": "XLink expansion type of requests",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryAttempts"
+    ],
+    "name": "XLinkExpansion",
+    "parent": "retryAttempts"
+  },
+  {
+    "type": "number",
+    "description": "Request to retrieve a media segment (video/audio/image/text chunk)",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryAttempts"
+    ],
+    "name": "MediaSegment",
+    "parent": "retryAttempts"
+  },
+  {
+    "type": "number",
+    "description": "Request to retrieve an initialization segment",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryAttempts"
+    ],
+    "name": "InitializationSegment",
+    "parent": "retryAttempts"
+  },
+  {
+    "type": "number",
+    "description": "Bitrate stream switching type of request",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryAttempts"
+    ],
+    "name": "BitstreamSwitchingSegment",
+    "parent": "retryAttempts"
+  },
+  {
+    "type": "number",
+    "description": "Request to retrieve an index segment (SegmentBase)",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryAttempts"
+    ],
+    "name": "IndexSegment",
+    "parent": "retryAttempts"
+  },
+  {
+    "type": "number",
+    "description": "Other type of request",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "retryAttempts"
+    ],
+    "name": "other",
+    "parent": "retryAttempts"
+  },
+  {
+    "enum": [
+      "ewma",
+      "slidingWindow"
+    ],
+    "type": "string",
+    "description": "Sets the moving average method used for smoothing throughput estimates. Valid methods are\n\"slidingWindow\" and \"ewma\". The call has no effect if an invalid method is passed.\n\nThe sliding window moving average method computes the average throughput using the last four segments downloaded.\nIf the stream is live (as opposed to VOD), then only the last three segments are used.\nIf wide variations in throughput are detected, the number of segments can be dynamically increased to avoid oscillations.\n\nThe exponentially weighted moving average (EWMA) method computes the average using exponential smoothing.\nTwo separate estimates are maintained, a fast one with a three-second half life and a slow one with an eight-second half life.\nThe throughput estimate at any time is the minimum of the fast and slow estimates.\nThis allows a fast reaction to a bandwidth drop and prevents oscillations on bandwidth spikes.",
+    "required": false,
+    "example": "\"slidingWindow\"",
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "movingAverageMethod",
+    "parent": "abr"
+  },
+  {
+    "enum": [
+      "abrBola",
+      "abrDynamic"
+    ],
+    "type": "string",
+    "description": "Returns the current ABR strategy being used: \"abrDynamic\", \"abrBola\" or \"abrThroughput\".",
+    "required": false,
+    "example": "\"abrDynamic\"",
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "ABRStrategy",
+    "parent": "abr"
+  },
+  {
+    "type": "number",
+    "description": "Standard ABR throughput rules multiply the throughput by this value. It should be between 0 and 1,\nwith lower values giving less rebuffering (but also lower quality).",
+    "required": false,
+    "example": 0.9,
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "bandwidthSafetyFactor",
+    "parent": "abr"
+  },
+  {
+    "type": "boolean",
+    "description": "Should the default ABR rules be used, or the custom ones added.",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "useDefaultABRRules",
+    "parent": "abr"
+  },
+  {
+    "type": "boolean",
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "useBufferOccupancyABR",
+    "parent": "abr"
+  },
+  {
+    "type": "boolean",
+    "description": "If true, only the download portion will be considered part of the download bitrate\nand latency will be regarded as static. If false, the reciprocal of the whole\ntransfer time will be used.",
+    "required": false,
+    "example": true,
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "useDeadTimeLatency",
+    "parent": "abr"
+  },
+  {
+    "type": "boolean",
+    "description": "If true, the size of the video portal will limit the max chosen video resolution.",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "limitBitrateByPortal",
+    "parent": "abr"
+  },
+  {
+    "type": "boolean",
+    "description": "Sets whether to take into account the device's pixel ratio when defining the portal dimensions.\nUseful on, for example, retina displays.",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "usePixelRatioInLimitBitrateByPortal",
+    "parent": "abr"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for audio media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "maxBitrate"
+    ],
+    "name": "audio",
+    "parent": "maxBitrate"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for video media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "maxBitrate"
+    ],
+    "name": "video",
+    "parent": "maxBitrate"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for audio media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "minBitrate"
+    ],
+    "name": "audio",
+    "parent": "minBitrate"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for video media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "minBitrate"
+    ],
+    "name": "video",
+    "parent": "minBitrate"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for audio media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "maxRepresentationRatio"
+    ],
+    "name": "audio",
+    "parent": "maxRepresentationRatio"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for video media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "maxRepresentationRatio"
+    ],
+    "name": "video",
+    "parent": "maxRepresentationRatio"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for audio media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "initialBitrate"
+    ],
+    "name": "audio",
+    "parent": "initialBitrate"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for video media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "initialBitrate"
+    ],
+    "name": "video",
+    "parent": "initialBitrate"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for audio media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "initialRepresentationRatio"
+    ],
+    "name": "audio",
+    "parent": "initialRepresentationRatio"
+  },
+  {
+    "type": "number",
+    "description": "Configuration for video media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "initialRepresentationRatio"
+    ],
+    "name": "video",
+    "parent": "initialRepresentationRatio"
+  },
+  {
+    "type": "boolean",
+    "description": "Configuration for audio media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "autoSwitchBitrate"
+    ],
+    "name": "audio",
+    "parent": "autoSwitchBitrate"
+  },
+  {
+    "type": "boolean",
+    "description": "Configuration for video media type of tracks.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "abr",
+      "autoSwitchBitrate"
+    ],
+    "name": "video",
+    "parent": "autoSwitchBitrate"
+  },
+  {
+    "type": "boolean",
+    "description": "Use this parameter to enable the catchup mode for non low-latency streams\n\nNote: Catch-up mechanism is automatically applied when playing low latency live streams.",
+    "required": false,
+    "example": false,
+    "path": [
+      "settings",
+      "streaming",
+      "cmcd"
+    ],
+    "name": "enabled",
+    "parent": "cmcd"
+  },
+  {
+    "type": "string",
+    "description": "GUID identifying the current playback session. Should be in UUID format. If not specified a UUID will be automatically generated.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "cmcd"
+    ],
+    "name": "sid",
+    "parent": "cmcd"
+  },
+  {
+    "type": "string",
+    "description": "A unique string to identify the current content. If not specified it will be a hash of the MPD url.",
+    "required": false,
+    "path": [
+      "settings",
+      "streaming",
+      "cmcd"
+    ],
+    "name": "cid",
+    "parent": "cmcd"
+  }
+]
