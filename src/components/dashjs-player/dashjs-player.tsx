@@ -1,17 +1,17 @@
-import { Component, Host, h, Element, Prop, Watch, Method } from '@stencil/core';
+import { Component, Host, h, Element, Prop, Watch } from '@stencil/core';
 import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 
 @Component({
   tag: 'dashjs-player',
   styleUrl: 'dashjs-player.css',
-  shadow: true,
+  shadow: false,
 })
 export class DashjsPlayer {
   @Element() 
   private element: HTMLElement;
   private player : MediaPlayerClass;
 
-  @Prop() url : string;
+  @Prop() url : string = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd";
 
   @Watch('url')
 	protected url_watcher(newUrl: string): void {
@@ -23,7 +23,6 @@ export class DashjsPlayer {
 
   componentDidLoad() {
     console.log(this.element);
-    this.url = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
     this.player = MediaPlayer().create();
     this.player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), this.url, true);
   }

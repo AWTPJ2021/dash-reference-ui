@@ -1,21 +1,54 @@
-import { Component, Host, h, Prop, Listen } from '@stencil/core';
+import { Component, Host, h, State, Element} from '@stencil/core';
 
 @Component({
   tag: 'dashjs-api-control',
   styleUrl: 'dashjs-api-control.css',
   assetsDirs: ["sources"],
-  shadow: true,
+  shadow: false,
 })
 export class DashjsApiControl {
-  @Prop()
-  json = "sources.json";
+
+  @State() 
+  sourceList: any[] = [];
+
+  @State() 
+  mediaUrl : string = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
+
+  @Element()
+  private el: HTMLElement;
+  
+  componentWillLoad() {
+    fetch('/static/sources.json')
+      .then((response: Response) => response.json())
+      .then(response => {
+        this.sourceList = response.items;
+        console.log("Here is the source: " + this.sourceList.length);
+      });
+  }
+
+  stopMedia() {
+    console.log("TODO: Stop media");
+  }
+
+  loadMedia() {
+      console.log("TODO: load " + this.el.querySelector("#stream_url").textContent);
+  }
+
+  setAutoLoad(event) {
+    console.log("TODO: Set auto load " + event );
+  }
+
+  setStreamUrl(url) {
+    this.mediaUrl = url;
+  }
 
   protected componentDidLoad(): void {
-    console.log(this.json);
+    /*this.sourceList.forEach(element => {
+      console.log(element.name);
+   });*/
   }
 
   render() {
-
     return (
       <Host>
         <ion-card>
@@ -23,29 +56,27 @@ export class DashjsApiControl {
         <ion-grid>
 					<ion-row>
             <ion-col size="2">
-              <ion-item>
+              <ion-item class="margin-fix">
                 <ion-label>Stream</ion-label>
-                <ion-select interface="popover">
-                  <ion-select-option value="nes">NES</ion-select-option>
-                  <ion-select-option value="n64">Nintendo64</ion-select-option>
-                  <ion-select-option value="ps">PlayStation</ion-select-option>
-                  <ion-select-option value="genesis">Sega Genesis</ion-select-option>
-                  <ion-select-option value="saturn">Sega Saturn</ion-select-option>
-                  <ion-select-option value="snes">SNES</ion-select-option>
+                <ion-select interface="popover" onIonChange={ev => this.setStreamUrl(ev.detail.value)}>
+                  {this.sourceList.map((item: any) => (
+                    <ion-select-option value={item.submenu[0].url} >{item.name}</ion-select-option>
+                  ))}
                 </ion-select>
               </ion-item>
             </ion-col>
-            <ion-col size="8">
+            <ion-col size="6">
               <ion-item>
-                <ion-textarea id="stream_url" rows={1} value="https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd" ></ion-textarea>
+                <ion-input id="stream_url" value={this.mediaUrl}></ion-input>
               </ion-item>
             </ion-col>
-            <ion-col size="2">
-              <ion-item class="noBorder">
-                <ion-button color="dark" slot="end">Stop</ion-button>
-                <ion-button class="reduced_margin" slot="end" id="load">Load</ion-button>
-                <ion-toggle checked slot="end"></ion-toggle>
-              </ion-item>
+            <ion-col size="4">
+                <ion-button shape="round" color="dark" onClick={() => this.stopMedia()}>Stop</ion-button>
+                <ion-button shape="round" id="load" onClick={() => this.loadMedia()}>Load</ion-button>
+                <ion-item class="inline-toggle">
+                  <ion-label>Auto load</ion-label>
+                  <ion-toggle onIonChange={ev => this.setAutoLoad(ev.detail.checked)} checked></ion-toggle>
+                </ion-item>
             </ion-col>
           </ion-row>
           </ion-grid>
