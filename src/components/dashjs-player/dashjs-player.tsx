@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, Element, Prop, Watch, Listen, State } from '@stencil/core';
 import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 
 @Component({
@@ -13,10 +13,32 @@ export class DashjsPlayer {
 
   @Prop() url : string = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd";
 
+  @State() autoPlay : boolean;
+
+  @Listen('playerEvent', {target: 'document'})
+  playerEventHandler(event) {
+    switch (event.detail.type){
+      case "load":
+        console.log("Re-initializing the player:\n" + JSON.stringify(event.detail));
+        this.player.reset();
+        this.player = MediaPlayer().create();
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, (event.detail.autoPlay == "true"));
+        break;
+      case "stop":
+        console.log("Resetting the player");
+        this.player.reset();
+        break;
+      case "autoload":
+        console.log("autoload state changed to: " + event.detail.autoPlay);
+        this.autoPlay = event.detail.autoPlay;
+        break;
+    }
+  }
+
   @Watch('url')
 	protected url_watcher(newUrl: string): void {
     console.log("Changed value: " + newUrl);
-	  this.player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), newUrl, true);
+	  this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), newUrl, this.autoPlay);
 	}
 
   connectedCallback() {}
@@ -24,7 +46,7 @@ export class DashjsPlayer {
   componentDidLoad() {
     console.log(this.element);
     this.player = MediaPlayer().create();
-    this.player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), this.url, true);
+    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
   }
 
   render() {

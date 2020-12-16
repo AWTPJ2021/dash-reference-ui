@@ -63,6 +63,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DashjsApiControl {
+        "onPlayerEvent"?: (event: CustomEvent<String>) => void;
     }
     interface DashjsPlayer {
         "url"?: string;

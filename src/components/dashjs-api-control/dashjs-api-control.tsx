@@ -1,21 +1,22 @@
-import { Component, Host, h, State, Element} from '@stencil/core';
+import { Component, Host, h, State, Event, Element, EventEmitter} from '@stencil/core';
 
 @Component({
   tag: 'dashjs-api-control',
   styleUrl: 'dashjs-api-control.css',
-  assetsDirs: ["sources"],
   shadow: false,
 })
 export class DashjsApiControl {
+  @Element()
+  private element: HTMLElement;
 
   @State() 
   sourceList: any[] = [];
 
   @State() 
-  mediaUrl : string = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
+  autoPlay : boolean;
 
-  @Element()
-  private el: HTMLElement;
+  @State() 
+  mediaUrl : string = "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd";
   
   componentWillLoad() {
     fetch('/static/sources.json')
@@ -27,15 +28,11 @@ export class DashjsApiControl {
   }
 
   stopMedia() {
-    console.log("TODO: Stop media");
+    this.playerEventHandler({ "type" : "stop"});
   }
 
   loadMedia() {
-      console.log("TODO: load " + this.el.querySelector("#stream_url").textContent);
-  }
-
-  setAutoLoad(event) {
-    console.log("TODO: Set auto load " + event );
+      this.playerEventHandler({ "type" : "load" , "url" : this.mediaUrl, "autoPlay" : this.element.querySelector("#autol").getAttribute("aria-checked")});
   }
 
   setStreamUrl(url) {
@@ -43,9 +40,16 @@ export class DashjsApiControl {
   }
 
   protected componentDidLoad(): void {
-    /*this.sourceList.forEach(element => {
-      console.log(element.name);
-   });*/
+    this.playerEventHandler({ "type" : "autoload" , "autoPlay" : this.element.querySelector("#autol").getAttribute("aria-checked")});
+  }
+
+  @Event({
+    composed : true,
+    bubbles: true
+  }) playerEvent: EventEmitter<String>;
+
+  playerEventHandler(todo: any) {
+    this.playerEvent.emit(todo);
   }
 
   render() {
@@ -75,7 +79,7 @@ export class DashjsApiControl {
                 <ion-button shape="round" id="load" onClick={() => this.loadMedia()}>Load</ion-button>
                 <ion-item class="inline-toggle">
                   <ion-label>Auto load</ion-label>
-                  <ion-toggle onIonChange={ev => this.setAutoLoad(ev.detail.checked)} checked></ion-toggle>
+                  <ion-toggle id="autol" checked></ion-toggle>
                 </ion-item>
             </ion-col>
           </ion-row>
