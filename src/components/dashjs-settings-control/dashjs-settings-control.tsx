@@ -1,5 +1,7 @@
 import { modalController } from '@ionic/core';
 import { Component, Host, h, Watch, Method, Event, EventEmitter, State } from '@stencil/core';
+import { Setting } from '../../types/types';
+import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap } from '../../utils/utils';
 
 @Component({
   tag: 'dashjs-settings-control',
@@ -7,7 +9,9 @@ import { Component, Host, h, Watch, Method, Event, EventEmitter, State } from '@
   shadow: false,
 })
 export class DashjsSettingsControl {
-  @State() defaultSettings: any[] = [];
+  @State() settingsList: Setting[] = [];
+  @State() selectedSettings: Map<string, any> = new Map();
+  @State() displayedSetting: string = 'settings.streaming.metricsMaxListDepth';
 
   // @Watch('defaultSettings')
   // updateSettings(newValue, oldValue) {
@@ -16,7 +20,7 @@ export class DashjsSettingsControl {
 
   @Method()
   async resetSettings() {
-    // Resets the Settings
+    this.selectedSettings = generateSettingsMapFromList(this.settingsList);
   }
 
   @Event() settingsUpdated: EventEmitter<Object>;
@@ -25,32 +29,40 @@ export class DashjsSettingsControl {
     const modal = await modalController.create({
       component: 'dashjs-settings-control-modal',
       cssClass: 'browse-settings-modal',
+      enterAnimation: undefined,
       componentProps: {
-        allSettings: [...this.allSettings],
+        settingsList: this.settingsList,
+        selectedSettings: new Map(this.selectedSettings),
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data) {
-      this.allSettings = data;
-      console.log(this.allSettings);
+      this.selectedSettings = data;
     }
   }
   componentWillLoad() {
     fetch('/static/out.json')
       .then((response: Response) => response.json())
       .then(response => {
-        this.defaultSettings = response.map(s => {
-          return { ...s, selected: false };
-        });
-        this.allSettings = this.defaultSettings;
+        this.settingsList = response;
+        this.selectedSettings = generateSettingsMapFromList(this.settingsList);
       });
   }
-  @State() allSettings: any[] = [];
 
-  @Watch('allSettings')
-  settingsUpdate(newVal: any) {
-    this.settingsUpdated.emit(newVal);
+  @Watch('selectedSettings')
+  settingsUpdate() {
+    this.settingsUpdated.emit(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings));
+  }
+
+  removeSetting(id: string) {
+    this.selectedSettings.set(id, undefined);
+    this.selectedSettings = new Map(this.selectedSettings);
+  }
+
+  updateSetting(id: string, value: any) {
+    this.selectedSettings.set(id, value);
+    this.selectedSettings = new Map(this.selectedSettings);
   }
 
   render() {
@@ -62,69 +74,59 @@ export class DashjsSettingsControl {
           </ion-card-header>
 
           <ion-card-content>
-            {this.allSettings
-              .filter(s => s.selected)
-              .map(s => (
-                <ion-chip>
-                  <ion-label>{s.name}</ion-label>
-                  <ion-icon name="close-circle"></ion-icon>
-                </ion-chip>
-              ))}
-            {/* <ion-chip color="secondary">
-              <ion-label color="secondary">Secondary Label</ion-label>
-              <ion-icon name="close-circle"></ion-icon>
-            </ion-chip> */}
-            <ion-input placeholder="Add more settings..."></ion-input>
-            <ion-button shape="round" color="dark" onClick={() => this.openSettings()}>
-              Browse Settings
-              <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetSettings()}>
-              Reset
-            </ion-button>
-            <ion-list>
-              <ion-item>
-                <ion-label>Input</ion-label>
-                <ion-input></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-label>Toggle</ion-label>
-                <ion-toggle slot="end"></ion-toggle>
-              </ion-item>
-              <ion-item>
-                <ion-label>Radio</ion-label>
-                <ion-radio slot="end"></ion-radio>
-              </ion-item>
-              <ion-item>
-                <ion-label>Checkbox</ion-label>
-                <ion-checkbox slot="start"></ion-checkbox>
-              </ion-item>
-              <ion-item>
-                <ion-segment /*onIonChange={ev => this.segmentChanged(ev)} */>
-                  <ion-segment-button value="friends">
-                    <ion-label>Friends</ion-label>
-                  </ion-segment-button>
-                  <ion-segment-button value="enemies">
-                    <ion-label>Enemies</ion-label>
-                  </ion-segment-button>
-                </ion-segment>
-              </ion-item>
-              <ion-item>
-                <ion-label>Pets</ion-label>
-                <ion-select interface="popover" multiple={true} value={['bird', 'dog']}>
-                  <ion-select-option value="bird">Bird</ion-select-option>
-                  <ion-select-option value="cat">Cat</ion-select-option>
-                  <ion-select-option value="dog">Dog</ion-select-option>
-                  <ion-select-option value="honeybadger">Honey Badger</ion-select-option>
-                </ion-select>
-              </ion-item>
-              <ion-item>
-                <ion-range min={20} max={80} step={2}>
-                  <ion-icon size="small" slot="start" name="sunny"></ion-icon>
-                  <ion-icon slot="end" name="sunny"></ion-icon>
-                </ion-range>
-              </ion-item>
-            </ion-list>
+            <ion-grid>
+              <ion-row>
+                {Array.from(this.selectedSettings.keys())
+                  .filter(k => this.selectedSettings.get(k) != undefined)
+                  .map(s => (
+                    <ion-chip
+                      color={s === this.displayedSetting ? 'primary' : 'secondary'}
+                      onClick={() => {
+                        this.displayedSetting = s;
+                      }}
+                    >
+                      <ion-label>{s}</ion-label>
+                      <ion-icon
+                        name="close-circle"
+                        onClick={event => {
+                          event.stopPropagation();
+                          this.removeSetting(s);
+                        }}
+                      ></ion-icon>
+                    </ion-chip>
+                  ))}
+                {/* <ion-input placeholder="Add more settings..."></ion-input> */}
+              </ion-row>
+              <ion-row>
+                <ion-button shape="round" color="dark" onClick={() => this.openSettings()}>
+                  Browse Settings
+                  <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetSettings()}>
+                  Reset
+                </ion-button>
+              </ion-row>
+              <ion-row>
+                <span>{this.displayedSetting}</span>
+              </ion-row>
+              <ion-row>
+                <ion-list style={{ width: '100%' }}>
+                  {Array.from(this.selectedSettings.keys())
+                    .filter(k => this.selectedSettings.get(k) != undefined)
+                    .map(key => (
+                      <dashjs-settings-control-element
+                        type={this.settingsList.filter(s => s.id === key)[0].type}
+                        name={key}
+                        defaultValue={this.selectedSettings.get(key)}
+                        onValueChanged={change => {
+                          this.updateSetting(key, change.detail);
+                        }}
+                      ></dashjs-settings-control-element>
+                    ))}
+                </ion-list>
+                {/* <dashjs-settings-control-element type={this.settingsList.filter(s => s.id === this.displayedSetting)[0].type}></dashjs-settings-control-element> */}
+              </ion-row>
+            </ion-grid>
           </ion-card-content>
         </ion-card>
       </Host>

@@ -1,12 +1,20 @@
 export interface Setting {
   name: string;
-  longname: string;
-  description: string;
+  id: string;
+  parent: string;
+  /**
+   * Includes all parent nodes, but not the Setting itself.
+   */
   path: string[];
+  example: string;
+  required: boolean;
+  description: string;
   type: Type;
-  properties: Setting[];
-  optional?: boolean;
-  defaultValue?: any;
+  enum?: any;
+  /**
+   * If this element is selected to be displayed in the settings control panel
+   */
+  activated: boolean;
 }
 
 export enum Type {
@@ -15,24 +23,4 @@ export enum Type {
   object = 'Object',
   boolean = 'boolean',
   group = 'group',
-}
-
-export interface JSDocExplanation {
-  comment: string;
-  meta: any;
-  kind: string;
-  name: string;
-  description: string;
-  see: string[];
-  longname: string;
-  type?: {
-    names: string[1];
-  };
-  properties: JSDocExplanation[];
-  optional?: boolean;
-  examples: string[];
-  scope: string;
-  memberof: string;
-  undocumented: boolean;
-  defaultvalue: any
 }
