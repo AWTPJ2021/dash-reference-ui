@@ -5,8 +5,8 @@ export const config: Config = {
   namespace: 'dashjs',
   plugins: [
     sass({
-      includePaths: ['./node_modules/'],
-      injectGlobalPaths: ['src/app.scss'],
+      includePaths: ['./node_modules/', './src/styles'],
+      injectGlobalPaths: ['src/styles/global.scss'],
     }),
   ],
   rollupPlugins: {

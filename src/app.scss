@@ -1,15 +1,5 @@
-@import '~@ionic/core/css/core.css';
-@import '~@ionic/core/css/normalize.css';
-@import '~@ionic/core/css/structure.css';
-@import '~@ionic/core/css/typography.css';
-
-@import '~@ionic/core/css/padding.css';
-@import '~@ionic/core/css/float-elements.css';
-@import '~@ionic/core/css/text-alignment.css';
-@import '~@ionic/core/css/text-transformation.css';
-@import '~@ionic/core/css/flex-utils.css';
-
-// Add global styles here (which should be applied to the page.
+// Add app specific styles here (which should be applied to the page.
+// These will be included once at the top (root) level, for styles applyed in each component go to the styles/global.scss
 // DO NOT add styles which apply to components!
 .browse-settings-modal .modal-wrapper {
   min-height: 90vh;

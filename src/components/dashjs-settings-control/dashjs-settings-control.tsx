@@ -4,7 +4,7 @@ import { Component, Host, h, Watch, Method, Event, EventEmitter, State } from '@
 @Component({
   tag: 'dashjs-settings-control',
   styleUrl: 'dashjs-settings-control.css',
-  shadow: false,
+  shadow: true,
 })
 export class DashjsSettingsControl {
   @State() defaultSettings: any[] = [];

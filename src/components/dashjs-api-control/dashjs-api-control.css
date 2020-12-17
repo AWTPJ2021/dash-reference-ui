@@ -3,9 +3,9 @@
 }
 
 ion-button {
-  text-transform:none;
+  text-transform: none;
 }
 
-.noBorder{
---inner-border-width: 0 0 0 0;
+.noBorder {
+  --inner-border-width: 0 0 0 0;
 }
