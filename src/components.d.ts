@@ -11,6 +11,7 @@ export namespace Components {
     }
     interface DashjsPlayer {
         "url": string;
+        "streamUrl": string;
     }
     interface DashjsReferenceUi {
         "url": string;
@@ -79,6 +80,7 @@ declare namespace LocalJSX {
     }
     interface DashjsPlayer {
         "url"?: string;
+        "streamUrl"?: string;
     }
     interface DashjsReferenceUi {
         "url"?: string;

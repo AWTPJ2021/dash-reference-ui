@@ -1,5 +1,16 @@
 :host {
-  display: block;
+  display: inline;
+}
+
+.player-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 30px 10px;
+}
+
+video {
+  max-width: 100%;
+  height: auto;
 }
 
 #myMainVideoPlayer {
