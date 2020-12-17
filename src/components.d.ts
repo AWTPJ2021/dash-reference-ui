@@ -9,6 +9,7 @@ export namespace Components {
     interface DashjsApiControl {
     }
     interface DashjsPlayer {
+        "streamUrl": string;
     }
     interface DashjsReferenceUi {
     }
@@ -71,6 +72,7 @@ declare namespace LocalJSX {
     interface DashjsApiControl {
     }
     interface DashjsPlayer {
+        "streamUrl"?: string;
     }
     interface DashjsReferenceUi {
     }

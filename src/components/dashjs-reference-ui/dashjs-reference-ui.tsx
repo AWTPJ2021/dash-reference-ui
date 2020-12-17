@@ -11,7 +11,7 @@ export class DashjsReferenceUi {
       <Host>
         <dashjs-api-control></dashjs-api-control>
         <dashjs-settings-control onSettingsUpdated={event => console.log(event)}></dashjs-settings-control>
-        <dashjs-player></dashjs-player>
+        <dashjs-player stream-url={''}></dashjs-player>
         <dashjs-statistics></dashjs-statistics>
       </Host>
     );
