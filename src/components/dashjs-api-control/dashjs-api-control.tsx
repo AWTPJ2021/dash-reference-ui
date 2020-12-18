@@ -37,6 +37,7 @@ export class DashjsApiControl {
 
   setStreamUrl(url) {
     this.mediaUrl = url;
+
   }
 
   protected componentDidLoad(): void {
@@ -62,10 +63,10 @@ export class DashjsApiControl {
             <ion-col size="2">
               <ion-item class="margin-fix">
                 <ion-label>Stream</ion-label>
-                <ion-select interface="popover" onIonChange={ev => this.setStreamUrl(ev.detail.value)}>
-                  {this.sourceList.map((item: any) => (
-                    <ion-select-option value={item.submenu[0].url} >{item.name}</ion-select-option>
-                  ))}
+                    <ion-select interface="action-sheet" selectedText=" " onIonChange={ev => this.setStreamUrl(ev.detail.value)}>
+                  {this.sourceList.map(item => item.submenu.map(ev => (
+                      <ion-select-option value={ev.url}>{item.name + ": " + ev.name}</ion-select-option>
+                  )))}
                 </ion-select>
               </ion-item>
             </ion-col>
