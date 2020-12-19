@@ -1,4 +1,4 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h, Prop} from '@stencil/core';
 
 @Component({
   tag: 'dashjs-reference-ui',
@@ -6,6 +6,8 @@ import { Component, Host, h } from '@stencil/core';
   shadow: false,
 })
 export class DashjsReferenceUi {
+  @Prop() url : string;
+
   render() {
     return (
       <Host>

@@ -9,9 +9,18 @@ export namespace Components {
     interface DashjsApiControl {
     }
     interface DashjsPlayer {
+        "url": string;
         "streamUrl": string;
     }
     interface DashjsReferenceUi {
+        "url": string;
+    }
+    interface DashjsSettingsControl {
+    }
+    interface DashjsStatistics {
+        "audio_data": any;
+        "videoInstance": any;
+        "video_data": any;
     }
     interface DashjsSettingsControl {
         "resetSettings": () => Promise<void>;
@@ -47,12 +56,14 @@ declare global {
         prototype: HTMLDashjsSettingsControlElement;
         new (): HTMLDashjsSettingsControlElement;
     };
+
     interface HTMLDashjsSettingsControlModalElement extends Components.DashjsSettingsControlModal, HTMLStencilElement {
     }
     var HTMLDashjsSettingsControlModalElement: {
         prototype: HTMLDashjsSettingsControlModalElement;
         new (): HTMLDashjsSettingsControlModalElement;
     };
+
     interface HTMLDashjsStatisticsElement extends Components.DashjsStatistics, HTMLStencilElement {
     }
     var HTMLDashjsStatisticsElement: {
@@ -64,17 +75,28 @@ declare global {
         "dashjs-player": HTMLDashjsPlayerElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
         "dashjs-settings-control": HTMLDashjsSettingsControlElement;
+
         "dashjs-settings-control-modal": HTMLDashjsSettingsControlModalElement;
         "dashjs-statistics": HTMLDashjsStatisticsElement;
     }
 }
 declare namespace LocalJSX {
     interface DashjsApiControl {
+        "onPlayerEvent"?: (event: CustomEvent<String>) => void;
     }
     interface DashjsPlayer {
+        "url"?: string;
         "streamUrl"?: string;
     }
     interface DashjsReferenceUi {
+        "url"?: string;
+    }
+    interface DashjsSettingsControl {
+    }
+    interface DashjsStatistics {
+        "audio_data"?: any;
+        "videoInstance"?: any;
+        "video_data"?: any;
     }
     interface DashjsSettingsControl {
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;

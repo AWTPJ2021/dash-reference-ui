@@ -7,6 +7,7 @@ import { Component, Host, h, Watch, Method, Event, EventEmitter, State } from '@
   shadow: false,
 })
 export class DashjsSettingsControl {
+
   @State() defaultSettings: any[] = [];
 
   // @Watch('defaultSettings')

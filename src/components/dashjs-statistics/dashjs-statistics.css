@@ -1,3 +1,33 @@
 :host {
   display: block;
 }
+
+:root {
+  --ion-safe-area-top: 20px;
+  --ion-safe-area-bottom: 22px;
+}
+.inline-item{
+  display: inline-block;
+  max-width: 50%;
+  --inner-border-width: 0 0 0 0;
+}
+
+.r-border ion-col:first-child {
+  border-right: 1px solid #E9E9E9;
+}
+
+.centered-header {
+  border-bottom: 1px solid #E9E9E9;
+  padding-bottom: 12px;
+}
+
+.rmv-b-border {
+  border-bottom: 0;
+}
+
+.display {
+  display: block;
+  width: 100%;
+  min-height: 200px;
+}
+
