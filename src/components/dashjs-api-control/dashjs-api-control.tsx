@@ -57,6 +57,7 @@ export class DashjsApiControl {
     return (
       <Host>
         <ion-card>
+
         <ion-card-content>
         <ion-grid>
 					<ion-row>

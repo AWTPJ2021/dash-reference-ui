@@ -1,4 +1,5 @@
-import { Component, Host, h, Element, Prop, Watch, Listen, State } from '@stencil/core';
+
+import { Component, Host, h, Element, State, Prop, Watch, Listen, State } from '@stencil/core';
 import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 
 @Component({
@@ -41,12 +42,27 @@ export class DashjsPlayer {
 	  this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), newUrl, this.autoPlay);
 	}
 
-  connectedCallback() {}
+  @Prop() streamUrl: string;
+  @State() currentUrl = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
 
   componentDidLoad() {
     console.log(this.element);
+
     this.player = MediaPlayer().create();
     this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
+
+    //let url = this.currentUrl;
+    //let player = MediaPlayer().create();
+    //player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), url, true);
+  }
+
+  componentWillLoad() {
+    this.onUrlChange(this.streamUrl);
+  }
+
+  @Watch('streamUrl')
+  onUrlChange(newUrl: string) {
+    if (newUrl) this.currentUrl = JSON.parse(newUrl);
   }
 
   render() {

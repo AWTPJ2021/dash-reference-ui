@@ -2,6 +2,7 @@ import { Component, Host, h, Prop, Watch, Element, State} from '@stencil/core';
 import * as chartjs from 'chart.js';
 const { Chart } = chartjs.default.Chart;
 
+
 @Component({
   tag: 'dashjs-statistics',
   styleUrl: 'dashjs-statistics.css',
