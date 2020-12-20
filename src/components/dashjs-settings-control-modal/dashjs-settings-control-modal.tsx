@@ -1,5 +1,6 @@
 import { modalController } from '@ionic/core';
 import { Component, h, Prop, State, Watch } from '@stencil/core';
+import { Setting } from '../../types/types';
 
 @Component({
   tag: 'dashjs-settings-control-modal',
@@ -8,24 +9,25 @@ import { Component, h, Prop, State, Watch } from '@stencil/core';
 })
 export class DashjsSettingsControlModal {
   componentWillLoad() {
-    this.viewedSettings = this.allSettings;
+    this.viewedSettings = this.settingsList;
   }
-  @Prop() allSettings = [];
-  @Watch('allSettings') test(newSettings: any) {
+  @Prop() settingsList: Setting[] = [];
+  @Prop() selectedSettings: Map<string, any> = new Map();
+  @Watch('selectedSettings') test(newSettings: Setting) {
     console.log(newSettings);
   }
-  @State() viewedSettings = [];
+  @State() viewedSettings: Setting[] = [];
 
   filterSettings(str: string) {
     if (str === '') {
-      this.viewedSettings = this.allSettings;
+      this.viewedSettings = this.settingsList;
       return;
     }
-    this.viewedSettings = this.allSettings.filter(s => (s.name as string).includes(str));
+    this.viewedSettings = this.settingsList.filter(s => (s.name as string).includes(str));
   }
 
   save() {
-    modalController.dismiss(this.viewedSettings);
+    modalController.dismiss(this.selectedSettings);
   }
 
   cancel() {
@@ -36,12 +38,11 @@ export class DashjsSettingsControlModal {
       <ion-searchbar
         onIonChange={e => {
           this.filterSettings(e.detail.value!);
-          console.log(e.detail.value!);
         }}
       ></ion-searchbar>,
       <ion-content>
         <ion-grid>
-          {this.viewedSettings.map((item: any) => (
+          {this.viewedSettings.map(item => (
             <ion-row>
               <ion-grid>
                 <ion-row>
@@ -56,14 +57,13 @@ export class DashjsSettingsControlModal {
                 <ion-row>
                   <ion-col size="1">
                     <ion-checkbox
-                      checked={item.selected}
-                      onIonChange={change => {
-                        item.selected = change.detail.checked;
-                        // console.log(change.detail.checked);
+                      checked={this.selectedSettings.get(item.id) != undefined}
+                      onIonChange={() => {
+                        /* TODO: Document settings.js with better example values*/
+                        this.selectedSettings.set(item.id, this.selectedSettings.get(item.id) === undefined ? (item.example == undefined ? '' : item.example) : undefined);
                       }}
                     ></ion-checkbox>
                   </ion-col>
-                  <ion-col>{item.selected}</ion-col>
                   <ion-col>{item.name}</ion-col>
                   <ion-col innerHTML={item.description}></ion-col>
                 </ion-row>

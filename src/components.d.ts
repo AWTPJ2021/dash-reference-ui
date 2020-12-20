@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { Setting, Type } from "./types/types";
 export namespace Components {
     interface DashjsApiControl {
     }
@@ -25,8 +26,15 @@ export namespace Components {
     interface DashjsSettingsControl {
         "resetSettings": () => Promise<void>;
     }
+    interface DashjsSettingsControlElement {
+        "defaultValue": any;
+        "name": string;
+        "options": string[];
+        "type": Type;
+    }
     interface DashjsSettingsControlModal {
-        "allSettings": any[];
+        "selectedSettings": Map<string, any>;
+        "settingsList": Setting[];
     }
     interface DashjsStatistics {
     }
@@ -56,6 +64,12 @@ declare global {
         prototype: HTMLDashjsSettingsControlElement;
         new (): HTMLDashjsSettingsControlElement;
     };
+    interface HTMLDashjsSettingsControlElementElement extends Components.DashjsSettingsControlElement, HTMLStencilElement {
+    }
+    var HTMLDashjsSettingsControlElementElement: {
+        prototype: HTMLDashjsSettingsControlElementElement;
+        new (): HTMLDashjsSettingsControlElementElement;
+    };
 
     interface HTMLDashjsSettingsControlModalElement extends Components.DashjsSettingsControlModal, HTMLStencilElement {
     }
@@ -75,7 +89,7 @@ declare global {
         "dashjs-player": HTMLDashjsPlayerElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
         "dashjs-settings-control": HTMLDashjsSettingsControlElement;
-
+        "dashjs-settings-control-element": HTMLDashjsSettingsControlElementElement;
         "dashjs-settings-control-modal": HTMLDashjsSettingsControlModalElement;
         "dashjs-statistics": HTMLDashjsStatisticsElement;
     }
@@ -101,8 +115,16 @@ declare namespace LocalJSX {
     interface DashjsSettingsControl {
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
     }
+    interface DashjsSettingsControlElement {
+        "defaultValue"?: any;
+        "name"?: string;
+        "onValueChanged"?: (event: CustomEvent<any>) => void;
+        "options"?: string[];
+        "type"?: Type;
+    }
     interface DashjsSettingsControlModal {
-        "allSettings"?: any[];
+        "selectedSettings"?: Map<string, any>;
+        "settingsList"?: Setting[];
     }
     interface DashjsStatistics {
     }
@@ -111,6 +133,7 @@ declare namespace LocalJSX {
         "dashjs-player": DashjsPlayer;
         "dashjs-reference-ui": DashjsReferenceUi;
         "dashjs-settings-control": DashjsSettingsControl;
+        "dashjs-settings-control-element": DashjsSettingsControlElement;
         "dashjs-settings-control-modal": DashjsSettingsControlModal;
         "dashjs-statistics": DashjsStatistics;
     }
@@ -123,6 +146,7 @@ declare module "@stencil/core" {
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;
             "dashjs-settings-control": LocalJSX.DashjsSettingsControl & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElement>;
+            "dashjs-settings-control-element": LocalJSX.DashjsSettingsControlElement & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElementElement>;
             "dashjs-settings-control-modal": LocalJSX.DashjsSettingsControlModal & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlModalElement>;
             "dashjs-statistics": LocalJSX.DashjsStatistics & JSXBase.HTMLAttributes<HTMLDashjsStatisticsElement>;
         }

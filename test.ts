@@ -57,13 +57,14 @@ fs.writeFileSync('./dev/out.json', JSON.stringify(ast, null, 2));
 
 function treeToAST(tree: any, name: string, parent: string, path: string[] = []) {
   let ast = [];
+  let id = path.join('.') + '.' + name;
   if (tree.properties) {
     path = [...path, name];
     Object.keys(tree.properties).forEach(o => {
       ast = ast.concat(treeToAST(tree.properties[o], o, name, path));
     });
   } else {
-    ast = ast.concat({ ...tree, path, name, parent });
+    ast = ast.concat({ ...tree, id, path, name, parent });
   }
   console.log(ast);
   return ast;
