@@ -1,0 +1,1615 @@
+[
+  {
+    "name": "initialize",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 6062,
+    "end": 6136,
+    "parameters": [
+      {
+        "name": "view",
+        "type": "HTMLElement",
+        "start": 6073,
+        "end": 6091
+      },
+      {
+        "name": "source",
+        "type": "string",
+        "start": 6093,
+        "end": 6108
+      },
+      {
+        "name": "autoPlay",
+        "type": "boolean",
+        "start": 6110,
+        "end": 6128
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "off",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10316,
+    "end": 10384,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "string",
+        "start": 10320,
+        "end": 10332
+      },
+      {
+        "name": "listener",
+        "type": "(e: any) => void",
+        "start": 10334,
+        "end": 10360
+      },
+      {
+        "name": "scope",
+        "type": "object",
+        "start": 10362,
+        "end": 10376
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "extend",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10389,
+    "end": 10470,
+    "parameters": [
+      {
+        "name": "parentNameString",
+        "type": "string",
+        "start": 10396,
+        "end": 10420
+      },
+      {
+        "name": "childInstance",
+        "type": "object",
+        "start": 10422,
+        "end": 10443
+      },
+      {
+        "name": "override",
+        "type": "boolean",
+        "start": 10445,
+        "end": 10462
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "attachView",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10475,
+    "end": 10514,
+    "parameters": [
+      {
+        "name": "element",
+        "type": "HTMLElement",
+        "start": 10486,
+        "end": 10506
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "attachSource",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10519,
+    "end": 10570,
+    "parameters": [
+      {
+        "name": "urlOrManifest",
+        "type": "string | object",
+        "start": 10532,
+        "end": 10562
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "isReady",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10575,
+    "end": 10594,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "play",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10599,
+    "end": 10612,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "isPaused",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10617,
+    "end": 10637,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "pause",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10642,
+    "end": 10656,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "isSeeking",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10661,
+    "end": 10682,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "isDynamic",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10687,
+    "end": 10708,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "seek",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10713,
+    "end": 10739,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "number",
+        "start": 10718,
+        "end": 10731
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setPlaybackRate",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10744,
+    "end": 10781,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "number",
+        "start": 10760,
+        "end": 10773
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getPlaybackRate",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10786,
+    "end": 10812,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "setMute",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10817,
+    "end": 10847,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "boolean",
+        "start": 10825,
+        "end": 10839
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "isMuted",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10852,
+    "end": 10871,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "setVolume",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10876,
+    "end": 10907,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "number",
+        "start": 10886,
+        "end": 10899
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getVolume",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10912,
+    "end": 10932,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "time",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10937,
+    "end": 10969,
+    "parameters": [
+      {
+        "name": "streamId",
+        "type": "string",
+        "start": 10942,
+        "end": 10959
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "duration",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10974,
+    "end": 10993,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "timeAsUTC",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 10998,
+    "end": 11018,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "durationAsUTC",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11023,
+    "end": 11047,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getActiveStream",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "Stream | null",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11052,
+    "end": 11085,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getDVRWindowSize",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11090,
+    "end": 11117,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getDVRSeekOffset",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11122,
+    "end": 11162,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "number",
+        "start": 11139,
+        "end": 11152
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "convertToTimeCode",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "string",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11167,
+    "end": 11208,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "number",
+        "start": 11185,
+        "end": 11198
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "formatUTC",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "string",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11213,
+    "end": 11299,
+    "parameters": [
+      {
+        "name": "time",
+        "type": "number",
+        "start": 11223,
+        "end": 11235
+      },
+      {
+        "name": "locales",
+        "type": "string",
+        "start": 11237,
+        "end": 11252
+      },
+      {
+        "name": "hour12",
+        "type": "boolean",
+        "start": 11254,
+        "end": 11269
+      },
+      {
+        "name": "withDate",
+        "type": "boolean",
+        "start": 11271,
+        "end": 11289
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getVersion",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "string",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11304,
+    "end": 11325,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getDebug",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "Debug",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11330,
+    "end": 11348,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getBufferLength",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11353,
+    "end": 11394,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 11369,
+        "end": 11384
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getVideoModel",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "VideoModel",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11399,
+    "end": 11427,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getTTMLRenderingDiv",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "HTMLDivElement | null",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11432,
+    "end": 11477,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getVideoElement",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "HTMLVideoElement",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11482,
+    "end": 11518,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getSource",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "string | object",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11523,
+    "end": 11552,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getTopBitrateInfoFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "BitrateInfo",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11557,
+    "end": 11608,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 11578,
+        "end": 11593
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setAutoPlay",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11613,
+    "end": 11647,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "boolean",
+        "start": 11625,
+        "end": 11639
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getAutoPlay",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11652,
+    "end": 11675,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getDashMetrics",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "DashMetrics",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11680,
+    "end": 11710,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getDashAdapter",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "DashAdapter",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11715,
+    "end": 11745,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getQualityFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11750,
+    "end": 11789,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 11764,
+        "end": 11779
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setQualityFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11794,
+    "end": 11846,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 11808,
+        "end": 11823
+      },
+      {
+        "name": "value",
+        "type": "number",
+        "start": 11825,
+        "end": 11838
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "updatePortalSize",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11851,
+    "end": 11876,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "enableText",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11881,
+    "end": 11915,
+    "parameters": [
+      {
+        "name": "enable",
+        "type": "boolean",
+        "start": 11892,
+        "end": 11907
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setTextTrack",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11920,
+    "end": 11952,
+    "parameters": [
+      {
+        "name": "idx",
+        "type": "number",
+        "start": 11933,
+        "end": 11944
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getTextDefaultLanguage",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "string | undefined",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 11957,
+    "end": 12002,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "setTextDefaultLanguage",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12007,
+    "end": 12050,
+    "parameters": [
+      {
+        "name": "lang",
+        "type": "string",
+        "start": 12030,
+        "end": 12042
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getTextDefaultEnabled",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean | undefined",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12055,
+    "end": 12100,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "setTextDefaultEnabled",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12105,
+    "end": 12150,
+    "parameters": [
+      {
+        "name": "enable",
+        "type": "boolean",
+        "start": 12127,
+        "end": 12142
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "provideThumbnail",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12155,
+    "end": 12241,
+    "parameters": [
+      {
+        "name": "time",
+        "type": "number",
+        "start": 12172,
+        "end": 12184
+      },
+      {
+        "name": "callback",
+        "type": "(thumbnail: Thumbnail | null) => void",
+        "start": 12186,
+        "end": 12233
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getBitrateInfoListFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "BitrateInfo[]",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12246,
+    "end": 12300,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 12268,
+        "end": 12283
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getStreamsFromManifest",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "StreamInfo[]",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12305,
+    "end": 12360,
+    "parameters": [
+      {
+        "name": "manifest",
+        "type": "object",
+        "start": 12328,
+        "end": 12344
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getTracksFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "MediaInfo[]",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12365,
+    "end": 12408,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 12378,
+        "end": 12393
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getTracksForTypeFromManifest",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "MediaInfo[]",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12413,
+    "end": 12514,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 12442,
+        "end": 12457
+      },
+      {
+        "name": "manifest",
+        "type": "object",
+        "start": 12459,
+        "end": 12475
+      },
+      {
+        "name": "streamInfo",
+        "type": "StreamInfo",
+        "start": 12477,
+        "end": 12499
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getCurrentTrackFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "MediaInfo | null",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12519,
+    "end": 12573,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 12538,
+        "end": 12553
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setInitialMediaSettingsFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12578,
+    "end": 12650,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 12605,
+        "end": 12620
+      },
+      {
+        "name": "value",
+        "type": "MediaSettings",
+        "start": 12622,
+        "end": 12642
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getInitialMediaSettingsFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "MediaSettings",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12655,
+    "end": 12714,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 12682,
+        "end": 12697
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setCurrentTrack",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12719,
+    "end": 12759,
+    "parameters": [
+      {
+        "name": "track",
+        "type": "MediaInfo",
+        "start": 12735,
+        "end": 12751
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getTrackSwitchModeFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "TrackSwitchMode",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12764,
+    "end": 12820,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 12786,
+        "end": 12801
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setTrackSwitchModeFor",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12825,
+    "end": 12893,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "MediaType",
+        "start": 12847,
+        "end": 12862
+      },
+      {
+        "name": "mode",
+        "type": "TrackSwitchMode",
+        "start": 12864,
+        "end": 12885
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setSelectionModeForInitialTrack",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12898,
+    "end": 12962,
+    "parameters": [
+      {
+        "name": "mode",
+        "type": "TrackSelectionMode",
+        "start": 12930,
+        "end": 12954
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getSelectionModeForInitialTrack",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "TrackSelectionMode",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 12967,
+    "end": 13021,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "retrieveManifest",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13026,
+    "end": 13119,
+    "parameters": [
+      {
+        "name": "url",
+        "type": "string",
+        "start": 13043,
+        "end": 13054
+      },
+      {
+        "name": "callback",
+        "type": "(manifest: object | null, error: any) => void",
+        "start": 13056,
+        "end": 13111
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "addUTCTimingSource",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13124,
+    "end": 13185,
+    "parameters": [
+      {
+        "name": "schemeIdUri",
+        "type": "string",
+        "start": 13143,
+        "end": 13162
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "start": 13164,
+        "end": 13177
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "removeUTCTimingSource",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13190,
+    "end": 13254,
+    "parameters": [
+      {
+        "name": "schemeIdUri",
+        "type": "string",
+        "start": 13212,
+        "end": 13231
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "start": 13233,
+        "end": 13246
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "clearDefaultUTCTimingSources",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13259,
+    "end": 13296,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "restoreDefaultUTCTimingSources",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13301,
+    "end": 13340,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "setXHRWithCredentialsForType",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13345,
+    "end": 13410,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "string",
+        "start": 13374,
+        "end": 13386
+      },
+      {
+        "name": "value",
+        "type": "boolean",
+        "start": 13388,
+        "end": 13402
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getXHRWithCredentialsForType",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13415,
+    "end": 13467,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "string",
+        "start": 13444,
+        "end": 13456
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getProtectionController",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "ProtectionController",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13472,
+    "end": 13520,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "attachProtectionController",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13525,
+    "end": 13587,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "ProtectionController",
+        "start": 13552,
+        "end": 13579
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "setProtectionData",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13592,
+    "end": 13642,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "ProtectionDataSet",
+        "start": 13610,
+        "end": 13634
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getOfflineController",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "OfflineController",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13647,
+    "end": 13689,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "enableManifestDateHeaderTimeSource",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13694,
+    "end": 13751,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "boolean",
+        "start": 13729,
+        "end": 13743
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "displayCaptionsOnTop",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13756,
+    "end": 13799,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "boolean",
+        "start": 13777,
+        "end": 13791
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "attachTTMLRenderingDiv",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13804,
+    "end": 13854,
+    "parameters": [
+      {
+        "name": "div",
+        "type": "HTMLDivElement",
+        "start": 13827,
+        "end": 13846
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getCurrentTextTrackIndex",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13859,
+    "end": 13894,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "preload",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13899,
+    "end": 13915,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "reset",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13920,
+    "end": 13934,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "addABRCustomRule",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 13939,
+    "end": 14008,
+    "parameters": [
+      {
+        "name": "type",
+        "type": "string",
+        "start": 13956,
+        "end": 13968
+      },
+      {
+        "name": "rulename",
+        "type": "string",
+        "start": 13970,
+        "end": 13986
+      },
+      {
+        "name": "rule",
+        "type": "object",
+        "start": 13988,
+        "end": 14000
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "removeABRCustomRule",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14013,
+    "end": 14057,
+    "parameters": [
+      {
+        "name": "rulename",
+        "type": "string",
+        "start": 14033,
+        "end": 14049
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "removeAllABRCustomRule",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14062,
+    "end": 14093,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getCurrentLiveLatency",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "number",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14098,
+    "end": 14130,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "enableForcedTextStreaming",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14135,
+    "end": 14183,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "boolean",
+        "start": 14161,
+        "end": 14175
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "isTextEnabled",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "boolean",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14188,
+    "end": 14213,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "getAverageThroughput",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14218,
+    "end": 14260,
+    "parameters": [
+      {
+        "name": "value",
+        "type": "number",
+        "start": 14239,
+        "end": 14252
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "getSettings",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "MediaPlayerSettingClass",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14265,
+    "end": 14304,
+    "parameters": [],
+    "variables": []
+  },
+  {
+    "name": "updateSettings",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14309,
+    "end": 14365,
+    "parameters": [
+      {
+        "name": "settings",
+        "type": "MediaPlayerSettingClass",
+        "start": 14324,
+        "end": 14357
+      }
+    ],
+    "variables": []
+  },
+  {
+    "name": "resetSettings",
+    "isAbstract": true,
+    "visibility": 2,
+    "type": "void",
+    "isOptional": false,
+    "isStatic": false,
+    "isAsync": false,
+    "start": 14370,
+    "end": 14392,
+    "parameters": [],
+    "variables": []
+  }
+]

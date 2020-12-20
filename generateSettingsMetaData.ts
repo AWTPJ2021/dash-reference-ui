@@ -81,3 +81,4 @@ let jsDocComments = allprops.filter(a => !a.undocumented);
 let ast = treeToAST(annotate(schema, jsDocComments, 'Settings'), 'settings', null);
 
 fs.writeFileSync('./dev/out.json', JSON.stringify(ast, null, 2));
+fs.writeFileSync('./src/static/settingsMetaData.json', JSON.stringify(ast, null, 2));
