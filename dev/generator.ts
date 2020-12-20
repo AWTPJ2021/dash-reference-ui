@@ -1,8 +1,8 @@
-import { JSDocExplanation, Setting, Type } from './src/types/types';
+import { JSDocExplanation, Setting, Type } from '../src/types/types';
 const jsdoc = require('jsdoc-api');
 const fs = require('fs');
 
-let file = fs.readFileSync('./dev/settings.js');
+let file = fs.readFileSync('./settings.js');
 
 let explain = jsdoc.explainSync({ source: file.toString() }) as JSDocExplanation[];
 
@@ -30,7 +30,7 @@ explain.forEach(elm => {
 // }, {});
 console.log(settings);
 
-fs.writeFileSync('./dev/out.json', JSON.stringify(settings, null, 2));
+fs.writeFileSync('./out.json', JSON.stringify(settings, null, 2));
 
 function findNodeForElement(element: JSDocExplanation, tree: Setting[]) {
   if (element.undocumented) {
