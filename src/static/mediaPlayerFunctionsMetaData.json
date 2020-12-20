@@ -29,7 +29,40 @@
         "end": 6128
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Upon creating the MediaPlayer you must call initialize before you call anything else.\nThere is one exception to this rule. It is crucial to call {@link module:MediaPlayer#extend extend()}\nwith all your extensions prior to calling initialize.\n\nALL arguments are optional and there are individual methods to set each argument later on.\nThe args in this method are just for convenience and should only be used for a simple player setup.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "HTML5MediaElement"
+          ]
+        },
+        "optional": true,
+        "description": "Optional arg to set the video element. {@link module:MediaPlayer#attachView attachView()}",
+        "name": "view"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "optional": true,
+        "description": "Optional arg to set the media source. {@link module:MediaPlayer#attachSource attachSource()}",
+        "name": "source"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "optional": true,
+        "description": "Optional arg to set auto play. {@link module:MediaPlayer#setAutoPlay setAutoPlay()}",
+        "name": "AutoPlay"
+      }
+    ]
   },
   {
     "name": "off",
@@ -61,7 +94,37 @@
         "end": 10376
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Use the off method to remove listeners for public events found in MediaPlayer.events. {@link MediaPlayerEvents}",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "{@link MediaPlayerEvents}",
+        "name": "type"
+      },
+      {
+        "type": {
+          "names": [
+            "function"
+          ]
+        },
+        "description": "callback method when the event fires.",
+        "name": "listener"
+      },
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        },
+        "description": "context of the listener so it can be removed properly.",
+        "name": "scope"
+      }
+    ]
   },
   {
     "name": "extend",
@@ -93,7 +156,37 @@
         "end": 10462
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method should be used to extend or replace internal dash.js objects.\nThere are two ways to extend dash.js (determined by the override argument):\n<ol>\n<li>If you set override to true any public method or property in your custom object will\noverride the dash.js parent object's property(ies) and will be used instead but the\ndash.js parent module will still be created.</li>\n\n<li>If you set override to false your object will completely replace the dash.js object.\n(Note: This is how it was in 1.x of Dash.js with Dijon).</li>\n</ol>\n<b>When you extend you get access to this.context, this.factory and this.parent to operate with in your custom object.</b>\n<ul>\n<li><b>this.context</b> - can be used to pass context for singleton access.</li>\n<li><b>this.factory</b> - can be used to call factory.getSingletonInstance().</li>\n<li><b>this.parent</b> - is the reference of the parent object to call other public methods. (this.parent is excluded if you extend with override set to false or option 2)</li>\n</ul>\n<b>You must call extend before you call initialize</b>",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "name of parent module",
+        "name": "parentNameString"
+      },
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        },
+        "description": "overriding object",
+        "name": "childInstance"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "replace only some methods (true) or the whole object (false)",
+        "name": "override"
+      }
+    ]
   },
   {
     "name": "attachView",
@@ -113,7 +206,19 @@
         "end": 10506
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to attach an HTML5 VideoElement for dash.js to operate upon.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        },
+        "description": "An HTMLMediaElement that has already been defined in the DOM (or equivalent stub).",
+        "name": "element"
+      }
+    ]
   },
   {
     "name": "attachSource",
@@ -133,7 +238,20 @@
         "end": 10562
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to set a source URL to a valid MPD manifest file OR\na previously downloaded and parsed manifest object.  Optionally, can\nalso provide protection information",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string",
+            "Object"
+          ]
+        },
+        "description": "A URL to a valid MPD manifest file, or a\nparsed manifest object.",
+        "name": "urlOrManifest"
+      }
+    ]
   },
   {
     "name": "isReady",
@@ -146,7 +264,19 @@
     "start": 10575,
     "end": 10594,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "The ready state of the MediaPlayer based on both the video element and MPD source being defined.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "The current ready state of the MediaPlayer"
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "play",
@@ -159,7 +289,9 @@
     "start": 10599,
     "end": 10612,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "The play method initiates playback of the media defined by the {@link module:MediaPlayer#attachSource attachSource()} method.\nThis method will call play on the native Video Element.",
+    "paramExplanation": []
   },
   {
     "name": "isPaused",
@@ -172,7 +304,18 @@
     "start": 10617,
     "end": 10637,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns a Boolean that indicates whether the Video Element is paused.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "pause",
@@ -185,7 +328,9 @@
     "start": 10642,
     "end": 10656,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "This method will call pause on the native Video Element.",
+    "paramExplanation": []
   },
   {
     "name": "isSeeking",
@@ -198,7 +343,18 @@
     "start": 10661,
     "end": 10682,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns a Boolean that indicates whether the media is in the process of seeking to a new position.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "isDynamic",
@@ -211,7 +367,18 @@
     "start": 10687,
     "end": 10708,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns a Boolean that indicates whether the media is in the process of dynamic.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "seek",
@@ -231,7 +398,19 @@
         "end": 10731
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Sets the currentTime property of the attached video element.  If it is a live stream with a\ntimeShiftBufferLength, then the DVR window offset will be automatically calculated.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "A relative time, in seconds, based on the return value of the {@link module:MediaPlayer#duration duration()} method is expected",
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "setPlaybackRate",
@@ -251,7 +430,18 @@
         "end": 10773
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to set the native Video Element's playback rate.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "getPlaybackRate",
@@ -264,7 +454,18 @@
     "start": 10786,
     "end": 10812,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns the current playback rate.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "setMute",
@@ -284,7 +485,18 @@
         "end": 10839
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to set the native Video Element's muted state. Takes a Boolean that determines whether audio is muted. true if the audio is muted and false otherwise.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "isMuted",
@@ -297,7 +509,18 @@
     "start": 10852,
     "end": 10871,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "A Boolean that determines whether audio is muted.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "setVolume",
@@ -317,7 +540,18 @@
         "end": 10899
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "A double indicating the audio volume, from 0.0 (silent) to 1.0 (loudest).",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "getVolume",
@@ -330,7 +564,18 @@
     "start": 10912,
     "end": 10932,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns the current audio volume, from 0.0 (silent) to 1.0 (loudest).",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "time",
@@ -350,7 +595,29 @@
         "end": 10959
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Current time of the playhead, in seconds.\n\nIf called with no arguments then the returned time value is time elapsed since the start point of the first stream, or if it is a live stream, then the time will be based on the return value of the {@link module:MediaPlayer#duration duration()} method.\nHowever if a stream ID is supplied then time is relative to the start of that stream, or is null if there is no such stream id in the manifest.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "The current playhead time of the media, or null."
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "The ID of a stream that the returned playhead time must be relative to the start of. If undefined, then playhead time is relative to the first stream.",
+        "name": "streamId"
+      }
+    ]
   },
   {
     "name": "duration",
@@ -363,7 +630,19 @@
     "start": 10974,
     "end": 10993,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Duration of the media's playback, in seconds.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "The current duration of the media."
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "timeAsUTC",
@@ -376,7 +655,19 @@
     "start": 10998,
     "end": 11018,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to get the current playhead time as an absolute value, the time in seconds since midnight UTC, Jan 1 1970.\nNote - this property only has meaning for live streams. If called before play() has begun, it will return a value of NaN.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "The current playhead time as UTC timestamp."
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "durationAsUTC",
@@ -389,7 +680,19 @@
     "start": 11023,
     "end": 11047,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to get the current duration as an absolute value, the time in seconds since midnight UTC, Jan 1 1970.\nNote - this property only has meaning for live streams.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "The current duration as UTC timestamp."
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getActiveStream",
@@ -402,7 +705,9 @@
     "start": 11052,
     "end": 11085,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "This method returns the active stream",
+    "paramExplanation": []
   },
   {
     "name": "getDVRWindowSize",
@@ -415,7 +720,19 @@
     "start": 11090,
     "end": 11117,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "The timeShiftBufferLength (DVR Window), in seconds.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "The window of allowable play time behind the live point of a live stream."
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getDVRSeekOffset",
@@ -435,7 +752,29 @@
         "end": 11152
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method should only be used with a live stream that has a valid timeShiftBufferLength (DVR Window).\nNOTE - If you do not need the raw offset value (i.e. media analytics, tracking, etc) consider using the {@link module:MediaPlayer#seek seek()} method\nwhich will calculate this value for you and set the video element's currentTime property all in one simple call.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "A value that is relative the available range within the timeShiftBufferLength (DVR Window)."
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "A relative time, in seconds, based on the return value of the {@link module:MediaPlayer#duration duration()} method is expected.",
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "convertToTimeCode",
@@ -455,7 +794,29 @@
         "end": 11198
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "A utility method which converts seconds into TimeCode (i.e. 300 --> 05:00).",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "A formatted time code string."
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "A number in seconds to be converted into a formatted time code.",
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "formatUTC",
@@ -493,7 +854,57 @@
         "end": 11289
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "A utility methods which converts UTC timestamp value into a valid time and date string.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "A formatted time and date string."
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "UTC timestamp to be converted into date and time.",
+        "name": "time"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "a region identifier (i.e. en_US).",
+        "name": "locales"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "12 vs 24 hour. Set to true for 12 hour time formatting.",
+        "name": "hour12"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "default is false. Set to true to append current date to UTC time format.",
+        "name": "withDate",
+        "defaultvalue": false
+      }
+    ]
   },
   {
     "name": "getVersion",
@@ -506,7 +917,19 @@
     "start": 11304,
     "end": 11325,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Current version of Dash.js",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "the current dash.js version string."
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getDebug",
@@ -519,7 +942,18 @@
     "start": 11330,
     "end": 11348,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to access the dash.js logging class.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Debug"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getBufferLength",
@@ -539,7 +973,29 @@
         "end": 11384
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "The length of the buffer for a given media type, in seconds. Valid media\ntypes are \"video\", \"audio\" and \"fragmentedText\". If no type is passed\nin, then the minimum of video, audio and fragmentedText buffer length is\nreturned. NaN is returned if an invalid type is requested, the\npresentation does not contain that type, or if no arguments are passed\nand the presentation does not include any adaption sets of valid media\ntype.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "The length of the buffer for the given media type, in\n seconds, or NaN"
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "description": "'video', 'audio' or 'fragmentedText'",
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "getVideoModel",
@@ -565,7 +1021,18 @@
     "start": 11432,
     "end": 11477,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns instance of Div that was attached by calling attachTTMLRenderingDiv()",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getVideoElement",
@@ -578,7 +1045,18 @@
     "start": 11482,
     "end": 11518,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns instance of Video Element that was attached by calling attachView()",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getSource",
@@ -591,7 +1069,19 @@
     "start": 11523,
     "end": 11552,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns the source string or manifest that was attached by calling attachSource()",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "string",
+            "manifest"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getTopBitrateInfoFor",
@@ -611,7 +1101,29 @@
         "end": 11593
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Gets the top quality BitrateInfo checking portal limit and max allowed.\nIt calls getTopQualityIndexFor internally",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "BitrateInfo",
+            "null"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "description": "'video' or 'audio'",
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "setAutoPlay",
@@ -631,7 +1143,18 @@
         "end": 11639
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "<p>Set to false to prevent stream from auto-playing when the view is attached.</p>",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "getAutoPlay",
@@ -644,7 +1167,18 @@
     "start": 11652,
     "end": 11675,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "The current autoPlay state."
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getDashMetrics",
@@ -657,7 +1191,18 @@
     "start": 11680,
     "end": 11710,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns the DashMetrics.js Module. You use this Module to get access to all the public metrics\nstored in dash.js",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getDashAdapter",
@@ -670,7 +1215,18 @@
     "start": 11715,
     "end": 11745,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Returns the DashAdapter.js Module.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getQualityFor",
@@ -690,7 +1246,29 @@
         "end": 11779
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Gets the current download quality for media type video, audio or images. For video and audio types the ABR\nrules update this value before every new download unless setAutoSwitchQualityFor(type, false) is called. For 'image'\ntype, thumbnails, there is no ABR algorithm and quality is set manually.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "the quality index, 0 corresponding to the lowest bitrate"
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "description": "'video', 'audio' or 'image' (thumbnails)",
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "setQualityFor",
@@ -716,7 +1294,28 @@
         "end": 11838
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Sets the current quality for media type instead of letting the ABR Heuristics automatically selecting it.\nThis value will be overwritten by the ABR rules unless setAutoSwitchQualityFor(type, false) is called.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "description": "'video', 'audio' or 'image'",
+        "name": "type"
+      },
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "the quality index, 0 corresponding to the lowest bitrate",
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "updatePortalSize",
@@ -729,7 +1328,9 @@
     "start": 11851,
     "end": 11876,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Update the video element size variables\nShould be called on window resize (or any other time player is resized). Fullscreen does trigger a window resize event.\n\nOnce windowResizeEventCalled = true, abrController.checkPortalSize() will use element size variables rather than querying clientWidth every time.",
+    "paramExplanation": []
   },
   {
     "name": "enableText",
@@ -749,7 +1350,19 @@
         "end": 11907
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Enable/disable text\nWhen enabling text, dash will choose the previous selected text track",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "true to enable text, false otherwise (same as setTextTrack(-1))",
+        "name": "enable"
+      }
+    ]
   },
   {
     "name": "setTextTrack",
@@ -769,7 +1382,19 @@
         "end": 11944
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to change the current text track for both external time text files and fragmented text tracks. There is no need to\nset the track mode on the video object to switch a track when using this method.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "Index of track based on the order of the order the tracks are added Use -1 to disable all tracks. (turn captions off).  Use module:MediaPlayer#dashjs.MediaPlayer.events.TEXT_TRACK_ADDED.",
+        "name": "idx"
+      }
+    ]
   },
   {
     "name": "getTextDefaultLanguage",
@@ -782,7 +1407,19 @@
     "start": 11957,
     "end": 12002,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Get default language for text.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "the default language if it has been set using setTextDefaultLanguage"
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "setTextDefaultLanguage",
@@ -802,7 +1439,19 @@
         "end": 12042
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Set default language for text. If default language is not one of text tracks, dash will choose the first one.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "default language",
+        "name": "lang"
+      }
+    ]
   },
   {
     "name": "getTextDefaultEnabled",
@@ -815,7 +1464,19 @@
     "start": 12055,
     "end": 12100,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Get enabled default state.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "default enable state"
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "setTextDefaultEnabled",
@@ -835,7 +1496,19 @@
         "end": 12142
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Set enabled default state.\nThis is used to enable/disable text when a file is loaded.\nDuring playback, use enableText to enable text for the file",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "true to enable text, false otherwise",
+        "name": "enable"
+      }
+    ]
   },
   {
     "name": "provideThumbnail",
@@ -861,7 +1534,28 @@
         "end": 12233
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Provide the thumbnail at time position. This can be asynchronous, so you must provide a callback ro retrieve thumbnails informations",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "A relative time, in seconds, based on the return value of the {@link module:MediaPlayer#duration duration()} method is expected",
+        "name": "time"
+      },
+      {
+        "type": {
+          "names": [
+            "function"
+          ]
+        },
+        "description": "A Callback function provided when retrieving thumbnail the given time position. Thumbnail object is null in case there are is not a thumbnails representation or\nif it doesn't contain a thumbnail for the given time position.",
+        "name": "callback"
+      }
+    ]
   },
   {
     "name": "getBitrateInfoListFor",
@@ -881,7 +1575,26 @@
         "end": 12283
       }
     ],
-    "variables": []
+    "variables": [],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Array"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "getStreamsFromManifest",
@@ -901,7 +1614,28 @@
         "end": 12344
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method returns the list of all available streams from a given manifest",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Array"
+          ]
+        },
+        "description": "list of {@link StreamInfo}"
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        },
+        "name": "manifest"
+      }
+    ]
   },
   {
     "name": "getTracksFor",
@@ -921,7 +1655,28 @@
         "end": 12393
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method returns the list of all available tracks for a given media type",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Array"
+          ]
+        },
+        "description": "list of {@link MediaInfo}"
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "getTracksForTypeFromManifest",
@@ -953,7 +1708,44 @@
         "end": 12499
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method returns the list of all available tracks for a given media type and streamInfo from a given manifest",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Array"
+          ]
+        },
+        "description": "list of {@link MediaInfo}"
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      },
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        },
+        "name": "manifest"
+      },
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        },
+        "name": "streamInfo"
+      }
+    ]
   },
   {
     "name": "getCurrentTrackFor",
@@ -973,7 +1765,28 @@
         "end": 12553
       }
     ],
-    "variables": []
+    "variables": [],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Object",
+            "null"
+          ]
+        },
+        "description": "{@link MediaInfo}"
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "setInitialMediaSettingsFor",
@@ -999,7 +1812,26 @@
         "end": 12642
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method allows to set media settings that will be used to pick the initial track. Format of the settings\nis following: <br />\n{lang: langValue (can be either a string or a regex to match),\n viewpoint: viewpointValue,\n audioChannelConfiguration: audioChannelConfigurationValue,\n accessibility: accessibilityValue,\n role: roleValue}",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      },
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        },
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "getInitialMediaSettingsFor",
@@ -1019,7 +1851,27 @@
         "end": 12697
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method returns media settings that is used to pick the initial track. Format of the settings\nis following:\n{lang: langValue,\n viewpoint: viewpointValue,\n audioChannelConfiguration: audioChannelConfigurationValue,\n accessibility: accessibilityValue,\n role: roleValue}",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "Object"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "setCurrentTrack",
@@ -1039,7 +1891,18 @@
         "end": 12751
       }
     ],
-    "variables": []
+    "variables": [],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaInfo"
+          ]
+        },
+        "description": "instance of {@link MediaInfo}",
+        "name": "track"
+      }
+    ]
   },
   {
     "name": "getTrackSwitchModeFor",
@@ -1059,7 +1922,28 @@
         "end": 12801
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method returns the current track switch mode.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "mode"
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "setTrackSwitchModeFor",
@@ -1085,7 +1969,26 @@
         "end": 12885
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method sets the current track switch mode. Available options are:\n\nConstants.TRACK_SWITCH_MODE_NEVER_REPLACE\n(used to forbid clearing the buffered data (prior to current playback position) after track switch.\nDefers to fastSwitchEnabled for placement of new data. Default for video)\n\nConstants.TRACK_SWITCH_MODE_ALWAYS_REPLACE\n(used to clear the buffered data (prior to current playback position) after track switch. Default for audio)",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "name": "mode"
+      }
+    ]
   },
   {
     "name": "setSelectionModeForInitialTrack",
@@ -1105,7 +2008,18 @@
         "end": 12954
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method sets the selection mode for the initial track. This mode defines how the initial track will be selected\nif no initial media settings are set. If initial media settings are set this parameter will be ignored. Available options are:\n\nConstants.TRACK_SELECTION_MODE_HIGHEST_BITRATE\nthis mode makes the player select the track with a highest bitrate. This mode is a default mode.\n\nConstants.TRACK_SELECTION_MODE_WIDEST_RANGE\nthis mode makes the player select the track with a widest range of bitrates",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "name": "mode"
+      }
+    ]
   },
   {
     "name": "getSelectionModeForInitialTrack",
@@ -1118,7 +2032,19 @@
     "start": 12967,
     "end": 13021,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "This method returns the track selection mode.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "mode"
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "retrieveManifest",
@@ -1144,7 +2070,28 @@
         "end": 13111
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Allows application to retrieve a manifest.  Manifest loading is asynchro\nnous and\nrequires the app-provided callback function",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "url the manifest url",
+        "name": "url"
+      },
+      {
+        "type": {
+          "names": [
+            "function"
+          ]
+        },
+        "description": "A Callback function provided when retrieving manifests",
+        "name": "callback"
+      }
+    ]
   },
   {
     "name": "addUTCTimingSource",
@@ -1170,7 +2117,28 @@
         "end": 13177
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "<p>Allows you to set a scheme and server source for UTC live edge detection for dynamic streams.\nIf UTCTiming is defined in the manifest, it will take precedence over any time source manually added.</p>\n<p>If you have exposed the Date header, use the method {@link module:MediaPlayer#clearDefaultUTCTimingSources clearDefaultUTCTimingSources()}.\nThis will allow the date header on the manifest to be used instead of a time server</p>",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "<ul>\n<li>urn:mpeg:dash:utc:http-head:2014</li>\n<li>urn:mpeg:dash:utc:http-xsdate:2014</li>\n<li>urn:mpeg:dash:utc:http-iso:2014</li>\n<li>urn:mpeg:dash:utc:direct:2014</li>\n</ul>\n<p>Some specs referencing early ISO23009-1 drafts incorrectly use\n2012 in the URI, rather than 2014. support these for now.</p>\n<ul>\n<li>urn:mpeg:dash:utc:http-head:2012</li>\n<li>urn:mpeg:dash:utc:http-xsdate:2012</li>\n<li>urn:mpeg:dash:utc:http-iso:2012</li>\n<li>urn:mpeg:dash:utc:direct:2012</li>\n</ul>",
+        "name": "schemeIdUri"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "Path to a time source.",
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "removeUTCTimingSource",
@@ -1196,7 +2164,28 @@
         "end": 13246
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "<p>Allows you to remove a UTC time source. Both schemeIdUri and value need to match the Dash.vo.UTCTiming properties in order for the\nentry to be removed from the array</p>",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "see {@link module:MediaPlayer#addUTCTimingSource addUTCTimingSource()}",
+        "name": "schemeIdUri"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "see {@link module:MediaPlayer#addUTCTimingSource addUTCTimingSource()}",
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "clearDefaultUTCTimingSources",
@@ -1209,7 +2198,9 @@
     "start": 13259,
     "end": 13296,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "<p>Allows you to clear the stored array of time sources.</p>\n<p>Example use: If you have exposed the Date header, calling this method\nwill allow the date header on the manifest to be used instead of the time server.</p>\n<p>Example use: Calling this method, assuming there is not an exposed date header on the manifest,  will default back\nto using a binary search to discover the live edge</p>",
+    "paramExplanation": []
   },
   {
     "name": "restoreDefaultUTCTimingSources",
@@ -1222,7 +2213,9 @@
     "start": 13301,
     "end": 13340,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "<p>Allows you to restore the default time sources after calling {@link module:MediaPlayer#clearDefaultUTCTimingSources clearDefaultUTCTimingSources()}</p>",
+    "paramExplanation": []
   },
   {
     "name": "setXHRWithCredentialsForType",
@@ -1248,7 +2241,27 @@
         "end": 13402
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Sets whether withCredentials on XHR requests for a particular request\ntype is true or false",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "one of HTTPRequest.*_TYPE",
+        "name": "type"
+      },
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "getXHRWithCredentialsForType",
@@ -1268,7 +2281,28 @@
         "end": 13456
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Gets whether withCredentials on XHR requests for a particular request\ntype is true or false",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        }
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "one of HTTPRequest.*_TYPE",
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "getProtectionController",
@@ -1281,7 +2315,9 @@
     "start": 13472,
     "end": 13520,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Detects if Protection is included and returns an instance of ProtectionController.js",
+    "paramExplanation": []
   },
   {
     "name": "attachProtectionController",
@@ -1301,7 +2337,19 @@
         "end": 13579
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Will override dash.js protection controller.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "ProtectionController"
+          ]
+        },
+        "description": "valid protection controller instance.",
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "setProtectionData",
@@ -1321,7 +2369,19 @@
         "end": 13634
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Sets Protection Data required to setup the Protection Module (DRM). Protection Data must\nbe set before initializing MediaPlayer or, once initialized, before PROTECTION_CREATED event is fired.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "ProtectionDataSet"
+          ]
+        },
+        "description": "object containing\nproperty names corresponding to key system name strings and associated\nvalues being instances of.",
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "getOfflineController",
@@ -1334,7 +2394,9 @@
     "start": 13647,
     "end": 13689,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Detects if Offline is included and returns an instance of OfflineController.js",
+    "paramExplanation": []
   },
   {
     "name": "enableManifestDateHeaderTimeSource",
@@ -1374,7 +2436,18 @@
         "end": 13791
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This method serves to control captions z-index value. If 'true' is passed, the captions will have the highest z-index and be\ndisplayed on top of other html elements. Default value is 'false' (z-index is not set).",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "name": "value"
+      }
+    ]
   },
   {
     "name": "attachTTMLRenderingDiv",
@@ -1394,7 +2467,19 @@
         "end": 13846
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Use this method to attach an HTML5 div for dash.js to render rich TTML subtitles.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "HTMLDivElement"
+          ]
+        },
+        "description": "An unstyled div placed after the video element. It will be styled to match the video size and overlay z-order.",
+        "name": "div"
+      }
+    ]
   },
   {
     "name": "getCurrentTextTrackIndex",
@@ -1420,7 +2505,9 @@
     "start": 13899,
     "end": 13915,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Causes the player to begin streaming the media as set by the {@link module:MediaPlayer#attachSource attachSource()}\nmethod in preparation for playing. It specifically does not require a view to be attached with {@link module:MediaPlayer#attachSource attachView()} to begin preloading.\nWhen a view is attached after preloading, the buffered data is transferred to the attached mediaSource buffers.",
+    "paramExplanation": []
   },
   {
     "name": "reset",
@@ -1433,7 +2520,9 @@
     "start": 13920,
     "end": 13934,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Sets the MPD source and the video element to null. You can also reset the MediaPlayer by\ncalling attachSource with a new source file.\n\nThis call does not destroy the MediaPlayer. To destroy the MediaPlayer and free all of its\nmemory, call destroy().",
+    "paramExplanation": []
   },
   {
     "name": "addABRCustomRule",
@@ -1465,7 +2554,37 @@
         "end": 14000
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Add a custom ABR Rule\nRule will be apply on next stream if a stream is being played",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "rule type (one of ['qualitySwitchRules','abandonFragmentRules'])",
+        "name": "type"
+      },
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "name of rule (used to identify custom rule). If one rule of same name has been added, then existing rule will be updated",
+        "name": "rulename"
+      },
+      {
+        "type": {
+          "names": [
+            "object"
+          ]
+        },
+        "description": "the rule object instance",
+        "name": "rule"
+      }
+    ]
   },
   {
     "name": "removeABRCustomRule",
@@ -1485,7 +2604,19 @@
         "end": 14049
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Remove a custom ABR Rule",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "string"
+          ]
+        },
+        "description": "name of the rule to be removed",
+        "name": "rulename"
+      }
+    ]
   },
   {
     "name": "removeAllABRCustomRule",
@@ -1498,7 +2629,9 @@
     "start": 14062,
     "end": 14093,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Remove all custom rules",
+    "paramExplanation": []
   },
   {
     "name": "getCurrentLiveLatency",
@@ -1511,7 +2644,19 @@
     "start": 14098,
     "end": 14130,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number",
+            "NaN"
+          ]
+        },
+        "description": "Current live stream latency in seconds. It is the difference between current time and time position at the playback head."
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "enableForcedTextStreaming",
@@ -1531,7 +2676,19 @@
         "end": 14175
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Enable/disable text\nWhen enabling dash will keep downloading and process fragmented text tracks even if all tracks are in mode \"hidden\"",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "true to enable text streaming even if all text tracks are hidden.",
+        "name": "enable"
+      }
+    ]
   },
   {
     "name": "isTextEnabled",
@@ -1544,7 +2701,19 @@
     "start": 14188,
     "end": 14213,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Return if text is enabled",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "boolean"
+          ]
+        },
+        "description": "return true if text is enabled, false otherwise"
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "getAverageThroughput",
@@ -1564,7 +2733,28 @@
         "end": 14252
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "Returns the average throughput computed in the ABR logic",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "number"
+          ]
+        },
+        "description": "value"
+      }
+    ],
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "MediaType"
+          ]
+        },
+        "name": "type"
+      }
+    ]
   },
   {
     "name": "getSettings",
@@ -1577,7 +2767,19 @@
     "start": 14265,
     "end": 14304,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Get the current settings object being used on the player.",
+    "returns": [
+      {
+        "type": {
+          "names": [
+            "PlayerSettings"
+          ]
+        },
+        "description": "The settings object being used."
+      }
+    ],
+    "paramExplanation": []
   },
   {
     "name": "updateSettings",
@@ -1597,7 +2799,19 @@
         "end": 14357
       }
     ],
-    "variables": []
+    "variables": [],
+    "description": "This function does not update the entire object, only properties in the passed in object are updated.\n\nThis means that updateSettings({a: x}) and updateSettings({b: y}) are functionally equivalent to\nupdateSettings({a: x, b: y}). If the default values are required again, @see{@link resetSettings}.",
+    "paramExplanation": [
+      {
+        "type": {
+          "names": [
+            "PlayerSettings"
+          ]
+        },
+        "description": "An object corresponding to the settings definition.",
+        "name": "settingsObj"
+      }
+    ]
   },
   {
     "name": "resetSettings",
@@ -1610,6 +2824,8 @@
     "start": 14370,
     "end": 14392,
     "parameters": [],
-    "variables": []
+    "variables": [],
+    "description": "Resets the settings object back to the default.",
+    "paramExplanation": []
   }
 ]
