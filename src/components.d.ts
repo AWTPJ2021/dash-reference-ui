@@ -10,18 +10,11 @@ export namespace Components {
     interface DashjsApiControl {
     }
     interface DashjsPlayer {
-        "url": string;
         "streamUrl": string;
+        "url": string;
     }
     interface DashjsReferenceUi {
         "url": string;
-    }
-    interface DashjsSettingsControl {
-    }
-    interface DashjsStatistics {
-        "audio_data": any;
-        "videoInstance": any;
-        "video_data": any;
     }
     interface DashjsSettingsControl {
         "resetSettings": () => Promise<void>;
@@ -37,6 +30,9 @@ export namespace Components {
         "settingsList": Setting[];
     }
     interface DashjsStatistics {
+        "audio_data": any;
+        "videoInstance": any;
+        "video_data": any;
     }
 }
 declare global {
@@ -70,14 +66,12 @@ declare global {
         prototype: HTMLDashjsSettingsControlElementElement;
         new (): HTMLDashjsSettingsControlElementElement;
     };
-
     interface HTMLDashjsSettingsControlModalElement extends Components.DashjsSettingsControlModal, HTMLStencilElement {
     }
     var HTMLDashjsSettingsControlModalElement: {
         prototype: HTMLDashjsSettingsControlModalElement;
         new (): HTMLDashjsSettingsControlModalElement;
     };
-
     interface HTMLDashjsStatisticsElement extends Components.DashjsStatistics, HTMLStencilElement {
     }
     var HTMLDashjsStatisticsElement: {
@@ -99,18 +93,11 @@ declare namespace LocalJSX {
         "onPlayerEvent"?: (event: CustomEvent<String>) => void;
     }
     interface DashjsPlayer {
-        "url"?: string;
         "streamUrl"?: string;
+        "url"?: string;
     }
     interface DashjsReferenceUi {
         "url"?: string;
-    }
-    interface DashjsSettingsControl {
-    }
-    interface DashjsStatistics {
-        "audio_data"?: any;
-        "videoInstance"?: any;
-        "video_data"?: any;
     }
     interface DashjsSettingsControl {
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
@@ -127,6 +114,9 @@ declare namespace LocalJSX {
         "settingsList"?: Setting[];
     }
     interface DashjsStatistics {
+        "audio_data"?: any;
+        "videoInstance"?: any;
+        "video_data"?: any;
     }
     interface IntrinsicElements {
         "dashjs-api-control": DashjsApiControl;

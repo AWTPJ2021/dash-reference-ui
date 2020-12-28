@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop} from '@stencil/core';
+import { Component, Host, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'dashjs-reference-ui',
@@ -6,14 +6,14 @@ import { Component, Host, h, Prop} from '@stencil/core';
   shadow: false,
 })
 export class DashjsReferenceUi {
-  @Prop() url : string;
+  @Prop() url: string;
 
   render() {
     return (
       <Host>
         <dashjs-api-control></dashjs-api-control>
         <dashjs-settings-control onSettingsUpdated={event => console.log(event.detail)}></dashjs-settings-control>
-        <dashjs-player stream-url={''}></dashjs-player>
+        <dashjs-player></dashjs-player>
         <dashjs-statistics></dashjs-statistics>
       </Host>
     );

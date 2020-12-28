@@ -1,5 +1,4 @@
-
-import { Component, Host, h, Element, State, Prop, Watch, Listen, State } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch, Listen } from '@stencil/core';
 import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 
 @Component({
@@ -8,39 +7,49 @@ import { MediaPlayer, MediaPlayerClass } from 'dashjs';
   shadow: false,
 })
 export class DashjsPlayer {
-  @Element() 
+  @Element()
   private element: HTMLElement;
-  private player : MediaPlayerClass;
+  private player: MediaPlayerClass;
 
-  @Prop() url : string = "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd";
+  @Prop() url: string = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
 
-  @State() autoPlay : boolean;
+  @State() autoPlay: boolean;
 
-  @Listen('playerEvent', {target: 'document'})
+  @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
-    switch (event.detail.type){
-      case "load":
-        console.log("Re-initializing the player:\n" + JSON.stringify(event.detail));
+    switch (event.detail.type) {
+      case 'load':
+        console.log('Re-initializing the player:\n' + JSON.stringify(event.detail));
         this.player.reset();
         this.player = MediaPlayer().create();
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, (event.detail.autoPlay == "true"));
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
         break;
-      case "stop":
-        console.log("Resetting the player");
+      case 'stop':
+        console.log('Resetting the player');
         this.player.reset();
         break;
-      case "autoload":
-        console.log("autoload state changed to: " + event.detail.autoPlay);
+      case 'autoload':
+        console.log('autoload state changed to: ' + event.detail.autoPlay);
         this.autoPlay = event.detail.autoPlay;
         break;
     }
   }
 
+  @Listen('settingsUpdated', { target: 'document' })
+  settingsUpdate(event) {
+    console.log('Received the updated settings: ', event.detail);
+
+    this.player?.updateSettings({
+      debug: event?.detail?.debug,
+      streaming: event?.detail?.streaming,
+    });
+  }
+
   @Watch('url')
-	protected url_watcher(newUrl: string): void {
-    console.log("Changed value: " + newUrl);
-	  this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), newUrl, this.autoPlay);
-	}
+  protected url_watcher(newUrl: string): void {
+    console.log('Changed value: ' + newUrl);
+    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), newUrl, this.autoPlay);
+  }
 
   @Prop() streamUrl: string;
   @State() currentUrl = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
@@ -71,7 +80,7 @@ export class DashjsPlayer {
         <slot>
           <ion-card>
             <video controls={true} id="myMainVideoPlayer"></video>
-            </ion-card>
+          </ion-card>
         </slot>
       </Host>
     );
