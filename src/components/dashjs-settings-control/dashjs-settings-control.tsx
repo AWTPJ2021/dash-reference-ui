@@ -117,6 +117,7 @@ export class DashjsSettingsControl {
                       <dashjs-settings-control-element
                         type={this.settingsList.filter(s => s.id === key)[0].type}
                         name={key}
+                        options={this.settingsList.filter(s => s.id === key)[0].enum || undefined}
                         defaultValue={this.selectedSettings.get(key)}
                         onValueChanged={change => {
                           this.updateSetting(key, change.detail);

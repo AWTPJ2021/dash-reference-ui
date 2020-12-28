@@ -13,11 +13,22 @@ export class DashjsSettingsControlElement {
   @Prop() defaultValue: any;
   @Event() valueChanged: EventEmitter<any>;
   render() {
-    if (this.type == Type.string) {
+    if (this.options != undefined) {
       return (
         <ion-item>
           <ion-label>{this.name}</ion-label>
-          <ion-input value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change)}></ion-input>
+          <ion-select placeholder="Select One" interface="popover" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}>
+            {this.options.map(val => (
+              <ion-select-option value={val}>{val}</ion-select-option>
+            ))}
+          </ion-select>
+        </ion-item>
+      );
+    } else if (this.type == Type.string) {
+      return (
+        <ion-item>
+          <ion-label>{this.name}</ion-label>
+          <ion-input value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>
         </ion-item>
       );
     } else if (this.type == Type.number) {
@@ -35,7 +46,7 @@ export class DashjsSettingsControlElement {
       return (
         <ion-item>
           <ion-label>{this.name}</ion-label>
-          <ion-toggle slot="end"></ion-toggle>
+          <ion-toggle slot="end" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-toggle>
         </ion-item>
       );
     } else {
@@ -62,15 +73,7 @@ export class DashjsSettingsControlElement {
     //           </ion-segment-button>
     //         </ion-segment>
     //       </ion-item>
-    //       <ion-item>
-    //         <ion-label>Pets</ion-label>
-    //         <ion-select interface="popover" multiple={true} value={['bird', 'dog']}>
-    //           <ion-select-option value="bird">Bird</ion-select-option>
-    //           <ion-select-option value="cat">Cat</ion-select-option>
-    //           <ion-select-option value="dog">Dog</ion-select-option>
-    //           <ion-select-option value="honeybadger">Honey Badger</ion-select-option>
-    //         </ion-select>
-    //       </ion-item>
+
     //       <ion-item>
     //         <ion-range min={20} max={80} step={2}>
     //           <ion-icon size="small" slot="start" name="sunny"></ion-icon>
