@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Prop, Watch, Listen, State } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch, Listen } from '@stencil/core';
 import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 
 @Component({
@@ -33,6 +33,16 @@ export class DashjsPlayer {
         this.autoPlay = event.detail.autoPlay;
         break;
     }
+  }
+
+  @Listen('settingsUpdated', { target: 'document' })
+  settingsUpdate(event) {
+    console.log('Received the updated settings: ', event.detail);
+
+    this.player?.updateSettings({
+      debug: event?.detail?.debug,
+      streaming: event?.detail?.streaming,
+    });
   }
 
   @Watch('url')
