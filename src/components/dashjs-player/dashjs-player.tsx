@@ -32,6 +32,9 @@ export class DashjsPlayer {
         console.log('autoload state changed to: ' + event.detail.autoPlay);
         this.autoPlay = event.detail.autoPlay;
         break;
+      case 'function':
+        var returnValue = this.player[event.detail.name](event.detail.param);
+        alert("The following function was called: " + event.detail.name + "(" + event.detail.param + "). \nReturn:\n"+returnValue);
     }
   }
 
