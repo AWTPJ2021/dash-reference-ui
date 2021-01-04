@@ -1,7 +1,7 @@
 import { Component, Host, h, State, Event, Element, EventEmitter } from '@stencil/core';
 import { DashFunction } from '../../types/types';
 import { modalController } from '@ionic/core';
-import { generateFunctionsMapFromList, generateFunctionsObjectFromListAndMap } from '../../utils/utils';
+import { generateFunctionsMapFromList } from '../../utils/utils';
 
 @Component({
   tag: 'dashjs-api-control',
