@@ -15,9 +15,9 @@ export class DashjsPlayer {
 
   @State() autoPlay: boolean;
 
-  @State() streamInfo;
-  @State() dashMetrics;
-  @State() dashAdapter;
+  // @State() streamInfo;
+  // @State() dashMetrics;
+  // @State() dashAdapter;
 
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
@@ -27,10 +27,13 @@ export class DashjsPlayer {
         this.player.reset();
         this.player = MediaPlayer().create();
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
-        this.streamInfo = this.player.getActiveStream().getStreamInfo();
-        this.dashMetrics = this.player.getDashMetrics();
-        this.dashAdapter = this.player.getDashAdapter();
-        console.log('streamInfo', this.streamInfo);
+        // this.streamInfo = this.player.getCurrentLiveLatency();
+        // this.dashMetrics = this.player.getDashMetrics();
+        // this.dashAdapter = this.player.getDashAdapter();
+        // setTimeout(() => {
+        //   console.log(this.player.getCurrentLiveLatency());
+        // }, 2000);
+        setInterval(this.streamMetrics, 1000);
         break;
       case 'stop':
         console.log('Resetting the player');
@@ -70,7 +73,6 @@ export class DashjsPlayer {
     this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], function () {
       clearInterval(this.streamMetrics);
     });
-
     //let url = this.currentUrl;
     //let player = MediaPlayer().create();
     //player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), url, true);
@@ -78,7 +80,6 @@ export class DashjsPlayer {
 
   componentWillLoad() {
     this.onUrlChange(this.streamUrl);
-    setInterval(this.streamMetrics, 1000);
   }
 
   @Watch('streamUrl')
@@ -87,24 +88,27 @@ export class DashjsPlayer {
   }
 
   streamMetrics() {
-    // const streamInfo = this.player.getActiveStream().getStreamInfo();
-    // const dashMetrics = this.player.getDashMetrics();
+    // const streamInfo = this.player.getCurrentLiveLatency();
+    const dashMetrics = this.player.getDashMetrics();
     // const dashAdapter = this.player.getDashAdapter();
+    console.log('dashMetrics', dashMetrics);
 
-    if (this.dashMetrics && this.streamInfo) {
-      const periodIdx = this.streamInfo.index;
-      let repSwitch = this.dashMetrics.getCurrentRepresentationSwitch('video', true);
-      let bufferLevel = this.dashMetrics.getCurrentBufferLevel('video', true);
-      let bitrate = repSwitch ? Math.round(this.dashAdapter.getBandwidthForRepresentation(repSwitch.to, periodIdx) / 1000) : NaN;
-      let adaptation = this.dashAdapter.getAdaptationForType(periodIdx, 'video', this.streamInfo);
-      let frameRate = adaptation.Representation_asArray.find(function (rep) {
-        return rep.id === repSwitch.to;
-      }).frameRate;
+    // if (this.dashMetrics) {
+    // const periodIdx = streamInfo.index;
+    let repSwitch = dashMetrics.getCurrentRepresentationSwitch('video');
+    let bufferLevel = dashMetrics.getCurrentBufferLevel('video');
 
-      console.log('bufferLevel', bufferLevel);
-      console.log('bitrate', bitrate);
-      console.log('frameRate', frameRate);
-    }
+    // let bitrate = repSwitch ? Math.round(this.dashAdapter.getBandwidthForRepresentation(repSwitch.to, periodIdx) / 1000) : NaN;
+    // let adaptation = this.dashAdapter.getAdaptationForType(periodIdx, 'video', this.streamInfo);
+    // let frameRate = adaptation.Representation_asArray.find(function (rep) {
+    //   return rep.id === repSwitch.to;
+    // }).frameRate;
+
+    console.log('bufferLevel', bufferLevel);
+    console.log('repSwitch', repSwitch);
+    // console.log('bitrate', bitrate);
+    // console.log('frameRate', frameRate);
+    // }
   }
 
   render() {
