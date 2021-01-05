@@ -1,5 +1,6 @@
 import { modalController } from '@ionic/core';
-import { Component, Host, h, Watch, Method, Event, EventEmitter, State } from '@stencil/core';
+import { Component, Host, h, Watch, Method, Event, EventEmitter, State, Prop } from '@stencil/core';
+import { RouterHistory } from '@stencil/router';
 import { Setting } from '../../types/types';
 import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap } from '../../utils/utils';
 
@@ -9,6 +10,7 @@ import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap } fro
   shadow: false,
 })
 export class DashjsSettingsControl {
+  @Prop() history: RouterHistory;
   @State() settingsList: Setting[] = [];
   @State() selectedSettings: Map<string, any> = new Map();
   @State() displayedSetting: string = 'settings.streaming.metricsMaxListDepth';
@@ -42,12 +44,31 @@ export class DashjsSettingsControl {
     }
   }
   componentWillLoad() {
-    fetch('/static/out.json')
+    fetch('/static/settingsMetaData.json')
       .then((response: Response) => response.json())
       .then(response => {
         this.settingsList = response;
         this.selectedSettings = generateSettingsMapFromList(this.settingsList);
+        const urlParams = new URLSearchParams(window.location.search);
+        this.selectedSettings.forEach((value, key) => {
+          // debugger;
+          if (urlParams.has(key)) {
+            this.selectedSettings.set(key, urlParams.get(key));
+          }
+        });
+        this.selectedSettings = new Map(this.selectedSettings);
       });
+  }
+
+  setParam(key, value) {
+    const url = new URL(window.location.href);
+
+    if (url.searchParams.has(key)) {
+      url.searchParams.set(key, value);
+    } else {
+      url.searchParams.append(key, value);
+    }
+    window.history.pushState(null, null, url as any);
   }
 
   @Watch('selectedSettings')
@@ -62,6 +83,7 @@ export class DashjsSettingsControl {
 
   updateSetting(id: string, value: any) {
     this.selectedSettings.set(id, value);
+    this.setParam(id, value);
     this.selectedSettings = new Map(this.selectedSettings);
   }
 
@@ -106,9 +128,9 @@ export class DashjsSettingsControl {
                   Reset
                 </ion-button>
               </ion-row>
-              <ion-row>
+              {/* <ion-row>
                 <span>{this.displayedSetting}</span>
-              </ion-row>
+              </ion-row> */}
               <ion-row>
                 <ion-list style={{ width: '100%' }}>
                   {Array.from(this.selectedSettings.keys())

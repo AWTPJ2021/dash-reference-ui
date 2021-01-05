@@ -4,7 +4,7 @@ import * as objectPath from 'object-path';
 export function generateSettingsMapFromList(list: Setting[]) {
   let map = new Map();
   list.forEach(element => {
-    map.set(element.id, true);
+    map.set(element.id, undefined);
   });
   return map;
 }

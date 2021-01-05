@@ -5,6 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { RouterHistory } from "@stencil/router";
 import { Setting, Type } from "./types/types";
 export namespace Components {
     interface DashjsApiControl {
@@ -17,6 +18,7 @@ export namespace Components {
         "url": string;
     }
     interface DashjsSettingsControl {
+        "history": RouterHistory;
         "resetSettings": () => Promise<void>;
     }
     interface DashjsSettingsControlElement {
@@ -100,6 +102,7 @@ declare namespace LocalJSX {
         "url"?: string;
     }
     interface DashjsSettingsControl {
+        "history"?: RouterHistory;
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
     }
     interface DashjsSettingsControlElement {
