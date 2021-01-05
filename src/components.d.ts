@@ -14,6 +14,9 @@ export namespace Components {
         "streamUrl": string;
         "url": string;
     }
+    interface DashjsPopoverSelect {
+        "options": [];
+    }
     interface DashjsReferenceUi {
         "url": string;
     }
@@ -50,6 +53,12 @@ declare global {
         prototype: HTMLDashjsPlayerElement;
         new (): HTMLDashjsPlayerElement;
     };
+    interface HTMLDashjsPopoverSelectElement extends Components.DashjsPopoverSelect, HTMLStencilElement {
+    }
+    var HTMLDashjsPopoverSelectElement: {
+        prototype: HTMLDashjsPopoverSelectElement;
+        new (): HTMLDashjsPopoverSelectElement;
+    };
     interface HTMLDashjsReferenceUiElement extends Components.DashjsReferenceUi, HTMLStencilElement {
     }
     var HTMLDashjsReferenceUiElement: {
@@ -83,6 +92,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "dashjs-api-control": HTMLDashjsApiControlElement;
         "dashjs-player": HTMLDashjsPlayerElement;
+        "dashjs-popover-select": HTMLDashjsPopoverSelectElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
         "dashjs-settings-control": HTMLDashjsSettingsControlElement;
         "dashjs-settings-control-element": HTMLDashjsSettingsControlElementElement;
@@ -97,6 +107,9 @@ declare namespace LocalJSX {
     interface DashjsPlayer {
         "streamUrl"?: string;
         "url"?: string;
+    }
+    interface DashjsPopoverSelect {
+        "options"?: [];
     }
     interface DashjsReferenceUi {
         "url"?: string;
@@ -124,6 +137,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "dashjs-api-control": DashjsApiControl;
         "dashjs-player": DashjsPlayer;
+        "dashjs-popover-select": DashjsPopoverSelect;
         "dashjs-reference-ui": DashjsReferenceUi;
         "dashjs-settings-control": DashjsSettingsControl;
         "dashjs-settings-control-element": DashjsSettingsControlElement;
@@ -137,6 +151,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "dashjs-api-control": LocalJSX.DashjsApiControl & JSXBase.HTMLAttributes<HTMLDashjsApiControlElement>;
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
+            "dashjs-popover-select": LocalJSX.DashjsPopoverSelect & JSXBase.HTMLAttributes<HTMLDashjsPopoverSelectElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;
             "dashjs-settings-control": LocalJSX.DashjsSettingsControl & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElement>;
             "dashjs-settings-control-element": LocalJSX.DashjsSettingsControlElement & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElementElement>;
