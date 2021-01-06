@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Prop, Watch, Listen } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 
 @Component({
@@ -15,10 +15,6 @@ export class DashjsPlayer {
 
   @State() autoPlay: boolean;
 
-  // @State() streamInfo;
-  // @State() dashMetrics;
-  // @State() dashAdapter;
-
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
     switch (event.detail.type) {
@@ -28,7 +24,7 @@ export class DashjsPlayer {
         this.player = MediaPlayer().create();
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
         setInterval(() => {
-          this.streamMetrics(this.player);
+          this.streamMetricsEventHandler(this.player);
         }, 2000);
         break;
       case 'stop':
@@ -64,6 +60,12 @@ export class DashjsPlayer {
   @Prop() streamUrl: string;
   @State() currentUrl = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
 
+  @Event() streamMetricsEvent: EventEmitter<Object>;
+
+  streamMetricsEventHandler(player: any) {
+    this.streamMetricsEvent.emit(player);
+  }
+
   componentDidLoad() {
     console.log(this.element);
 
@@ -84,45 +86,6 @@ export class DashjsPlayer {
   @Watch('streamUrl')
   onUrlChange(newUrl: string) {
     if (newUrl) this.currentUrl = JSON.parse(newUrl);
-  }
-
-  streamMetrics(player: any) {
-    const streamInfo = player.getActiveStream().getStreamInfo();
-    const dashMetrics = player.getDashMetrics();
-    const dashAdapter = player.getDashAdapter();
-
-    if (dashMetrics && streamInfo) {
-      const periodIdx = streamInfo.index;
-      let latency = setTimeout(() => {
-        player.getCurrentLiveLatency();
-      }, 2000);
-
-      // Video Metrics
-      let videoRepSwitch = dashMetrics.getCurrentRepresentationSwitch('video', true);
-      let videoBufferLevel = dashMetrics.getCurrentBufferLevel('video', true);
-      let videoBufferLength = player.getBufferLength('video');
-      let videoDroppedFrames = dashMetrics.getCurrentDroppedFrames('video', true).droppedFrames;
-      let videoBitrate = videoRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(videoRepSwitch.to, periodIdx) / 1000) : NaN;
-      let videoAdaptation = dashAdapter.getAdaptationForType(periodIdx, 'video', streamInfo);
-      let videoFrameRate = videoAdaptation.Representation_asArray.find(function (rep) {
-        return rep.id === videoRepSwitch.to;
-      }).frameRate;
-
-      // Audio Metrics
-      let audioRepSwitch = dashMetrics.getCurrentRepresentationSwitch('audio', true);
-      let audioBufferLevel = dashMetrics.getCurrentBufferLevel('audio', true);
-      let audioBufferLength = player.getBufferLength('audio');
-      let audioDroppedFrames = dashMetrics.getCurrentDroppedFrames('audio', true).droppedFrames;
-      let audioBitrate = audioRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN;
-
-      // console.log('audioRepSwitch', audioRepSwitch);
-      // console.log('audioBufferLevel', audioBufferLevel);
-      // console.log('audioDroppedFrames', audioDroppedFrames);
-      // console.log('audioBitrate', audioBitrate);
-      // console.log('audioBufferLength', audioBufferLength);
-      // console.log('videoBufferLength', videoBufferLength);
-      // console.log('latency', latency);
-    }
   }
 
   render() {
