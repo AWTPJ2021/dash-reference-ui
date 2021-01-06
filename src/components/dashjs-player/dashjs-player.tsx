@@ -27,17 +27,16 @@ export class DashjsPlayer {
         this.player.reset();
         this.player = MediaPlayer().create();
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
-        // this.streamInfo = this.player.getCurrentLiveLatency();
-        // this.dashMetrics = this.player.getDashMetrics();
-        // this.dashAdapter = this.player.getDashAdapter();
-        // setTimeout(() => {
-        //   console.log(this.player.getCurrentLiveLatency());
-        // }, 2000);
-        setInterval(this.streamMetrics, 1000);
+        setInterval(() => {
+          this.streamMetrics(this.player);
+        }, 2000);
         break;
       case 'stop':
         console.log('Resetting the player');
         this.player.reset();
+        this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], function () {
+          clearInterval(this.streamMetrics(this.player));
+        });
         break;
       case 'autoload':
         console.log('autoload state changed to: ' + event.detail.autoPlay);
@@ -87,28 +86,43 @@ export class DashjsPlayer {
     if (newUrl) this.currentUrl = JSON.parse(newUrl);
   }
 
-  streamMetrics() {
-    // const streamInfo = this.player.getCurrentLiveLatency();
-    const dashMetrics = this.player.getDashMetrics();
-    // const dashAdapter = this.player.getDashAdapter();
-    console.log('dashMetrics', dashMetrics);
+  streamMetrics(player: any) {
+    const streamInfo = player.getActiveStream().getStreamInfo();
+    const dashMetrics = player.getDashMetrics();
+    const dashAdapter = player.getDashAdapter();
 
-    // if (this.dashMetrics) {
-    // const periodIdx = streamInfo.index;
-    let repSwitch = dashMetrics.getCurrentRepresentationSwitch('video');
-    let bufferLevel = dashMetrics.getCurrentBufferLevel('video');
+    if (dashMetrics && streamInfo) {
+      const periodIdx = streamInfo.index;
+      let latency = setTimeout(() => {
+        player.getCurrentLiveLatency();
+      }, 2000);
 
-    // let bitrate = repSwitch ? Math.round(this.dashAdapter.getBandwidthForRepresentation(repSwitch.to, periodIdx) / 1000) : NaN;
-    // let adaptation = this.dashAdapter.getAdaptationForType(periodIdx, 'video', this.streamInfo);
-    // let frameRate = adaptation.Representation_asArray.find(function (rep) {
-    //   return rep.id === repSwitch.to;
-    // }).frameRate;
+      // Video Metrics
+      let videoRepSwitch = dashMetrics.getCurrentRepresentationSwitch('video', true);
+      let videoBufferLevel = dashMetrics.getCurrentBufferLevel('video', true);
+      let videoBufferLength = player.getBufferLength('video');
+      let videoDroppedFrames = dashMetrics.getCurrentDroppedFrames('video', true).droppedFrames;
+      let videoBitrate = videoRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(videoRepSwitch.to, periodIdx) / 1000) : NaN;
+      let videoAdaptation = dashAdapter.getAdaptationForType(periodIdx, 'video', streamInfo);
+      let videoFrameRate = videoAdaptation.Representation_asArray.find(function (rep) {
+        return rep.id === videoRepSwitch.to;
+      }).frameRate;
 
-    console.log('bufferLevel', bufferLevel);
-    console.log('repSwitch', repSwitch);
-    // console.log('bitrate', bitrate);
-    // console.log('frameRate', frameRate);
-    // }
+      // Audio Metrics
+      let audioRepSwitch = dashMetrics.getCurrentRepresentationSwitch('audio', true);
+      let audioBufferLevel = dashMetrics.getCurrentBufferLevel('audio', true);
+      let audioBufferLength = player.getBufferLength('audio');
+      let audioDroppedFrames = dashMetrics.getCurrentDroppedFrames('audio', true).droppedFrames;
+      let audioBitrate = audioRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN;
+
+      // console.log('audioRepSwitch', audioRepSwitch);
+      // console.log('audioBufferLevel', audioBufferLevel);
+      // console.log('audioDroppedFrames', audioDroppedFrames);
+      // console.log('audioBitrate', audioBitrate);
+      // console.log('audioBufferLength', audioBufferLength);
+      // console.log('videoBufferLength', videoBufferLength);
+      // console.log('latency', latency);
+    }
   }
 
   render() {
