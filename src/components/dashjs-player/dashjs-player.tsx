@@ -14,6 +14,7 @@ export class DashjsPlayer {
   @Prop() url: string = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
 
   @State() autoPlay: boolean;
+  @State() streamInterval: any;
 
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
@@ -26,13 +27,14 @@ export class DashjsPlayer {
         setInterval(() => {
           this.streamMetricsEventHandler(this.player);
         }, 1000);
+
         break;
       case 'stop':
         console.log('Resetting the player');
         this.player.reset();
-        this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], function () {
-          clearInterval(this.streamMetricsEventHandler(this.player));
-        });
+        // this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], function () {
+        //   clearInterval(this.streamInterval);
+        // });
         break;
       case 'autoload':
         console.log('autoload state changed to: ' + event.detail.autoPlay);
@@ -68,12 +70,8 @@ export class DashjsPlayer {
 
   componentDidLoad() {
     console.log(this.element);
-
     this.player = MediaPlayer().create();
     this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
-    this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], function () {
-      clearInterval(this.streamMetrics);
-    });
     //let url = this.currentUrl;
     //let player = MediaPlayer().create();
     //player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), url, true);

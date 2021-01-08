@@ -22,17 +22,29 @@ export class DashjsStatistics {
   // DashMetrics properties
   @State()
   videoBufferLevel: number;
-  audioBufferLevel: number;
+  videoBufferLevelArr: number[] = new Array();
   videoBitrate: number;
-  audioBitrate: number;
+  videoBitrateArr: number[] = new Array();
   videoDroppedFrames: number;
-  audioDroppedFrames: number;
+  videoDroppedFramesArr: number[] = new Array();
   videoFrameRate: number;
+  videoFrameRateArr: number[] = new Array();
   videoIndex: number;
+  videoIndexArr: number[] = new Array();
   maxVideoIndex: number;
+  maxVideoIndexArr: number[] = new Array();
+  audioBufferLevel: number;
+  audioBufferLevelArr: number[] = new Array();
+  audioBitrate: number;
+  audioBitrateArr: number[] = new Array();
+  audioDroppedFrames: number;
+  audioDroppedFramesArr: number[] = new Array();
   maxAudioIndex: number;
+  maxAudioIndexArr: number[] = new Array();
   latency: any;
+  latencyArr: any[] = new Array();
   currentTime: any;
+  currentTimeArr: string[] = new Array();
 
   chartVisibility(isVideo, title, checked) {
     let toChange = isVideo ? this.videoInstance : this.audioInstance;
@@ -60,7 +72,7 @@ export class DashjsStatistics {
   clearChart(isVideo) {
     let toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds) {
-      ds.data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      ds.data = [0, 0, 0, 0, 0, 0];
     });
     toChange.update();
   }
@@ -110,28 +122,53 @@ export class DashjsStatistics {
       const periodIdx = streamInfo.index;
       let currentTimeInSec = player.time().toFixed(0);
       this.currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
+      this.currentTimeArr.push(this.currentTime);
+
       this.latency = setTimeout(() => {
         player.getCurrentLiveLatency();
       }, 1000);
+      this.latencyArr.push(this.videoBufferLevel);
+      // console.log('currentTimeArr', this.currentTimeArr.slice(1).slice(-6));
 
       // Video Metrics
       let videoRepSwitch = dashMetrics.getCurrentRepresentationSwitch('video');
-      this.videoBufferLevel = dashMetrics.getCurrentBufferLevel('video');
-      this.videoDroppedFrames = dashMetrics.getCurrentDroppedFrames('video').droppedFrames;
-      this.videoBitrate = videoRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(videoRepSwitch.to, periodIdx) / 1000) : NaN;
       let videoAdaptation = dashAdapter.getAdaptationForType(periodIdx, 'video', streamInfo);
+
+      this.videoBufferLevel = dashMetrics.getCurrentBufferLevel('video');
+      this.videoBufferLevelArr.push(this.videoBufferLevel);
+      // console.log('videoBufferLevelArr', this.videoBufferLevelArr.slice(1).slice(-6));
+
+      this.videoDroppedFrames = dashMetrics.getCurrentDroppedFrames('video').droppedFrames;
+      this.videoBufferLevelArr.push(this.videoBufferLevel);
+
+      this.videoBitrate = videoRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(videoRepSwitch.to, periodIdx) / 1000) : NaN;
+      this.videoBitrateArr.push(this.videoBufferLevel);
+
       this.videoFrameRate = videoAdaptation.Representation_asArray.find(function (rep) {
         return rep.id === videoRepSwitch.to;
       }).frameRate;
+      this.videoFrameRateArr.push(this.videoBufferLevel);
+
       this.videoIndex = dashAdapter.getIndexForRepresentation(videoRepSwitch.to, periodIdx);
+      this.videoIndexArr.push(this.videoBufferLevel);
+
       this.maxVideoIndex = dashAdapter.getMaxIndexForBufferType('video', periodIdx);
+      this.maxVideoIndexArr.push(this.videoBufferLevel);
 
       // Audio Metrics
       let audioRepSwitch = dashMetrics.getCurrentRepresentationSwitch('audio');
+
       this.audioBufferLevel = dashMetrics.getCurrentBufferLevel('audio');
+      this.audioBufferLevelArr.push(this.videoBufferLevel);
+
       this.audioDroppedFrames = dashMetrics.getCurrentDroppedFrames('audio').droppedFrames;
+      this.audioDroppedFramesArr.push(this.videoBufferLevel);
+
       this.audioBitrate = audioRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN;
+      this.audioBitrateArr.push(this.videoBufferLevel);
+
       this.maxAudioIndex = dashAdapter.getMaxIndexForBufferType('audio', periodIdx);
+      this.maxAudioIndexArr.push(this.videoBufferLevel);
     }
   }
 
@@ -144,10 +181,10 @@ export class DashjsStatistics {
     this.audio_context = this.audio_canvas.getContext('2d');
     var dataExample = [
       {
-        labels: ['00:00', '00:01', '00:02', '00:03', '00:04', '00:05', '00:06', '00:07', '00:08', '00:09'],
+        labels: this.currentTimeArr.slice(1).slice(-6),
         datasets: [
           {
-            data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
+            data: this.videoBufferLevelArr.slice(1).slice(-6),
             label: 'Buffer Length',
             borderColor: '#3e95cd',
             yAxisID: 'y0',
