@@ -25,13 +25,13 @@ export class DashjsPlayer {
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
         setInterval(() => {
           this.streamMetricsEventHandler(this.player);
-        }, 2000);
+        }, 1000);
         break;
       case 'stop':
         console.log('Resetting the player');
         this.player.reset();
         this.player.on(MediaPlayer.events['PLAYBACK_ENDED'], function () {
-          clearInterval(this.streamMetrics(this.player));
+          clearInterval(this.streamMetricsEventHandler(this.player));
         });
         break;
       case 'autoload':

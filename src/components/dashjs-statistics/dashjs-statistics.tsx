@@ -19,6 +19,21 @@ export class DashjsStatistics {
   @State()
   audioDisable: string = 'Disable';
 
+  // DashMetrics properties
+  @State()
+  videoBufferLevel: number;
+  audioBufferLevel: number;
+  videoBitrate: number;
+  audioBitrate: number;
+  videoDroppedFrames: number;
+  audioDroppedFrames: number;
+  videoFrameRate: number;
+  videoIndex: number;
+  maxVideoIndex: number;
+  maxAudioIndex: number;
+  latency: any;
+  currentTime: any;
+
   chartVisibility(isVideo, title, checked) {
     let toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds, index) {
@@ -83,7 +98,6 @@ export class DashjsStatistics {
 
   @Listen('streamMetricsEvent', { target: 'document' })
   streamMetricsEventHandler(event) {
-    // console.log('Received the player object: ', event.detail);
     this.streamMetrics(event.detail);
   }
 
@@ -94,37 +108,30 @@ export class DashjsStatistics {
 
     if (dashMetrics && streamInfo) {
       const periodIdx = streamInfo.index;
-      let latency = setTimeout(() => {
+      let currentTimeInSec = player.time().toFixed(0);
+      this.currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
+      this.latency = setTimeout(() => {
         player.getCurrentLiveLatency();
       }, 1000);
 
       // Video Metrics
-      let videoRepSwitch = dashMetrics.getCurrentRepresentationSwitch('video', true);
-      let videoBufferLevel = dashMetrics.getCurrentBufferLevel('video', true);
-      let videoBufferLength = player.getBufferLength('video');
-      let videoDroppedFrames = dashMetrics.getCurrentDroppedFrames('video', true).droppedFrames;
-      let videoBitrate = videoRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(videoRepSwitch.to, periodIdx) / 1000) : NaN;
+      let videoRepSwitch = dashMetrics.getCurrentRepresentationSwitch('video');
+      this.videoBufferLevel = dashMetrics.getCurrentBufferLevel('video');
+      this.videoDroppedFrames = dashMetrics.getCurrentDroppedFrames('video').droppedFrames;
+      this.videoBitrate = videoRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(videoRepSwitch.to, periodIdx) / 1000) : NaN;
       let videoAdaptation = dashAdapter.getAdaptationForType(periodIdx, 'video', streamInfo);
-      let videoFrameRate = videoAdaptation.Representation_asArray.find(function (rep) {
+      this.videoFrameRate = videoAdaptation.Representation_asArray.find(function (rep) {
         return rep.id === videoRepSwitch.to;
       }).frameRate;
+      this.videoIndex = dashAdapter.getIndexForRepresentation(videoRepSwitch.to, periodIdx);
+      this.maxVideoIndex = dashAdapter.getMaxIndexForBufferType('video', periodIdx);
 
       // Audio Metrics
-      let audioRepSwitch = dashMetrics.getCurrentRepresentationSwitch('audio', true);
-      let audioBufferLevel = dashMetrics.getCurrentBufferLevel('audio', true);
-      let audioBufferLength = player.getBufferLength('audio');
-      let audioDroppedFrames = dashMetrics.getCurrentDroppedFrames('audio', true).droppedFrames;
-      let audioBitrate = audioRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN;
-
-      //   console.log('audioRepSwitch', audioRepSwitch);
-      //   console.log('audioBufferLevel', audioBufferLevel);
-      //   console.log('audioDroppedFrames', audioDroppedFrames);
-      //   console.log('audioBitrate', audioBitrate);
-      //   console.log('audioBufferLength', audioBufferLength);
-      //   console.log('videoBufferLength', videoBufferLength);
-      //   console.log('latency', latency);
-
-      // return {streamInfo, dashMetrics, dashAdapter};
+      let audioRepSwitch = dashMetrics.getCurrentRepresentationSwitch('audio');
+      this.audioBufferLevel = dashMetrics.getCurrentBufferLevel('audio');
+      this.audioDroppedFrames = dashMetrics.getCurrentDroppedFrames('audio').droppedFrames;
+      this.audioBitrate = audioRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN;
+      this.maxAudioIndex = dashAdapter.getMaxIndexForBufferType('audio', periodIdx);
     }
   }
 
@@ -280,10 +287,6 @@ export class DashjsStatistics {
   }
 
   protected render() {
-    const a_buffer_length = 0;
-    const a_bitrate_downloading = 0;
-    const v_buffer_length = 0;
-    const v_bitrate_downloading = 0;
     return (
       <Host>
         <ion-card>
@@ -295,24 +298,52 @@ export class DashjsStatistics {
               <ion-col size="6">
                 <ion-title>Video</ion-title>
                 <ion-item class="inline-item">
-                  <ion-label class="rmv-b-border">Buffer Length: {v_buffer_length}</ion-label>
+                  <ion-label class="rmv-b-border">Buffer Length: {this.videoBufferLevel}</ion-label>
                   <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Buffer Length', ev.detail.checked)}></ion-checkbox>
                 </ion-item>
                 <ion-item class="inline-item">
-                  <ion-label class="rmv-b-border">Bitrate Downloading: {v_bitrate_downloading} kbs</ion-label>
+                  <ion-label class="rmv-b-border">Bitrate Downloading: {this.videoBitrate} kbs</ion-label>
                   <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Bitrate Downloading', ev.detail.checked)}></ion-checkbox>
+                </ion-item>
+                <ion-item class="inline-item">
+                  <ion-label class="rmv-b-border">Dropped Frames: {this.videoDroppedFrames}</ion-label>
+                  <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Dropped Frames', ev.detail.checked)}></ion-checkbox>
+                </ion-item>
+                <ion-item class="inline-item">
+                  <ion-label class="rmv-b-border">Frame Rate: {this.videoFrameRate}</ion-label>
+                  <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Frame Rate', ev.detail.checked)}></ion-checkbox>
+                </ion-item>
+                <ion-item class="inline-item">
+                  <ion-label class="rmv-b-border">Latency: {this.latency}</ion-label>
+                  <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Latency', ev.detail.checked)}></ion-checkbox>
+                </ion-item>
+                <ion-item class="inline-item">
+                  <ion-label class="rmv-b-border">Index: {this.videoIndex}</ion-label>
+                  <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Index', ev.detail.checked)}></ion-checkbox>
+                </ion-item>
+                <ion-item class="inline-item">
+                  <ion-label class="rmv-b-border">Max Index: {this.maxVideoIndex}</ion-label>
+                  <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Max Index', ev.detail.checked)}></ion-checkbox>
                 </ion-item>
               </ion-col>
 
               <ion-col size="6">
                 <ion-title>Audio</ion-title>
                 <ion-item class="inline-item">
-                  <ion-label class="rmv-b-border">Buffer Length: {a_buffer_length}</ion-label>
+                  <ion-label class="rmv-b-border">Buffer Length: {this.audioBufferLevel}</ion-label>
                   <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(false, 'Buffer Length', ev.detail.checked)}></ion-checkbox>
                 </ion-item>
                 <ion-item class="inline-item">
-                  <ion-label class="rmv-b-border">Bitrate Downloading: {a_bitrate_downloading} kbs</ion-label>
+                  <ion-label class="rmv-b-border">Bitrate Downloading: {this.audioBitrate} kbs</ion-label>
                   <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(false, 'Bitrate Downloading', ev.detail.checked)}></ion-checkbox>
+                </ion-item>
+                <ion-item class="inline-item">
+                  <ion-label class="rmv-b-border">Dropped Frames: {this.audioDroppedFrames}</ion-label>
+                  <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Dropped Frames', ev.detail.checked)}></ion-checkbox>
+                </ion-item>
+                <ion-item class="inline-item">
+                  <ion-label class="rmv-b-border">Max Index: {this.maxAudioIndex}</ion-label>
+                  <ion-checkbox color="primary" checked slot="start" onIonChange={ev => this.chartVisibility(true, 'Max Index', ev.detail.checked)}></ion-checkbox>
                 </ion-item>
               </ion-col>
             </ion-row>
