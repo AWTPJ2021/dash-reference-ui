@@ -2,7 +2,7 @@ import { Component, Host, h, Prop, State } from '@stencil/core';
 
 @Component({
   tag: 'ion-accordion',
-  styleUrl: 'ion-accordion.css',
+  styleUrl: 'ion-accordion.scss',
   shadow: true,
 })
 export class IonAccordion {
@@ -13,14 +13,21 @@ export class IonAccordion {
       <Host>
         <ion-card>
           <ion-card-header>
-            <ion-card-title>
-              {this.title}
-              <ion-button fill="clear" style={{ float: 'right' }} onClick={() => (this.expanded = !this.expanded)}>
-                <ion-icon slot="icon-only" color="dark" name={this.expanded ? 'chevron-up-outline' : 'chevron-down-outline'}></ion-icon>
-              </ion-button>
-            </ion-card-title>
+            <div class="header">
+              <h2>{this.title}</h2>
+              <div style={{ display: 'flex' }}>
+                <slot name="title" />
+                <ion-button fill="clear" onClick={() => (this.expanded = !this.expanded)}>
+                  <ion-icon slot="icon-only" color="dark" name={this.expanded ? 'chevron-up-outline' : 'chevron-down-outline'}></ion-icon>
+                </ion-button>
+              </div>
+            </div>
           </ion-card-header>
-          <ion-card-content>{this.expanded ? <slot></slot> : null}</ion-card-content>
+          {this.expanded ? (
+            <ion-card-content>
+              <slot></slot>{' '}
+            </ion-card-content>
+          ) : null}
         </ion-card>
       </Host>
     );

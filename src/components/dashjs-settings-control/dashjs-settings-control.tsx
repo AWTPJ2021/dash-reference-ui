@@ -167,6 +167,9 @@ export class DashjsSettingsControl {
     return (
       <Host>
         <ion-accordion title="Settings">
+          <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
+            Auto Update <ion-toggle id="autol" checked></ion-toggle>
+          </div>
           <ion-grid>
             <ion-row>
               {Array.from(this.selectedSettings.keys())

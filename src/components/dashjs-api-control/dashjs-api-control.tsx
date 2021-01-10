@@ -114,6 +114,9 @@ export class DashjsApiControl {
     return (
       <Host>
         <ion-accordion title="API">
+          <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
+            Auto load <ion-toggle id="autol" checked></ion-toggle>
+          </div>
           <ion-grid>
             <ion-row>
               <ion-col size="2">
@@ -136,10 +139,6 @@ export class DashjsApiControl {
                 <ion-button shape="round" id="load" onClick={() => this.loadMedia()}>
                   Load
                 </ion-button>
-                <ion-item class="inline-toggle">
-                  <ion-label>Auto load</ion-label>
-                  <ion-toggle id="autol" checked></ion-toggle>
-                </ion-item>
               </ion-col>
             </ion-row>
             <ion-row>

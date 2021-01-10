@@ -361,10 +361,8 @@ export class DashjsStatistics {
   protected render() {
     return (
       <Host>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title class="centered-header">Statistics</ion-card-title>
-          </ion-card-header>
+        <ion-accordion title="Statistics">
+
           <ion-grid>
             <ion-row class="r-border">
               <ion-col size="6">
@@ -454,7 +452,7 @@ export class DashjsStatistics {
               </ion-row>
             </ion-card-content>
           </ion-grid>
-        </ion-card>
+        </ion-accordion>
       </Host>
     );
   }
