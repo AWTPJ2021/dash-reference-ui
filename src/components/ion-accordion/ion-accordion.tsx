@@ -6,7 +6,7 @@ import { Component, Host, h, Prop, State } from '@stencil/core';
   shadow: true,
 })
 export class IonAccordion {
-  @Prop() title = '';
+  @Prop() titleText = '';
   @State() expanded = true;
   render() {
     return (
@@ -14,7 +14,7 @@ export class IonAccordion {
         <ion-card>
           <ion-card-header>
             <div class="header">
-              <h2>{this.title}</h2>
+              <h2>{this.titleText}</h2>
               <div style={{ display: 'flex' }}>
                 <slot name="title" />
                 <ion-button fill="clear" onClick={() => (this.expanded = !this.expanded)}>

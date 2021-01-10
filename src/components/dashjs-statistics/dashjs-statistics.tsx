@@ -361,8 +361,7 @@ export class DashjsStatistics {
   protected render() {
     return (
       <Host>
-        <ion-accordion title="Statistics">
-
+        <ion-accordion titleText="Statistics">
           <ion-grid>
             <ion-row class="r-border">
               <ion-col size="6">

@@ -49,7 +49,7 @@ export namespace Components {
         "video_data": any;
     }
     interface IonAccordion {
-        "title": string;
+        "titleText": string;
     }
 }
 declare global {
@@ -179,7 +179,7 @@ declare namespace LocalJSX {
         "video_data"?: any;
     }
     interface IonAccordion {
-        "title"?: string;
+        "titleText"?: string;
     }
     interface IntrinsicElements {
         "dashjs-api-control": DashjsApiControl;

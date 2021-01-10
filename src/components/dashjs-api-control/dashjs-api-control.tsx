@@ -113,7 +113,7 @@ export class DashjsApiControl {
   render() {
     return (
       <Host>
-        <ion-accordion title="API">
+        <ion-accordion titleText="API">
           <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
             Auto load <ion-toggle id="autol" checked></ion-toggle>
           </div>
