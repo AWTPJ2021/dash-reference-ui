@@ -92,6 +92,7 @@ export class DashjsStatistics {
   }
 
   clearChart(isVideo) {
+    clearInterval(this.chartInterval);
     let toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds) {
       ds.data = [0, 0, 0, 0, 0, 0];
@@ -435,7 +436,7 @@ export class DashjsStatistics {
 
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(true)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable ? "Disable" : "Enable"}</ion-button>
+              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable ? "Disabled" : "Enabled"}</ion-button>
               <ion-row>
                 <div class="display">
                   <canvas id="video_canvas">a chart</canvas>
@@ -447,7 +448,7 @@ export class DashjsStatistics {
 
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(false)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable ? "Disable" : "Enable"}</ion-button>
+              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable ? "Disabled" : "Enabled"}</ion-button>
               <ion-row>
                 <div class="display">
                   <canvas id="audio_canvas">another chart</canvas>
