@@ -134,10 +134,10 @@ export class DashjsApiControl {
               </ion-item>
             </ion-col>
             <ion-col size="4">
-                <ion-button shape="round" color="dark" onClick={() => this.stopMedia()}>Stop</ion-button>
+                <ion-button shape="round" color="dark" onClick={() => this.stopMedia()}>Reset</ion-button>
                 <ion-button shape="round" id="load" onClick={() => this.loadMedia()}>Load</ion-button>
                 <ion-item class="inline-toggle">
-                  <ion-label>Auto load</ion-label>
+                  <ion-label>Auto start</ion-label>
                   <ion-toggle id="autol" checked></ion-toggle>
                 </ion-item>
             </ion-col>
