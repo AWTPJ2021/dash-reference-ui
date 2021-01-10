@@ -14,10 +14,10 @@ export class DashjsStatistics {
   audio_data: any;
 
   @State()
-  videoDisable: string = 'Disable';
+  videoDisable: boolean = false;
 
   @State()
-  audioDisable: string = 'Disable';
+  audioDisable: boolean = false;
 
   @State()
   chartInterval: any;
@@ -77,24 +77,21 @@ export class DashjsStatistics {
         toChange.options.scales.yAxes[index].display = checked ? true : false;
       }
     });
-    if ((isVideo && this.videoDisable == 'Disable') || (!isVideo && this.audioDisable == 'Disable')) {
+    if ((isVideo && !this.videoDisable) || (!isVideo && !this.audioDisable)) {
       toChange.data.datasets[0].data.shift();
       toChange.data.datasets[0].data.push(122);
-    }
     toChange.update();
+  }
   }
 
   disableChart(isVideo) {
-    clearInterval(this.chartInterval);
-    if (isVideo) this.videoDisable = this.videoDisable == 'Disable' ? 'Enable' : 'Disable';
-    else this.audioDisable = this.audioDisable == 'Disable' ? 'Enable' : 'Disable';
-
+    if (isVideo) this.videoDisable = this.videoDisable? false : true;
+    else this.audioDisable = this.audioDisable  ? false : true;
     console.log('video: + ' + this.videoDisable);
     console.log('audio: ' + this.audioDisable);
   }
 
   clearChart(isVideo) {
-    clearInterval(this.chartInterval);
     let toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds) {
       ds.data = [0, 0, 0, 0, 0, 0];
@@ -104,11 +101,13 @@ export class DashjsStatistics {
 
   @Watch('audio_data')
   audio_watcher(newData: any) {
-    for (let index in newData) {
-      this.audioInstance.data.datasets[index].data.shift();
-      this.audioInstance.data.datasets[index].data.push(newData[index]);
+    if(!this.audioDisable) {
+      for (let index in newData) {
+        this.audioInstance.data.datasets[index].data.shift();
+        this.audioInstance.data.datasets[index].data.push(newData[index]);
+      }
+      this.audioInstance.update();
     }
-    this.audioInstance.update();
   }
 
   @Element()
@@ -187,12 +186,14 @@ export class DashjsStatistics {
 
   @Watch('video_data')
   video_watcher(isVideo: boolean, newData: any, newLabels: any) {
-    let toChange = isVideo ? this.videoInstance : this.audioInstance;
-    // for (let index in newData) {
-    toChange.data.datasets[0].data = newData.slice(1).slice(-6);
-    toChange.data.labels = newLabels.slice(1).slice(-6);
-    // }
-    toChange.update();
+    if(!this.videoDisable) {
+      let toChange = isVideo ? this.videoInstance : this.audioInstance;
+      // for (let index in newData) {
+      toChange.data.datasets[0].data = newData.slice(1).slice(-6);
+      toChange.data.labels = newLabels.slice(1).slice(-6);
+      // }
+      toChange.update();
+    }
   }
 
   componentDidLoad() {
@@ -431,7 +432,7 @@ export class DashjsStatistics {
 
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(true)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable}</ion-button>
+              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable ? "Disable" : "Enable"}</ion-button>
               <ion-row>
                 <div class="display">
                   <canvas id="video_canvas">a chart</canvas>
@@ -443,7 +444,7 @@ export class DashjsStatistics {
 
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(false)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable}</ion-button>
+              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable ? "Disable" : "Enable"}</ion-button>
               <ion-row>
                 <div class="display">
                   <canvas id="audio_canvas">another chart</canvas>
