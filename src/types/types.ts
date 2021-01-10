@@ -17,10 +17,31 @@ export interface Setting {
   activated: boolean;
 }
 
+export interface DashFunction {
+  name: string;
+  description : string;
+  parameters : DashPara[];
+  paramExplanation : DashParaExplaination[];
+}
+
+export interface DashPara {
+  name: string;
+  description : string;
+  type: Type; 
+}
+
+export interface DashParaExplaination {
+  name: string;
+  description : string;
+}
+
 export enum Type {
   string = 'string',
   number = 'number',
   object = 'Object',
   boolean = 'boolean',
   group = 'group',
+  HTML5MediaElement = 'HTMLElement',
+  function = '(e: any) => void',
+  value = 'value'
 }

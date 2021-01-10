@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Prop, Watch, Listen } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayer, MediaPlayerClass } from 'dashjs';
 
 @Component({
@@ -14,6 +14,7 @@ export class DashjsPlayer {
   @Prop() url: string = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
 
   @State() autoPlay: boolean;
+  @State() streamInterval: any;
 
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
@@ -23,15 +24,22 @@ export class DashjsPlayer {
         this.player.reset();
         this.player = MediaPlayer().create();
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
+        this.streamInterval = setInterval(() => {
+          this.streamMetricsEventHandler(this.player);
+        }, 1000);
         break;
       case 'stop':
         console.log('Resetting the player');
         this.player.reset();
+        clearInterval(this.streamInterval);
         break;
       case 'autoload':
         console.log('autoload state changed to: ' + event.detail.autoPlay);
         this.autoPlay = event.detail.autoPlay;
         break;
+      case 'function':
+        var returnValue = this.player[event.detail.name](event.detail.param);
+        alert('The following function was called: ' + event.detail.name + '(' + event.detail.param + '). \nReturn:\n' + returnValue);
     }
   }
 
@@ -53,13 +61,19 @@ export class DashjsPlayer {
 
   @Prop() streamUrl: string;
   @State() currentUrl = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
+  // @State() isPaused: boolean;
+
+  @Event() streamMetricsEvent: EventEmitter<Object>;
+
+  streamMetricsEventHandler(player: any) {
+    this.streamMetricsEvent.emit(player);
+  }
 
   componentDidLoad() {
     console.log(this.element);
-
     this.player = MediaPlayer().create();
     this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
-
+    // this.isPaused = this.player.isPaused();
     //let url = this.currentUrl;
     //let player = MediaPlayer().create();
     //player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), url, true);
@@ -67,7 +81,13 @@ export class DashjsPlayer {
 
   componentWillLoad() {
     this.onUrlChange(this.streamUrl);
+    // this.stream_watcher();
   }
+
+  // @Watch('isPaused')
+  // stream_watcher() {
+  //   if (this.isPaused) clearInterval(this.streamInterval);
+  // }
 
   @Watch('streamUrl')
   onUrlChange(newUrl: string) {

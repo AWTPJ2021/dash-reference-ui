@@ -5,10 +5,19 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { DashFunction, Setting, Type } from "./types/types";
 import { RouterHistory } from "@stencil/router";
-import { Setting, Type } from "./types/types";
 export namespace Components {
     interface DashjsApiControl {
+    }
+    interface DashjsApiControlElement {
+        "name": string;
+        "param": any;
+        "paramDesc": any;
+    }
+    interface DashjsApiControlModal {
+        "functionList": DashFunction[];
+        "selectedFunctions": Map<string, any>;
     }
     interface DashjsPlayer {
         "streamUrl": string;
@@ -46,6 +55,18 @@ declare global {
     var HTMLDashjsApiControlElement: {
         prototype: HTMLDashjsApiControlElement;
         new (): HTMLDashjsApiControlElement;
+    };
+    interface HTMLDashjsApiControlElementElement extends Components.DashjsApiControlElement, HTMLStencilElement {
+    }
+    var HTMLDashjsApiControlElementElement: {
+        prototype: HTMLDashjsApiControlElementElement;
+        new (): HTMLDashjsApiControlElementElement;
+    };
+    interface HTMLDashjsApiControlModalElement extends Components.DashjsApiControlModal, HTMLStencilElement {
+    }
+    var HTMLDashjsApiControlModalElement: {
+        prototype: HTMLDashjsApiControlModalElement;
+        new (): HTMLDashjsApiControlModalElement;
     };
     interface HTMLDashjsPlayerElement extends Components.DashjsPlayer, HTMLStencilElement {
     }
@@ -91,6 +112,8 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "dashjs-api-control": HTMLDashjsApiControlElement;
+        "dashjs-api-control-element": HTMLDashjsApiControlElementElement;
+        "dashjs-api-control-modal": HTMLDashjsApiControlModalElement;
         "dashjs-player": HTMLDashjsPlayerElement;
         "dashjs-popover-select": HTMLDashjsPopoverSelectElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
@@ -104,7 +127,18 @@ declare namespace LocalJSX {
     interface DashjsApiControl {
         "onPlayerEvent"?: (event: CustomEvent<String>) => void;
     }
+    interface DashjsApiControlElement {
+        "name"?: string;
+        "onValueChanged"?: (event: CustomEvent<any>) => void;
+        "param"?: any;
+        "paramDesc"?: any;
+    }
+    interface DashjsApiControlModal {
+        "functionList"?: DashFunction[];
+        "selectedFunctions"?: Map<string, any>;
+    }
     interface DashjsPlayer {
+        "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
         "streamUrl"?: string;
         "url"?: string;
     }
@@ -136,6 +170,8 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "dashjs-api-control": DashjsApiControl;
+        "dashjs-api-control-element": DashjsApiControlElement;
+        "dashjs-api-control-modal": DashjsApiControlModal;
         "dashjs-player": DashjsPlayer;
         "dashjs-popover-select": DashjsPopoverSelect;
         "dashjs-reference-ui": DashjsReferenceUi;
@@ -150,6 +186,8 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "dashjs-api-control": LocalJSX.DashjsApiControl & JSXBase.HTMLAttributes<HTMLDashjsApiControlElement>;
+            "dashjs-api-control-element": LocalJSX.DashjsApiControlElement & JSXBase.HTMLAttributes<HTMLDashjsApiControlElementElement>;
+            "dashjs-api-control-modal": LocalJSX.DashjsApiControlModal & JSXBase.HTMLAttributes<HTMLDashjsApiControlModalElement>;
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
             "dashjs-popover-select": LocalJSX.DashjsPopoverSelect & JSXBase.HTMLAttributes<HTMLDashjsPopoverSelectElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;
