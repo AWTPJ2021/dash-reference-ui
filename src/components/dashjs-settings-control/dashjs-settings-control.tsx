@@ -56,7 +56,6 @@ export class DashjsSettingsControl {
         this.selectedSettings = generateSettingsMapFromList(this.settingsList);
         const urlParams = new URLSearchParams(window.location.search);
         this.selectedSettings.forEach((_value, key) => {
-          // debugger;
           if (urlParams.has(key)) {
             this.selectedSettings.set(key, urlParams.get(key));
           }
@@ -167,73 +166,67 @@ export class DashjsSettingsControl {
   render() {
     return (
       <Host>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Settings</ion-card-title>
-          </ion-card-header>
-
-          <ion-card-content>
-            <ion-grid>
-              <ion-row>
-                {Array.from(this.selectedSettings.keys())
-                  .filter(k => this.selectedSettings.get(k) != undefined)
-                  .map(s => (
-                    <ion-chip
-                      color={s === this.displayedSetting ? 'primary' : 'secondary'}
-                      onClick={() => {
-                        this.displayedSetting = s;
+        <ion-accordion title="Settings">
+          <ion-grid>
+            <ion-row>
+              {Array.from(this.selectedSettings.keys())
+                .filter(k => this.selectedSettings.get(k) != undefined)
+                .map(s => (
+                  <ion-chip
+                    color={s === this.displayedSetting ? 'primary' : 'secondary'}
+                    onClick={() => {
+                      this.displayedSetting = s;
+                    }}
+                  >
+                    <ion-label>{s}</ion-label>
+                    <ion-icon
+                      name="close-circle"
+                      onClick={event => {
+                        event.stopPropagation();
+                        this.removeSetting(s);
                       }}
-                    >
-                      <ion-label>{s}</ion-label>
-                      <ion-icon
-                        name="close-circle"
-                        onClick={event => {
-                          event.stopPropagation();
-                          this.removeSetting(s);
-                        }}
-                      ></ion-icon>
-                    </ion-chip>
-                  ))}
-                <ion-input
-                  id="searchInput"
-                  placeholder="Add more settings..."
-                  onIonChange={event => this.updateSearch(event)}
-                  onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
-                ></ion-input>
-              </ion-row>
-              <ion-row>
-                <ion-button shape="round" color="dark" onClick={() => this.openSettings()}>
-                  Browse Settings
-                  <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-                </ion-button>
-                <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetSettings()}>
-                  Reset
-                </ion-button>
-              </ion-row>
-              {/* <ion-row>
+                    ></ion-icon>
+                  </ion-chip>
+                ))}
+              <ion-input
+                id="searchInput"
+                placeholder="Add more settings..."
+                onIonChange={event => this.updateSearch(event)}
+                onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
+              ></ion-input>
+            </ion-row>
+            <ion-row>
+              <ion-button shape="round" color="dark" onClick={() => this.openSettings()}>
+                Browse Settings
+                <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+              </ion-button>
+              <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetSettings()}>
+                Reset
+              </ion-button>
+            </ion-row>
+            {/* <ion-row>
                 <span>{this.displayedSetting}</span>
               </ion-row> */}
-              <ion-row>
-                <ion-list style={{ width: '100%' }}>
-                  {Array.from(this.selectedSettings.keys())
-                    .filter(k => this.selectedSettings.get(k) != undefined)
-                    .map(key => (
-                      <dashjs-settings-control-element
-                        type={this.settingsList.filter(s => s.id === key)[0].type}
-                        name={key}
-                        options={this.settingsList.filter(s => s.id === key)[0].enum || undefined}
-                        defaultValue={this.selectedSettings.get(key)}
-                        onValueChanged={change => {
-                          this.updateSetting(key, change.detail);
-                        }}
-                      ></dashjs-settings-control-element>
-                    ))}
-                </ion-list>
-                {/* <dashjs-settings-control-element type={this.settingsList.filter(s => s.id === this.displayedSetting)[0].type}></dashjs-settings-control-element> */}
-              </ion-row>
-            </ion-grid>
-          </ion-card-content>
-        </ion-card>
+            <ion-row>
+              <ion-list style={{ width: '100%' }}>
+                {Array.from(this.selectedSettings.keys())
+                  .filter(k => this.selectedSettings.get(k) != undefined)
+                  .map(key => (
+                    <dashjs-settings-control-element
+                      type={this.settingsList.filter(s => s.id === key)[0].type}
+                      name={key}
+                      options={this.settingsList.filter(s => s.id === key)[0].enum || undefined}
+                      defaultValue={this.selectedSettings.get(key)}
+                      onValueChanged={change => {
+                        this.updateSetting(key, change.detail);
+                      }}
+                    ></dashjs-settings-control-element>
+                  ))}
+              </ion-list>
+              {/* <dashjs-settings-control-element type={this.settingsList.filter(s => s.id === this.displayedSetting)[0].type}></dashjs-settings-control-element> */}
+            </ion-row>
+          </ion-grid>
+        </ion-accordion>
       </Host>
     );
   }
