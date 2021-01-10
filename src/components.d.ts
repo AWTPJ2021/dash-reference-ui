@@ -6,6 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DashFunction, Setting, Type } from "./types/types";
+import { RouterHistory } from "@stencil/router";
 export namespace Components {
     interface DashjsApiControl {
     }
@@ -22,10 +23,14 @@ export namespace Components {
         "streamUrl": string;
         "url": string;
     }
+    interface DashjsPopoverSelect {
+        "options": [];
+    }
     interface DashjsReferenceUi {
         "url": string;
     }
     interface DashjsSettingsControl {
+        "history": RouterHistory;
         "resetSettings": () => Promise<void>;
     }
     interface DashjsSettingsControlElement {
@@ -69,6 +74,12 @@ declare global {
         prototype: HTMLDashjsPlayerElement;
         new (): HTMLDashjsPlayerElement;
     };
+    interface HTMLDashjsPopoverSelectElement extends Components.DashjsPopoverSelect, HTMLStencilElement {
+    }
+    var HTMLDashjsPopoverSelectElement: {
+        prototype: HTMLDashjsPopoverSelectElement;
+        new (): HTMLDashjsPopoverSelectElement;
+    };
     interface HTMLDashjsReferenceUiElement extends Components.DashjsReferenceUi, HTMLStencilElement {
     }
     var HTMLDashjsReferenceUiElement: {
@@ -104,6 +115,7 @@ declare global {
         "dashjs-api-control-element": HTMLDashjsApiControlElementElement;
         "dashjs-api-control-modal": HTMLDashjsApiControlModalElement;
         "dashjs-player": HTMLDashjsPlayerElement;
+        "dashjs-popover-select": HTMLDashjsPopoverSelectElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
         "dashjs-settings-control": HTMLDashjsSettingsControlElement;
         "dashjs-settings-control-element": HTMLDashjsSettingsControlElementElement;
@@ -130,10 +142,14 @@ declare namespace LocalJSX {
         "streamUrl"?: string;
         "url"?: string;
     }
+    interface DashjsPopoverSelect {
+        "options"?: [];
+    }
     interface DashjsReferenceUi {
         "url"?: string;
     }
     interface DashjsSettingsControl {
+        "history"?: RouterHistory;
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
     }
     interface DashjsSettingsControlElement {
@@ -157,6 +173,7 @@ declare namespace LocalJSX {
         "dashjs-api-control-element": DashjsApiControlElement;
         "dashjs-api-control-modal": DashjsApiControlModal;
         "dashjs-player": DashjsPlayer;
+        "dashjs-popover-select": DashjsPopoverSelect;
         "dashjs-reference-ui": DashjsReferenceUi;
         "dashjs-settings-control": DashjsSettingsControl;
         "dashjs-settings-control-element": DashjsSettingsControlElement;
@@ -172,6 +189,7 @@ declare module "@stencil/core" {
             "dashjs-api-control-element": LocalJSX.DashjsApiControlElement & JSXBase.HTMLAttributes<HTMLDashjsApiControlElementElement>;
             "dashjs-api-control-modal": LocalJSX.DashjsApiControlModal & JSXBase.HTMLAttributes<HTMLDashjsApiControlModalElement>;
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
+            "dashjs-popover-select": LocalJSX.DashjsPopoverSelect & JSXBase.HTMLAttributes<HTMLDashjsPopoverSelectElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;
             "dashjs-settings-control": LocalJSX.DashjsSettingsControl & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElement>;
             "dashjs-settings-control-element": LocalJSX.DashjsSettingsControlElement & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElementElement>;

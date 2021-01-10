@@ -25,6 +25,7 @@
   "dependencies": {
     "@ionic/core": "^5.5.2",
     "@stencil/core": "^2.0.1",
+    "@stencil/router": "^1.0.1",
     "@stencil/sass": "^1.4.1",
     "chart.js": "^2.9.4",
     "dashjs": "^3.2.0",
