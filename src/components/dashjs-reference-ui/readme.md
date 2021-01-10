@@ -47,13 +47,14 @@ graph TD;
   dashjs-settings-control --> ion-card
   dashjs-settings-control --> ion-card-header
   dashjs-settings-control --> ion-card-title
+  dashjs-settings-control --> ion-button
+  dashjs-settings-control --> ion-icon
   dashjs-settings-control --> ion-card-content
   dashjs-settings-control --> ion-grid
   dashjs-settings-control --> ion-row
   dashjs-settings-control --> ion-chip
   dashjs-settings-control --> ion-label
-  dashjs-settings-control --> ion-icon
-  dashjs-settings-control --> ion-button
+  dashjs-settings-control --> ion-input
   dashjs-settings-control --> ion-list
   dashjs-settings-control --> dashjs-settings-control-element
   ion-chip --> ion-ripple-effect

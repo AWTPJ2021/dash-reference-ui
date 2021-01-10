@@ -48,6 +48,9 @@ export namespace Components {
         "videoInstance": any;
         "video_data": any;
     }
+    interface IonAccordion {
+        "titleText": string;
+    }
 }
 declare global {
     interface HTMLDashjsApiControlElement extends Components.DashjsApiControl, HTMLStencilElement {
@@ -110,6 +113,12 @@ declare global {
         prototype: HTMLDashjsStatisticsElement;
         new (): HTMLDashjsStatisticsElement;
     };
+    interface HTMLIonAccordionElement extends Components.IonAccordion, HTMLStencilElement {
+    }
+    var HTMLIonAccordionElement: {
+        prototype: HTMLIonAccordionElement;
+        new (): HTMLIonAccordionElement;
+    };
     interface HTMLElementTagNameMap {
         "dashjs-api-control": HTMLDashjsApiControlElement;
         "dashjs-api-control-element": HTMLDashjsApiControlElementElement;
@@ -121,6 +130,7 @@ declare global {
         "dashjs-settings-control-element": HTMLDashjsSettingsControlElementElement;
         "dashjs-settings-control-modal": HTMLDashjsSettingsControlModalElement;
         "dashjs-statistics": HTMLDashjsStatisticsElement;
+        "ion-accordion": HTMLIonAccordionElement;
     }
 }
 declare namespace LocalJSX {
@@ -168,6 +178,9 @@ declare namespace LocalJSX {
         "videoInstance"?: any;
         "video_data"?: any;
     }
+    interface IonAccordion {
+        "titleText"?: string;
+    }
     interface IntrinsicElements {
         "dashjs-api-control": DashjsApiControl;
         "dashjs-api-control-element": DashjsApiControlElement;
@@ -179,6 +192,7 @@ declare namespace LocalJSX {
         "dashjs-settings-control-element": DashjsSettingsControlElement;
         "dashjs-settings-control-modal": DashjsSettingsControlModal;
         "dashjs-statistics": DashjsStatistics;
+        "ion-accordion": IonAccordion;
     }
 }
 export { LocalJSX as JSX };
@@ -195,6 +209,7 @@ declare module "@stencil/core" {
             "dashjs-settings-control-element": LocalJSX.DashjsSettingsControlElement & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElementElement>;
             "dashjs-settings-control-modal": LocalJSX.DashjsSettingsControlModal & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlModalElement>;
             "dashjs-statistics": LocalJSX.DashjsStatistics & JSXBase.HTMLAttributes<HTMLDashjsStatisticsElement>;
+            "ion-accordion": LocalJSX.IonAccordion & JSXBase.HTMLAttributes<HTMLIonAccordionElement>;
         }
     }
 }

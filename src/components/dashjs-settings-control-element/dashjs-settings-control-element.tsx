@@ -16,7 +16,7 @@ export class DashjsSettingsControlElement {
     if (this.options != undefined) {
       return (
         <ion-item>
-          <ion-label>{this.name}</ion-label>
+          <ion-label position="floating">{this.name}</ion-label>
           <ion-select placeholder="Select One" interface="popover" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}>
             {this.options.map(val => (
               <ion-select-option value={val}>{val}</ion-select-option>
@@ -27,7 +27,7 @@ export class DashjsSettingsControlElement {
     } else if (this.type == Type.string) {
       return (
         <ion-item>
-          <ion-label>{this.name}</ion-label>
+          <ion-label position="floating">{this.name}</ion-label>
           <ion-input value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>
         </ion-item>
       );
@@ -35,7 +35,7 @@ export class DashjsSettingsControlElement {
       return (
         <ion-item>
           <ion-label>{this.name}</ion-label>
-          <ion-input type="number" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>
+          <ion-input slot="end" type="number" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>
           {/* <ion-range min={20} max={80} step={2}>
             <ion-icon size="small" slot="start" name="sunny"></ion-icon>
             <ion-icon slot="end" name="sunny"></ion-icon>
@@ -45,7 +45,7 @@ export class DashjsSettingsControlElement {
     } else if (this.type == Type.boolean) {
       return (
         <ion-item>
-          <ion-label>{this.name}</ion-label>
+          <ion-label position="floating">{this.name}</ion-label>
           <ion-toggle slot="end" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-toggle>
         </ion-item>
       );
