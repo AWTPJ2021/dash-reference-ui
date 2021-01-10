@@ -27,6 +27,7 @@ export class DashjsSettingsControl {
   @Method()
   async resetSettings() {
     this.selectedSettings = generateSettingsMapFromList(this.settingsList);
+    this.removeQueryParams();
   }
 
   @Event() settingsUpdated: EventEmitter<Object>;
@@ -79,6 +80,14 @@ export class DashjsSettingsControl {
         url.searchParams.append(key, value);
       }
     }
+    window.history.pushState(null, null, url as any);
+  }
+
+  removeQueryParams() {
+    const url = new URL(window.location.href);
+    Array.from((url.searchParams as any).keys()).forEach((key: string) => {
+      url.searchParams.delete(key);
+    });
     window.history.pushState(null, null, url as any);
   }
 
