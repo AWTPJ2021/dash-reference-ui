@@ -1,5 +1,5 @@
 import { popoverController } from '@ionic/core';
-import { Component, Host, h, Prop } from '@stencil/core';
+import { Component, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'dashjs-popover-select',

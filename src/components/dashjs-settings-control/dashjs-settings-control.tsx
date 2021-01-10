@@ -54,7 +54,7 @@ export class DashjsSettingsControl {
         this.settingsList = response;
         this.selectedSettings = generateSettingsMapFromList(this.settingsList);
         const urlParams = new URLSearchParams(window.location.search);
-        this.selectedSettings.forEach((value, key) => {
+        this.selectedSettings.forEach((_value, key) => {
           // debugger;
           if (urlParams.has(key)) {
             this.selectedSettings.set(key, urlParams.get(key));
@@ -154,8 +154,6 @@ export class DashjsSettingsControl {
       this.searchElement.value = '';
     }
   }
-
-  async presentPopover(ev: any) {}
 
   render() {
     return (
