@@ -26,28 +26,29 @@ async function main() {
 
   // TODO: Await finihes before all requests are finished.
 
-  fs.readdirSync(workingFolder)
-    .reverse()
-    .forEach(version => {
-      if (first == true) {
-        if (onlyFirst == true) first = false;
-        // For each version
-        const workFolder = `${workingFolder}/${version}/`;
-        const overwriteFolder = `${overwritingFolder}/${version}/`;
+  let versions = fs.readdirSync(workingFolder).reverse();
+  versions.forEach(version => {
+    if (first == true) {
+      if (onlyFirst == true) first = false;
+      // For each version
+      const workFolder = `${workingFolder}/${version}/`;
+      const overwriteFolder = `${overwritingFolder}/${version}/`;
 
-        generateAPIMetaData(workingFolder, version);
-        generateSettingsMetaData(workingFolder, version);
-        if (!fs.existsSync(outputFolder)) {
-          fs.mkdirSync(outputFolder, { recursive: true });
-        }
-        mergeFiles(`${workFolder}settingsMetaData.json`, `${overwriteFolder}settingsMetaData.json`, `${outputFolder}settingsMetaData-${version}.json`);
-        mergeFiles(
-          `${workFolder}mediaPlayerFunctionsMetaData.json`,
-          `${overwriteFolder}mediaPlayerFunctionsMetaData.json`,
-          `${outputFolder}mediaPlayerFunctionsMetaData-${version}.json`,
-        );
+      generateAPIMetaData(workingFolder, version);
+      generateSettingsMetaData(workingFolder, version);
+      if (!fs.existsSync(outputFolder)) {
+        fs.mkdirSync(outputFolder, { recursive: true });
       }
-    });
+      mergeFiles(`${workFolder}settingsMetaData.json`, `${overwriteFolder}settingsMetaData.json`, `${outputFolder}settingsMetaData-${version}.json`);
+      mergeFiles(
+        `${workFolder}mediaPlayerFunctionsMetaData.json`,
+        `${overwriteFolder}mediaPlayerFunctionsMetaData.json`,
+        `${outputFolder}mediaPlayerFunctionsMetaData-${version}.json`,
+      );
+    }
+  });
+
+  fs.writeFileSync(`${outputFolder}/versions.json`, JSON.stringify(versions));
 }
 
 main();

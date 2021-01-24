@@ -49,7 +49,7 @@ export class DashjsSettingsControl {
     }
   }
   componentWillLoad() {
-    fetch('/static/settingsMetaData-v3.2.0.json')
+    fetch('/static/gen/settingsMetaData-v3.2.0.json')
       .then((response: Response) => response.json())
       .then(response => {
         this.settingsList = response;

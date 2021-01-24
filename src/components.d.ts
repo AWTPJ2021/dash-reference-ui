@@ -27,7 +27,9 @@ export namespace Components {
         "options": [];
     }
     interface DashjsReferenceUi {
+        "selectedVersion": string;
         "url": string;
+        "versions": string[];
     }
     interface DashjsSettingsControl {
         "history": RouterHistory;
@@ -156,7 +158,9 @@ declare namespace LocalJSX {
         "options"?: [];
     }
     interface DashjsReferenceUi {
+        "selectedVersion"?: string;
         "url"?: string;
+        "versions"?: string[];
     }
     interface DashjsSettingsControl {
         "history"?: RouterHistory;
