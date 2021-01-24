@@ -28,7 +28,7 @@ export class DashjsApiControl {
         this.sourceList = response.items;
         console.log('Here is the source: ' + this.sourceList.length);
       });
-    fetch('/static/mediaPlayerFunctionsMetaData.json')
+    fetch('/static/mediaPlayerFunctionsMetaData-v3.2.0.json')
       .then((response: Response) => response.json())
       .then(response => {
         this.functionList = response;

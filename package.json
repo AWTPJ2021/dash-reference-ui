@@ -20,7 +20,8 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "gen-meta": "ts-node -P tsconfig.metadata.json generate-metadata.ts"
   },
   "dependencies": {
     "@ionic/core": "^5.5.2",
@@ -30,15 +31,19 @@
     "chart.js": "^2.9.4",
     "dashjs": "^3.2.0",
     "ionicons": "^5.3.0",
-    "object-path": "^0.11.5",
-    "quicktype-core": "^6.0.69",
-    "typescript-json-schema": "^0.45.1",
-    "typescript-parser": "^2.6.1"
+    "object-path": "^0.11.5"
   },
   "license": "MIT",
   "devDependencies": {
+    "@octokit/graphql": "^4.5.8",
+    "@octokit/rest": "^18.0.14",
     "@types/node": "^14.14.20",
+    "bottleneck": "^2.19.5",
+    "dotenv": "^8.2.0",
     "jsdoc-api": "^6.0.0",
-    "rollup-plugin-node-polyfills": "^0.2.1"
+    "quicktype-core": "^6.0.69",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "typescript-json-schema": "^0.45.1",
+    "typescript-parser": "^2.6.1"
   }
 }
