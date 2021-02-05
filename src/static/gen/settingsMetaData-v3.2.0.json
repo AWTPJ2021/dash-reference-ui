@@ -11,13 +11,34 @@
     "type": "number",
     "description": "Sets up the log level. The levels are cumulative. For example, if you set the log level\nto dashjs.Debug.LOG_LEVEL_WARNING all warnings, errors and fatals will be logged. Possible values.\n\n<ul>\n<li>dashjs.Debug.LOG_LEVEL_NONE<br/>\nNo message is written in the browser console.\n\n<li>dashjs.Debug.LOG_LEVEL_FATAL<br/>\nLog fatal errors. An error is considered fatal when it causes playback to fail completely.\n\n<li>dashjs.Debug.LOG_LEVEL_ERROR<br/>\nLog error messages.\n\n<li>dashjs.Debug.LOG_LEVEL_WARNING<br/>\nLog warning messages.\n\n<li>dashjs.Debug.LOG_LEVEL_INFO<br/>\nLog info messages.\n\n<li>dashjs.Debug.LOG_LEVEL_DEBUG<br/>\nLog debug messages.\n</ul>",
     "required": false,
-    "example": "dashjs.Debug.LOG_LEVEL_WARNING",
+    "example": 0,
     "id": "settings.debug.logLevel",
     "path": [
       "settings",
       "debug"
     ],
     "name": "logLevel",
+    "parent": "debug",
+    "enum-description": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "type": "boolean",
+    "description": "Enable to trigger a Events.LOG event whenever log output is generated. Note this will be dispatched regardless of log level",
+    "required": false,
+    "example": false,
+    "id": "settings.debug.dispatchEvent",
+    "path": [
+      "settings",
+      "debug"
+    ],
+    "name": "dispatchEvent",
     "parent": "debug"
   },
   {
@@ -112,9 +133,22 @@
   },
   {
     "type": "boolean",
-    "description": "Enable calculation of the DVR window for SegmentTimeline manifests based on the entries in <SegmentTimeline>",
+    "description": "Enable reuse of existing MediaSource Sourcebuffers during period transition",
     "required": false,
     "example": true,
+    "id": "settings.streaming.reuseExistingSourceBuffers",
+    "path": [
+      "settings",
+      "streaming"
+    ],
+    "name": "reuseExistingSourceBuffers",
+    "parent": "streaming"
+  },
+  {
+    "type": "boolean",
+    "description": "Enable calculation of the DVR window for SegmentTimeline manifests based on the entries in <SegmentTimeline>",
+    "required": false,
+    "example": false,
     "id": "settings.streaming.calcSegmentAvailabilityRangeFromTimeline",
     "path": [
       "settings",
@@ -343,37 +377,118 @@
   },
   {
     "type": "number",
-    "id": "settings.streaming.liveCatchUpMinDrift",
+    "description": "Stall threshold used in BufferController.js to determine whether a track should still be changed and which buffer range to prune.",
+    "required": false,
+    "example": 0.5,
+    "id": "settings.streaming.stallThreshold",
     "path": [
       "settings",
       "streaming"
     ],
-    "name": "liveCatchUpMinDrift",
+    "name": "stallThreshold",
     "parent": "streaming"
   },
   {
     "type": "number",
-    "id": "settings.streaming.liveCatchUpMaxDrift",
+    "description": "Use this method to set the minimum latency deviation allowed before activating catch-up mechanism. In low latency mode,\nwhen the difference between the measured latency and the target one,\nas an absolute number, is higher than the one sets with this method, then dash.js increases/decreases\nplayback rate until target latency is reached.\n\nLowLatencyMinDrift should be provided in seconds, and it uses values between 0.0 and 0.5.\n\nNote: Catch-up mechanism is only applied when playing low latency live streams.",
+    "required": false,
+    "example": 0.02,
+    "id": "settings.streaming.liveCatchup.minDrift",
     "path": [
       "settings",
-      "streaming"
+      "streaming",
+      "liveCatchup"
     ],
-    "name": "liveCatchUpMaxDrift",
-    "parent": "streaming"
+    "name": "minDrift",
+    "parent": "liveCatchup"
   },
   {
     "type": "number",
-    "id": "settings.streaming.liveCatchUpPlaybackRate",
+    "description": "Use this method to set the maximum latency deviation allowed before dash.js to do a seeking to live position. In low latency mode,\nwhen the difference between the measured latency and the target one,\nas an absolute number, is higher than the one sets with this method, then dash.js does a seek to live edge position minus\nthe target live delay.\n\nLowLatencyMaxDriftBeforeSeeking should be provided in seconds. If 0, then seeking operations won't be used for\nfixing latency deviations.\n\nNote: Catch-up mechanism is only applied when playing low latency live streams.",
+    "required": false,
+    "example": 0,
+    "id": "settings.streaming.liveCatchup.maxDrift",
     "path": [
       "settings",
-      "streaming"
+      "streaming",
+      "liveCatchup"
     ],
-    "name": "liveCatchUpPlaybackRate",
-    "parent": "streaming"
+    "name": "maxDrift",
+    "parent": "liveCatchup"
+  },
+  {
+    "type": "number",
+    "description": "Use this parameter to set the maximum catch up rate, as a percentage, for low latency live streams. In low latency mode,\nwhen measured latency is higher/lower than the target one,\ndash.js increases/decreases playback rate respectively up to (+/-) the percentage defined with this method until target is reached.\n\nValid values for catch up rate are in range 0-0.5 (0-50%). Set it to 0 to turn off live catch up feature.\n\nNote: Catch-up mechanism is only applied when playing low latency live streams.",
+    "required": false,
+    "example": 0.5,
+    "id": "settings.streaming.liveCatchup.playbackRate",
+    "path": [
+      "settings",
+      "streaming",
+      "liveCatchup"
+    ],
+    "name": "playbackRate",
+    "parent": "liveCatchup"
+  },
+  {
+    "type": "number",
+    "description": "Use this parameter to set the maximum threshold for which live catch up is applied. For instance, if this value is set to 8 seconds,\nthen live catchup is only applied if the current live latency is equal or below 8 seconds. The reason behind this parameter is to avoid an increase\nof the playback rate if the user seeks within the DVR window.\n\nIf no value is specified this will be twice the maximum live delay. The maximum live delay is either specified in the manifest as part of a ServiceDescriptor or calculated the following:\nmaximumLiveDelay = targetDelay + liveCatchupMinDrift",
+    "required": false,
+    "example": null,
+    "id": "settings.streaming.liveCatchup.latencyThreshold",
+    "path": [
+      "settings",
+      "streaming",
+      "liveCatchup"
+    ],
+    "name": "latencyThreshold",
+    "parent": "liveCatchup"
+  },
+  {
+    "type": "number",
+    "description": "Use this parameter to specify the minimum buffer which is used for LoL+ based playback rate reduction",
+    "required": false,
+    "example": null,
+    "id": "settings.streaming.liveCatchup.playbackBufferMin",
+    "path": [
+      "settings",
+      "streaming",
+      "liveCatchup"
+    ],
+    "name": "playbackBufferMin",
+    "parent": "liveCatchup"
   },
   {
     "type": "boolean",
-    "description": "Use this parameter to enable the catchup mode for non low-latency streams\n\nNote: Catch-up mechanism is automatically applied when playing low latency live streams.",
+    "description": "Use this parameter to enable the catchup mode for non low-latency streams",
+    "required": false,
+    "example": false,
+    "id": "settings.streaming.liveCatchup.enabled",
+    "path": [
+      "settings",
+      "streaming",
+      "liveCatchup"
+    ],
+    "name": "enabled",
+    "parent": "liveCatchup"
+  },
+  {
+    "type": "string",
+    "description": "Use this parameter to switch between different catchup modes. Options: \"liveCatchupModeDefault\" or \"liveCatchupModeLOLP\"\n\nNote: Catch-up mechanism is automatically applied when playing low latency live streams.",
+    "required": false,
+    "example": "Constants.LIVE_CATCHUP_MODE_DEFAULT",
+    "id": "settings.streaming.liveCatchup.mode",
+    "path": [
+      "settings",
+      "streaming",
+      "liveCatchup"
+    ],
+    "name": "mode",
+    "parent": "liveCatchup"
+  },
+  {
+    "type": "boolean",
+    "description": "Use this parameter to enable the catchup mode for non low-latency streams",
     "required": false,
     "example": false,
     "id": "settings.streaming.lastBitrateCachingInfo.enabled",
@@ -400,7 +515,7 @@
   },
   {
     "type": "boolean",
-    "description": "Use this parameter to enable the catchup mode for non low-latency streams\n\nNote: Catch-up mechanism is automatically applied when playing low latency live streams.",
+    "description": "Use this parameter to enable the catchup mode for non low-latency streams",
     "required": false,
     "example": false,
     "id": "settings.streaming.lastMediaSettingsCachingInfo.enabled",
@@ -759,17 +874,6 @@
   },
   {
     "type": "boolean",
-    "id": "settings.streaming.abr.useBufferOccupancyABR",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
-    "name": "useBufferOccupancyABR",
-    "parent": "abr"
-  },
-  {
-    "type": "boolean",
     "description": "If true, only the download portion will be considered part of the download bitrate\nand latency will be regarded as static. If false, the reciprocal of the whole\ntransfer time will be used.",
     "required": false,
     "example": true,
@@ -979,8 +1083,22 @@
     "parent": "autoSwitchBitrate"
   },
   {
+    "type": "string",
+    "description": "Algorithm to determine the throughput in case the Fetch API is used for low latency streaming. For details please check the samples section and FetchLoader.js",
+    "required": false,
+    "example": "Constants.ABR_FETCH_THROUGHPUT_CALCULATION_DOWNLOADED_DATA",
+    "id": "settings.streaming.abr.fetchThroughputCalculationMode",
+    "path": [
+      "settings",
+      "streaming",
+      "abr"
+    ],
+    "name": "fetchThroughputCalculationMode",
+    "parent": "abr"
+  },
+  {
     "type": "boolean",
-    "description": "Use this parameter to enable the catchup mode for non low-latency streams\n\nNote: Catch-up mechanism is automatically applied when playing low latency live streams.",
+    "description": "Use this parameter to enable the catchup mode for non low-latency streams",
     "required": false,
     "example": false,
     "id": "settings.streaming.cmcd.enabled",
@@ -1017,5 +1135,17 @@
     ],
     "name": "cid",
     "parent": "cmcd"
+  },
+  {
+    "enum-description": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "example": 0,
+    "id": "fun"
   }
 ]
