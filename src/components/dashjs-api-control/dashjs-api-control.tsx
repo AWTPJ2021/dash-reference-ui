@@ -156,7 +156,7 @@ export class DashjsApiControl {
                   Reset
                 </ion-button>
                 <ion-button shape="round" id="load" onClick={() => this.loadMedia()}>
-                  Load
+                  (Re)Load
                 </ion-button>
               </ion-col>
             </ion-row>
