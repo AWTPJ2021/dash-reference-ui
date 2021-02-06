@@ -13,7 +13,7 @@ DELETEMETORELOAD
 log.txt
 *.sublime-project
 *.sublime-workspace
-
+.vs
 .stencil/
 .idea/
 .vscode/
