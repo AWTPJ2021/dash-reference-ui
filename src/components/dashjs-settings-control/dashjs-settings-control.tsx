@@ -219,6 +219,7 @@ export class DashjsSettingsControl {
                         display: 'flex',
                         alignItems: 'center',
                       };
+                      let setting = this.settingsList.filter(s => s.id === key)[0];
                       return (
                         <ion-row>
                           <ion-col size="auto" style={ioncolcss}>
@@ -236,9 +237,9 @@ export class DashjsSettingsControl {
                           </ion-col>
                           <ion-col>
                             <dashjs-settings-control-element
-                              type={this.settingsList.filter(s => s.id === key)[0].type}
-                              name={key}
-                              options={this.settingsList.filter(s => s.id === key)[0].enum || undefined}
+                              type={setting.type}
+                              name={setting.name}
+                              options={setting.enum || undefined}
                               defaultValue={this.selectedSettings.get(key)}
                               onValueChanged={change => {
                                 this.updateSetting(key, change.detail);
