@@ -12,6 +12,7 @@ export class DashjsPlayer {
   private player: MediaPlayerClass;
 
   @Prop() url: string = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
+  @Prop() version: string = undefined;
 
   @State() autoPlay: boolean;
   @State() streamInterval: any;
@@ -70,7 +71,6 @@ export class DashjsPlayer {
   }
 
   componentDidLoad() {
-    console.log(this.element);
     this.player = MediaPlayer().create();
     this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
     // this.isPaused = this.player.isPaused();

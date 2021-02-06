@@ -9,6 +9,7 @@ import { DashFunction, Setting, Tree, Type } from "./types/types";
 import { RouterHistory } from "@stencil/router";
 export namespace Components {
     interface DashjsApiControl {
+        "version": string;
     }
     interface DashjsApiControlElement {
         "name": string;
@@ -22,6 +23,7 @@ export namespace Components {
     interface DashjsPlayer {
         "streamUrl": string;
         "url": string;
+        "version": string;
     }
     interface DashjsPopoverSelect {
         "options": [];
@@ -34,6 +36,7 @@ export namespace Components {
     interface DashjsSettingsControl {
         "history": RouterHistory;
         "resetSettings": () => Promise<void>;
+        "version": string;
     }
     interface DashjsSettingsControlElement {
         "defaultValue": any;
@@ -151,6 +154,7 @@ declare global {
 declare namespace LocalJSX {
     interface DashjsApiControl {
         "onPlayerEvent"?: (event: CustomEvent<String>) => void;
+        "version"?: string;
     }
     interface DashjsApiControlElement {
         "name"?: string;
@@ -166,6 +170,7 @@ declare namespace LocalJSX {
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
         "streamUrl"?: string;
         "url"?: string;
+        "version"?: string;
     }
     interface DashjsPopoverSelect {
         "options"?: [];
@@ -178,6 +183,7 @@ declare namespace LocalJSX {
     interface DashjsSettingsControl {
         "history"?: RouterHistory;
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
+        "version"?: string;
     }
     interface DashjsSettingsControlElement {
         "defaultValue"?: any;

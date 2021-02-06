@@ -1,4 +1,4 @@
-import { Component, Host, h, State, Event, Element, EventEmitter } from '@stencil/core';
+import { Component, Host, h, State, Event, Element, EventEmitter, Prop } from '@stencil/core';
 import { DashFunction } from '../../types/types';
 import { modalController } from '@ionic/core';
 import { generateFunctionsMapFromList } from '../../utils/utils';
@@ -9,6 +9,8 @@ import { generateFunctionsMapFromList } from '../../utils/utils';
   shadow: false,
 })
 export class DashjsApiControl {
+  @Prop() version: string = undefined;
+
   @Element() private element: HTMLElement;
 
   @State() sourceList: any[] = [];
