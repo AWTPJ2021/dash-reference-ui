@@ -1,6 +1,6 @@
 import { Component, Host, h, State, Event, Element, EventEmitter, Listen } from '@stencil/core';
 import { DashFunction } from '../../types/types';
-import { modalController, popoverController } from '@ionic/core';
+import { modalController, popoverController, toastController } from '@ionic/core';
 import { generateFunctionsMapFromList } from '../../utils/utils';
 
 @Component({
@@ -85,7 +85,8 @@ export class DashjsApiControl {
   @Listen('setStream', { target: 'document' })
   setStreamEventHandler(event) {
     this.mediaUrl = event.detail;
-    console.log(popoverController.dismiss());
+    popoverController.dismiss();
+    this.loadMedia();
   }
 
   removeFunction(id: string) {
@@ -117,9 +118,19 @@ export class DashjsApiControl {
     const popover = await popoverController.create({
       component: 'dashjs-api-link-selector',
       event: ev,
-      translucent: true
+      translucent: true,
+      componentProps: {sourceList : this.sourceList}
     });
     return await popover.present();
+  }
+
+  @Listen('playerResponse', { target: 'document' })
+  async playerResponseHandler(event) {
+    const toast = await toastController.create({
+      message: 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
+      duration: 2000
+    });
+    toast.present();
   }
 
 
@@ -133,14 +144,14 @@ export class DashjsApiControl {
           <ion-grid>
             <ion-row>
               <ion-col size="2">
-              <ion-button onClick={(ev) => this.presentPopover(ev)}>Select Stream <ion-icon name="arrow-dropdown"></ion-icon></ion-button>
+              <ion-button  shape="round" onClick={(ev) => this.presentPopover(ev)} class="fill_width">Select Stream<ion-icon name="arrow-dropdown"></ion-icon></ion-button>
               </ion-col>
-              <ion-col size="6">
+              <ion-col size="8">
                 <ion-item>
                   <ion-input id="stream_url" value={this.mediaUrl}></ion-input>
                 </ion-item>
               </ion-col>
-              <ion-col size="4">
+              <ion-col>
                 <ion-button shape="round" color="dark" onClick={() => this.stopMedia()}>
                   Reset
                 </ion-button>

@@ -20,6 +20,7 @@ export namespace Components {
         "selectedFunctions": Map<string, any>;
     }
     interface DashjsApiLinkSelector {
+        "sourceList": any[];
     }
     interface DashjsPlayer {
         "streamUrl": string;
@@ -160,6 +161,7 @@ declare namespace LocalJSX {
     }
     interface DashjsApiLinkSelector {
         "onSetStream"?: (event: CustomEvent<String>) => void;
+        "sourceList"?: any[];
     }
     interface DashjsPlayer {
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;

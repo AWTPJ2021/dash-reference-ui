@@ -1,4 +1,4 @@
-import { Component, h, State, EventEmitter, Event} from '@stencil/core';
+import { Component, h, EventEmitter, Event, Prop} from '@stencil/core';
 
 @Component({
   tag: 'dashjs-api-link-selector',
@@ -6,22 +6,9 @@ import { Component, h, State, EventEmitter, Event} from '@stencil/core';
   shadow: false,
 })
 
+
 export class PagePopover {
-  @State() sourceList: any[] = [];
-  @State() mediaUrl: string = 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd';
-
-  componentWillLoad() {
-    fetch('/static/sources.json')
-      .then((response: Response) => response.json())
-      .then(response => {
-        this.sourceList = response.items;
-        console.log('Here is the source: ' + this.sourceList.length);
-      });
-  }
-
-  setStreamUrl(url) {
-    this.mediaUrl = url;
-  }
+  @Prop() sourceList : any[];
 
   @Event({
     composed: true,
