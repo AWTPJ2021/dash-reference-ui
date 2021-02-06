@@ -3,10 +3,5 @@
     "enum-description": [0, 1, 2, 3, 4, 5],
     "example": 0,
     "id": "settings.debug.logLevel"
-  },
-  {
-    "enum-description": [0, 1, 2, 3, 4, 5],
-    "example": 0,
-    "id": "fun"
   }
 ]
