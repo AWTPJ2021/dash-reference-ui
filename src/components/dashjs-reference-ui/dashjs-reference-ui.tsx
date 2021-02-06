@@ -33,7 +33,8 @@ export class DashjsReferenceUi {
         </ion-toolbar>
         <dashjs-api-control></dashjs-api-control>
         <dashjs-settings-control onSettingsUpdated={event => console.log(event.detail)}></dashjs-settings-control>
-        <dashjs-player></dashjs-player>
+        {/* <dashjs-settings-control></dashjs-settings-control> */}
+        {/* <dashjs-player></dashjs-player> */}
         <dashjs-statistics></dashjs-statistics>
       </Host>
     );

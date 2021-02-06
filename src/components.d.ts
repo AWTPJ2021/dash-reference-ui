@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DashFunction, Setting, Type } from "./types/types";
+import { DashFunction, Setting, Tree, Type } from "./types/types";
 import { RouterHistory } from "@stencil/router";
 export namespace Components {
     interface DashjsApiControl {
@@ -49,6 +49,12 @@ export namespace Components {
         "audio_data": any;
         "videoInstance": any;
         "video_data": any;
+    }
+    interface DashjsTree {
+        "elements": string[];
+        "renderFunc": (key) => void;
+        "root": boolean;
+        "tree": Tree;
     }
     interface IonAccordion {
         "titleText": string;
@@ -115,6 +121,12 @@ declare global {
         prototype: HTMLDashjsStatisticsElement;
         new (): HTMLDashjsStatisticsElement;
     };
+    interface HTMLDashjsTreeElement extends Components.DashjsTree, HTMLStencilElement {
+    }
+    var HTMLDashjsTreeElement: {
+        prototype: HTMLDashjsTreeElement;
+        new (): HTMLDashjsTreeElement;
+    };
     interface HTMLIonAccordionElement extends Components.IonAccordion, HTMLStencilElement {
     }
     var HTMLIonAccordionElement: {
@@ -132,6 +144,7 @@ declare global {
         "dashjs-settings-control-element": HTMLDashjsSettingsControlElementElement;
         "dashjs-settings-control-modal": HTMLDashjsSettingsControlModalElement;
         "dashjs-statistics": HTMLDashjsStatisticsElement;
+        "dashjs-tree": HTMLDashjsTreeElement;
         "ion-accordion": HTMLIonAccordionElement;
     }
 }
@@ -182,6 +195,12 @@ declare namespace LocalJSX {
         "videoInstance"?: any;
         "video_data"?: any;
     }
+    interface DashjsTree {
+        "elements"?: string[];
+        "renderFunc"?: (key) => void;
+        "root"?: boolean;
+        "tree"?: Tree;
+    }
     interface IonAccordion {
         "titleText"?: string;
     }
@@ -196,6 +215,7 @@ declare namespace LocalJSX {
         "dashjs-settings-control-element": DashjsSettingsControlElement;
         "dashjs-settings-control-modal": DashjsSettingsControlModal;
         "dashjs-statistics": DashjsStatistics;
+        "dashjs-tree": DashjsTree;
         "ion-accordion": IonAccordion;
     }
 }
@@ -213,6 +233,7 @@ declare module "@stencil/core" {
             "dashjs-settings-control-element": LocalJSX.DashjsSettingsControlElement & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElementElement>;
             "dashjs-settings-control-modal": LocalJSX.DashjsSettingsControlModal & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlModalElement>;
             "dashjs-statistics": LocalJSX.DashjsStatistics & JSXBase.HTMLAttributes<HTMLDashjsStatisticsElement>;
+            "dashjs-tree": LocalJSX.DashjsTree & JSXBase.HTMLAttributes<HTMLDashjsTreeElement>;
             "ion-accordion": LocalJSX.IonAccordion & JSXBase.HTMLAttributes<HTMLIonAccordionElement>;
         }
     }
