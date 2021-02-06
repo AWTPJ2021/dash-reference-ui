@@ -39,8 +39,22 @@ export class DashjsPlayer {
         break;
       case 'function':
         var returnValue = this.player[event.detail.name](event.detail.param);
-        alert('The following function was called: ' + event.detail.name + '(' + event.detail.param + '). \nReturn:\n' + returnValue);
+        var toSend = {
+          "event": event.detail.name,
+          "return": returnValue
+        }
+        this.playerResponseHandler(toSend);
     }
+  }
+
+  @Event({
+    composed: true,
+    bubbles: true,
+  })
+  playerResponse: EventEmitter<any>;
+
+  playerResponseHandler(todo: any) {
+    this.playerResponse.emit(todo);
   }
 
   @Listen('settingsUpdated', { target: 'document' })
