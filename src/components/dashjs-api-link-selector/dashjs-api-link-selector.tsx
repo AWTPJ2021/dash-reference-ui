@@ -1,4 +1,3 @@
-import { dismiss } from '@ionic/core/dist/types/utils/overlays';
 import { Component, h, State, EventEmitter, Event} from '@stencil/core';
 
 @Component({
