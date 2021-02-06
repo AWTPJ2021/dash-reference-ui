@@ -85,7 +85,7 @@ export class DashjsApiControl {
   @Listen('setStream', { target: 'document' })
   setStreamEventHandler(event) {
     this.mediaUrl = event.detail;
-    popoverController.dismiss();
+    console.log(popoverController.dismiss());
   }
 
   removeFunction(id: string) {
