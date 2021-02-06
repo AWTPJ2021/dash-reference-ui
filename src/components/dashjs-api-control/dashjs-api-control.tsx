@@ -1,6 +1,6 @@
-import { Component, Host, h, State, Event, Element, EventEmitter } from '@stencil/core';
+import { Component, Host, h, State, Event, Element, EventEmitter, Listen } from '@stencil/core';
 import { DashFunction } from '../../types/types';
-import { modalController } from '@ionic/core';
+import { modalController, popoverController } from '@ionic/core';
 import { generateFunctionsMapFromList } from '../../utils/utils';
 
 @Component({
@@ -8,6 +8,7 @@ import { generateFunctionsMapFromList } from '../../utils/utils';
   styleUrl: 'dashjs-api-control.css',
   shadow: false,
 })
+
 export class DashjsApiControl {
   @Element() private element: HTMLElement;
 
@@ -81,8 +82,10 @@ export class DashjsApiControl {
     this.playerEventHandler({ type: 'load', url: this.mediaUrl, autoPlay: this.element.querySelector('#autol').getAttribute('aria-checked') });
   }
 
-  setStreamUrl(url) {
-    this.mediaUrl = url;
+  @Listen('setStream', { target: 'document' })
+  setStreamEventHandler(event) {
+    this.mediaUrl = event.detail;
+    popoverController.dismiss();
   }
 
   removeFunction(id: string) {
@@ -110,6 +113,16 @@ export class DashjsApiControl {
     this.playerEvent.emit(todo);
   }
 
+  async presentPopover(ev: any) {
+    const popover = await popoverController.create({
+      component: 'dashjs-api-link-selector',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
+
+
   render() {
     return (
       <Host>
@@ -120,12 +133,7 @@ export class DashjsApiControl {
           <ion-grid>
             <ion-row>
               <ion-col size="2">
-                <ion-item class="margin-fix">
-                  <ion-label>Stream</ion-label>
-                  <ion-select interface="action-sheet" selectedText=" " onIonChange={ev => this.setStreamUrl(ev.detail.value)}>
-                    {this.sourceList.map(item => item.submenu.map(ev => <ion-select-option value={ev.url}>{item.name + ': ' + ev.name}</ion-select-option>))}
-                  </ion-select>
-                </ion-item>
+              <ion-button onClick={(ev) => this.presentPopover(ev)}>Select Stream <ion-icon name="arrow-dropdown"></ion-icon></ion-button>
               </ion-col>
               <ion-col size="6">
                 <ion-item>
