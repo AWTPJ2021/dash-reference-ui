@@ -23,6 +23,7 @@ export class DashjsAPIControlElement {
       return (
         <ion-item>
           <ion-button shape="round" onClick={ () => this.valueChanged.emit("")}>{this.name}</ion-button>
+          <ion-label id={this.name}></ion-label>
         </ion-item>
       );
     } else if (this.paramDesc[0].type.names[0] == Type.string) {
