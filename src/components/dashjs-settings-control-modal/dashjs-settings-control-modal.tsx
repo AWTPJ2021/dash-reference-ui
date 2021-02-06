@@ -18,6 +18,7 @@ export class DashjsSettingsControlModal {
     console.log(newSettings);
   }
   @State() viewedSettings: Setting[] = [];
+  @State() triggerRerender = 0;
 
   filterSettings(str: string) {
     if (str === '') {
@@ -52,32 +53,24 @@ export class DashjsSettingsControlModal {
                 renderFuncTitle={(title, path) => {
                   return <h3>{path.join(' >> ')}</h3>;
                 }}
+                renderFuncSuffix={() => undefined}
                 renderFunc={key => {
                   let setting = this.viewedSettings.filter(s => s.id === key)[0];
-                  return (
-                    // <ion-row>
-                    //   <ion-col>
-                    //     {item.path.map(p => (
-                    //       <span style={{ fontSize: '12px' }}>
-                    //         {p} {'> '}
-                    //       </span>
-                    //     ))}
-                    //   </ion-col>
-                    // </ion-row>
-                    <ion-row>
-                      <ion-col size="1">
-                        <ion-checkbox
-                          checked={this.selectedSettings.get(key) != undefined}
-                          onIonChange={() => {
-                            /* TODO: Document settings.js with better example values*/
-                            this.selectedSettings.set(key, this.selectedSettings.get(key) === undefined ? (setting.example == undefined ? '' : setting.example) : undefined);
-                          }}
-                        ></ion-checkbox>
+                  return [
+                    <ion-row
+                      onClick={() => {
+                        this.selectedSettings.set(key, this.selectedSettings.get(key) === undefined ? (setting.example == undefined ? '' : setting.example) : undefined);
+                        this.triggerRerender++;
+                      }}
+                    >
+                      <ion-col size="auto">
+                        <ion-checkbox checked={this.selectedSettings.get(key) != undefined}></ion-checkbox>
                       </ion-col>
                       <ion-col>{setting.name}</ion-col>
                       <ion-col innerHTML={setting.description}></ion-col>
-                    </ion-row>
-                  );
+                    </ion-row>,
+                    <ion-item-divider></ion-item-divider>,
+                  ];
                 }}
               ></dashjs-tree>
             </ion-grid>

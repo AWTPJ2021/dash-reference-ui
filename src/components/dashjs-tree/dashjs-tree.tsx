@@ -21,6 +21,7 @@ export class DashjsTree {
 
   @Prop() root: boolean = false;
   @Prop() path: string[] = [];
+  @State() pathInitialized: boolean = false;
   @State() elementsOnRoot: string[];
   componentWillRender() {
     if (!this.root) {
@@ -30,7 +31,10 @@ export class DashjsTree {
       this.elementsOnRoot = this.elements;
     }
     debugger;
-    this.path = [...this.path.concat(this.tree.name)];
+    if (!this.pathInitialized) {
+      this.path = [...this.path.concat(this.tree.name)];
+      this.pathInitialized = true;
+    }
   }
 
   render() {
