@@ -24,35 +24,19 @@ export class DashjsReferenceUi {
   }
   componentDidLoad() {
     // Prefetch Componentes that are needed immendiatley on user interaction later on
-    const componentsConfig = [
-      {
-        tag: 'dashjs-popover-select',
-      },
-      {
-        tag: 'ion-popover',
-      },
-      {
-        tag: 'ion-backdrop',
-      },
-      {
-        tag: 'ion-modal',
-      },
-      {
-        tag: 'dashjs-settings-control-modal',
-      },
-      {
-        tag: 'ion-searchbar',
-      },
-      {
-        tag: 'ion-content',
-      },
-    ];
+    const prefetchedComponents = ['dashjs-popover-select', 'ion-popover', 'ion-backdrop', 'ion-modal', 'dashjs-settings-control-modal', 'ion-searchbar', 'ion-content'];
 
     if (Build.isBrowser) {
       // only pre-fetch if it's a real browser
       const prefetch: StencilComponentPrefetch = this.prefetcher.querySelector('stencil-component-prefetch') as any;
 
-      prefetch.setComponents(componentsConfig);
+      prefetch.setComponents(
+        prefetchedComponents.map(comp => {
+          return {
+            tag: comp,
+          };
+        }),
+      );
     }
   }
   render() {

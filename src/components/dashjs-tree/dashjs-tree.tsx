@@ -30,7 +30,6 @@ export class DashjsTree {
     } else {
       this.elementsOnRoot = this.elements;
     }
-    debugger;
     if (!this.pathInitialized) {
       this.path = [...this.path.concat(this.tree.name)];
       this.pathInitialized = true;
