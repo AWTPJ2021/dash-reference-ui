@@ -83,15 +83,9 @@ export class DashjsPlayer {
 
   componentDidLoad() {
     this.loadOrUpdateDashJsScript();
-    // this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
-    // this.isPaused = this.player.isPaused();
-    //let url = this.currentUrl;
-    //let player = MediaPlayer().create();
-    //player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), url, true);
   }
 
   private loadOrUpdateDashJsScript() {
-    debugger;
     if (this.version == undefined) {
       return;
     }

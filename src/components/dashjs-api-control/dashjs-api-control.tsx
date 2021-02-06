@@ -1,4 +1,4 @@
-import { Component, Host, h, State, Event, Element, EventEmitter, Prop } from '@stencil/core';
+import { Component, Host, h, State, Event, Element, EventEmitter, Prop, Watch } from '@stencil/core';
 import { DashFunction } from '../../types/types';
 import { modalController } from '@ionic/core';
 import { generateFunctionsMapFromList } from '../../utils/utils';
@@ -10,6 +10,10 @@ import { generateFunctionsMapFromList } from '../../utils/utils';
 })
 export class DashjsApiControl {
   @Prop() version: string = undefined;
+  @Watch('version')
+  watchHandler() {
+    this.loadSettingsMetaData();
+  }
 
   @Element() private element: HTMLElement;
 
@@ -30,7 +34,13 @@ export class DashjsApiControl {
         this.sourceList = response.items;
         console.log('Here is the source: ' + this.sourceList.length);
       });
-    fetch('/static/gen/mediaPlayerFunctionsMetaData-v3.2.0.json')
+    if (this.version) {
+      this.loadSettingsMetaData();
+    }
+  }
+
+  private loadSettingsMetaData() {
+    fetch(`/static/gen/mediaPlayerFunctionsMetaData-${this.version}.json`)
       .then((response: Response) => response.json())
       .then(response => {
         this.functionList = response;
