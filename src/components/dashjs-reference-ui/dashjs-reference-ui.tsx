@@ -1,4 +1,5 @@
-import { Component, Host, h, Prop } from '@stencil/core';
+import { StencilComponentPrefetch } from '@beck24/stencil-component-prefetch/dist/types/components/stencil-component-prefetch/stencil-component-prefetch';
+import { Component, Host, h, Prop, Element, Build } from '@stencil/core';
 
 @Component({
   tag: 'dashjs-reference-ui',
@@ -10,8 +11,8 @@ export class DashjsReferenceUi {
   @Prop() versions: string[] = [];
   @Prop() selectedVersion: string = undefined;
   @Prop() type: string[] = ['min', 'debug'];
-
   @Prop() selectedType: string = 'min';
+  @Element() prefetcher: HTMLElement;
 
   componentWillLoad() {
     fetch('/static/gen/versions.json')
@@ -21,9 +22,43 @@ export class DashjsReferenceUi {
         this.selectedVersion = response[0];
       });
   }
+  componentDidLoad() {
+    // Prefetch Componentes that are needed immendiatley on user interaction later on
+    const componentsConfig = [
+      {
+        tag: 'dashjs-popover-select',
+      },
+      {
+        tag: 'ion-popover',
+      },
+      {
+        tag: 'ion-backdrop',
+      },
+      {
+        tag: 'ion-modal',
+      },
+      {
+        tag: 'dashjs-settings-control-modal',
+      },
+      {
+        tag: 'ion-searchbar',
+      },
+      {
+        tag: 'ion-content',
+      },
+    ];
+
+    if (Build.isBrowser) {
+      // only pre-fetch if it's a real browser
+      const prefetch: StencilComponentPrefetch = this.prefetcher.querySelector('stencil-component-prefetch') as any;
+
+      prefetch.setComponents(componentsConfig);
+    }
+  }
   render() {
     return (
       <Host>
+        <stencil-component-prefetch />
         <ion-toolbar>
           <ion-title>DashJS Reference UI</ion-title>
           <ion-buttons slot="end">
