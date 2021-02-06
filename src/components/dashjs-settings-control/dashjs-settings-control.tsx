@@ -53,6 +53,7 @@ export class DashjsSettingsControl {
       enterAnimation: undefined,
       componentProps: {
         settingsList: this.settingsList,
+        settingsTree: this.settingsTree,
         selectedSettings: new Map(this.selectedSettings),
       },
     });

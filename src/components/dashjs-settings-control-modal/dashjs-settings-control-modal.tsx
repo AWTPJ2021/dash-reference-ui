@@ -1,6 +1,6 @@
 import { modalController } from '@ionic/core';
 import { Component, h, Prop, State, Watch } from '@stencil/core';
-import { Setting } from '../../types/types';
+import { Setting, Tree } from '../../types/types';
 
 @Component({
   tag: 'dashjs-settings-control-modal',
@@ -12,6 +12,7 @@ export class DashjsSettingsControlModal {
     this.viewedSettings = this.settingsList;
   }
   @Prop() settingsList: Setting[] = [];
+  @Prop() settingsTree: Tree = undefined;
   @Prop() selectedSettings: Map<string, any> = new Map();
   @Watch('selectedSettings') test(newSettings: Setting) {
     console.log(newSettings);
@@ -42,34 +43,45 @@ export class DashjsSettingsControlModal {
       ></ion-searchbar>,
       <ion-content>
         <ion-grid>
-          {this.viewedSettings.map(item => (
-            <ion-row>
-              <ion-grid>
-                <ion-row>
-                  <ion-col>
-                    {item.path.map(p => (
-                      <span style={{ fontSize: '12px' }}>
-                        {p} {'> '}
-                      </span>
-                    ))}
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col size="1">
-                    <ion-checkbox
-                      checked={this.selectedSettings.get(item.id) != undefined}
-                      onIonChange={() => {
-                        /* TODO: Document settings.js with better example values*/
-                        this.selectedSettings.set(item.id, this.selectedSettings.get(item.id) === undefined ? (item.example == undefined ? '' : item.example) : undefined);
-                      }}
-                    ></ion-checkbox>
-                  </ion-col>
-                  <ion-col>{item.name}</ion-col>
-                  <ion-col innerHTML={item.description}></ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-row>
-          ))}
+          <ion-row>
+            <ion-grid>
+              <dashjs-tree
+                root={true}
+                tree={this.settingsTree}
+                elements={this.viewedSettings.map(s => s.id)}
+                renderFuncTitle={(title, path) => {
+                  return <h3>{path.join(' >> ')}</h3>;
+                }}
+                renderFunc={key => {
+                  let setting = this.viewedSettings.filter(s => s.id === key)[0];
+                  return (
+                    // <ion-row>
+                    //   <ion-col>
+                    //     {item.path.map(p => (
+                    //       <span style={{ fontSize: '12px' }}>
+                    //         {p} {'> '}
+                    //       </span>
+                    //     ))}
+                    //   </ion-col>
+                    // </ion-row>
+                    <ion-row>
+                      <ion-col size="1">
+                        <ion-checkbox
+                          checked={this.selectedSettings.get(key) != undefined}
+                          onIonChange={() => {
+                            /* TODO: Document settings.js with better example values*/
+                            this.selectedSettings.set(key, this.selectedSettings.get(key) === undefined ? (setting.example == undefined ? '' : setting.example) : undefined);
+                          }}
+                        ></ion-checkbox>
+                      </ion-col>
+                      <ion-col>{setting.name}</ion-col>
+                      <ion-col innerHTML={setting.description}></ion-col>
+                    </ion-row>
+                  );
+                }}
+              ></dashjs-tree>
+            </ion-grid>
+          </ion-row>
         </ion-grid>
       </ion-content>,
       <ion-toolbar>

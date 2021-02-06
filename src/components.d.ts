@@ -50,6 +50,7 @@ export namespace Components {
     interface DashjsSettingsControlModal {
         "selectedSettings": Map<string, any>;
         "settingsList": Setting[];
+        "settingsTree": Tree;
     }
     interface DashjsStatistics {
         "audio_data": any;
@@ -58,7 +59,10 @@ export namespace Components {
     }
     interface DashjsTree {
         "elements": string[];
+        "path": string[];
         "renderFunc": (key) => void;
+        "renderFuncSuffix": () => void;
+        "renderFuncTitle": (title, path) => void;
         "root": boolean;
         "tree": Tree;
     }
@@ -201,6 +205,7 @@ declare namespace LocalJSX {
     interface DashjsSettingsControlModal {
         "selectedSettings"?: Map<string, any>;
         "settingsList"?: Setting[];
+        "settingsTree"?: Tree;
     }
     interface DashjsStatistics {
         "audio_data"?: any;
@@ -209,7 +214,10 @@ declare namespace LocalJSX {
     }
     interface DashjsTree {
         "elements"?: string[];
+        "path"?: string[];
         "renderFunc"?: (key) => void;
+        "renderFuncSuffix"?: () => void;
+        "renderFuncTitle"?: (title, path) => void;
         "root"?: boolean;
         "tree"?: Tree;
     }
