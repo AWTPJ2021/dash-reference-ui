@@ -1,6 +1,6 @@
 import { Component, Host, h, State, Event, Element, EventEmitter, Listen } from '@stencil/core';
 import { DashFunction } from '../../types/types';
-import { modalController, toastController  } from '@ionic/core';
+import { modalController, popoverController, toastController } from '@ionic/core';
 import { generateFunctionsMapFromList } from '../../utils/utils';
 
 @Component({
@@ -8,6 +8,7 @@ import { generateFunctionsMapFromList } from '../../utils/utils';
   styleUrl: 'dashjs-api-control.css',
   shadow: false,
 })
+
 export class DashjsApiControl {
   @Element() private element: HTMLElement;
 
@@ -81,8 +82,11 @@ export class DashjsApiControl {
     this.playerEventHandler({ type: 'load', url: this.mediaUrl, autoPlay: this.element.querySelector('#autol').getAttribute('aria-checked') });
   }
 
-  setStreamUrl(url) {
-    this.mediaUrl = url;
+  @Listen('setStream', { target: 'document' })
+  setStreamEventHandler(event) {
+    this.mediaUrl = event.detail;
+    popoverController.dismiss();
+    this.loadMedia();
   }
 
   removeFunction(id: string) {
@@ -110,10 +114,18 @@ export class DashjsApiControl {
     this.playerEvent.emit(todo);
   }
 
+  async presentPopover(ev: any) {
+    const popover = await popoverController.create({
+      component: 'dashjs-api-link-selector',
+      event: ev,
+      translucent: true,
+      componentProps: {sourceList : this.sourceList}
+    });
+    return await popover.present();
+  }
+
   @Listen('playerResponse', { target: 'document' })
   async playerResponseHandler(event) {
-    console.log(event.detail.return);
-    console.log(JSON.stringify(event.detail.return));
     const toast = await toastController.create({
       message: 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
       duration: 2000
@@ -132,19 +144,14 @@ export class DashjsApiControl {
           <ion-grid>
             <ion-row>
               <ion-col size="2">
-                <ion-item class="margin-fix">
-                  <ion-label>Stream</ion-label>
-                  <ion-select interface="action-sheet" selectedText=" " onIonChange={ev => this.setStreamUrl(ev.detail.value)}>
-                    {this.sourceList.map(item => item.submenu.map(ev => <ion-select-option value={ev.url}>{item.name + ': ' + ev.name}</ion-select-option>))}
-                  </ion-select>
-                </ion-item>
+              <ion-button  shape="round" onClick={(ev) => this.presentPopover(ev)} class="fill_width">Select Stream<ion-icon name="arrow-dropdown"></ion-icon></ion-button>
               </ion-col>
-              <ion-col size="6">
+              <ion-col size="8">
                 <ion-item>
                   <ion-input id="stream_url" value={this.mediaUrl}></ion-input>
                 </ion-item>
               </ion-col>
-              <ion-col size="4">
+              <ion-col>
                 <ion-button shape="round" color="dark" onClick={() => this.stopMedia()}>
                   Reset
                 </ion-button>
