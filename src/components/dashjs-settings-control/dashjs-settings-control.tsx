@@ -38,11 +38,6 @@ export class DashjsSettingsControl {
   searchPopover: any;
   @Element() el: HTMLElement;
 
-  // @Watch('defaultSettings')
-  // updateSettings(newValue, oldValue) {
-  //   // Update the settings
-  // }
-
   @Method()
   async resetSettings() {
     this.selectedSettings = generateSettingsMapFromList(this.settingsList);

@@ -22,6 +22,7 @@ export namespace Components {
     }
     interface DashjsPlayer {
         "streamUrl": string;
+        "type": string;
         "url": string;
         "version": string;
     }
@@ -29,7 +30,9 @@ export namespace Components {
         "options": [];
     }
     interface DashjsReferenceUi {
+        "selectedType": string;
         "selectedVersion": string;
+        "type": string[];
         "url": string;
         "versions": string[];
     }
@@ -169,6 +172,7 @@ declare namespace LocalJSX {
     interface DashjsPlayer {
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
         "streamUrl"?: string;
+        "type"?: string;
         "url"?: string;
         "version"?: string;
     }
@@ -176,7 +180,9 @@ declare namespace LocalJSX {
         "options"?: [];
     }
     interface DashjsReferenceUi {
+        "selectedType"?: string;
         "selectedVersion"?: string;
+        "type"?: string[];
         "url"?: string;
         "versions"?: string[];
     }
