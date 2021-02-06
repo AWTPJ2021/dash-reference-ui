@@ -16,7 +16,7 @@ export class DashjsTree {
   @Prop()
   elements: string[];
   @Prop() renderFunc: (key) => void;
-  @Prop() renderFuncTitle: (title, path) => void;
+  @Prop() renderFuncTitle: (path) => void;
   @Prop() renderFuncSuffix: () => void;
 
   @Prop() root: boolean = false;
@@ -44,7 +44,7 @@ export class DashjsTree {
     // debugger;
     return (
       <Host>
-        {this.root ? undefined : this.renderFuncTitle == undefined ? <h3>{this.tree.name}</h3> : this.renderFuncTitle(this.tree.name, this.path)}
+        {this.root ? undefined : this.renderFuncTitle == undefined ? <h3>{this.tree.name}</h3> : this.renderFuncTitle(this.path)}
         {/* {this.renderFuncTitle(this.tree.name, this.tree.elements)} */}
         {this.tree.elements.filter(el => this.elementsOnRoot.includes(el)).map(key => this.renderFunc(key))}
         {this.tree.child == undefined

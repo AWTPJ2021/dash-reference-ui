@@ -50,7 +50,7 @@ export class DashjsSettingsControlModal {
                 root={true}
                 tree={this.settingsTree}
                 elements={this.viewedSettings.map(s => s.id)}
-                renderFuncTitle={(title, path) => {
+                renderFuncTitle={path => {
                   return <h3>{path.join(' >> ')}</h3>;
                 }}
                 renderFuncSuffix={() => undefined}

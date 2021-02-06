@@ -62,7 +62,7 @@ export namespace Components {
         "path": string[];
         "renderFunc": (key) => void;
         "renderFuncSuffix": () => void;
-        "renderFuncTitle": (title, path) => void;
+        "renderFuncTitle": (path) => void;
         "root": boolean;
         "tree": Tree;
     }
@@ -217,7 +217,7 @@ declare namespace LocalJSX {
         "path"?: string[];
         "renderFunc"?: (key) => void;
         "renderFuncSuffix"?: () => void;
-        "renderFuncTitle"?: (title, path) => void;
+        "renderFuncTitle"?: (path) => void;
         "root"?: boolean;
         "tree"?: Tree;
     }
