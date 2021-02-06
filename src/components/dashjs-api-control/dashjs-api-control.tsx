@@ -1,6 +1,6 @@
-import { Component, Host, h, State, Event, Element, EventEmitter } from '@stencil/core';
+import { Component, Host, h, State, Event, Element, EventEmitter, Listen } from '@stencil/core';
 import { DashFunction } from '../../types/types';
-import { modalController } from '@ionic/core';
+import { modalController, toastController  } from '@ionic/core';
 import { generateFunctionsMapFromList } from '../../utils/utils';
 
 @Component({
@@ -109,6 +109,18 @@ export class DashjsApiControl {
   playerEventHandler(todo: any) {
     this.playerEvent.emit(todo);
   }
+
+  @Listen('playerResponse', { target: 'document' })
+  async playerResponseHandler(event) {
+    console.log(event.detail.return);
+    console.log(JSON.stringify(event.detail.return));
+    const toast = await toastController.create({
+      message: 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
+      duration: 2000
+    });
+    toast.present();
+  }
+
 
   render() {
     return (

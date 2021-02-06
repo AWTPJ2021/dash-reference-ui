@@ -150,6 +150,7 @@ declare namespace LocalJSX {
         "selectedFunctions"?: Map<string, any>;
     }
     interface DashjsPlayer {
+        "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
         "streamUrl"?: string;
         "url"?: string;
