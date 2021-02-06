@@ -1,6 +1,8 @@
 dist/
 www/
 loader/
+build/
+DELETEMETORELOAD
 
 *~
 *.sw[mnpcod]

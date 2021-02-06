@@ -20,7 +20,8 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "gen-meta": "ts-node -P tsconfig.metadata.json generate-metadata.ts"
   },
   "dependencies": {
     "@ionic/core": "^5.5.2",
@@ -39,6 +40,9 @@
   "devDependencies": {
     "@types/node": "^14.14.22",
     "jsdoc-api": "^6.0.0",
-    "rollup-plugin-node-polyfills": "^0.2.1"
+    "quicktype-core": "^6.0.69",
+    "rollup-plugin-node-polyfills": "^0.2.1",
+    "typescript-json-schema": "^0.45.1",
+    "typescript-parser": "^2.6.1"
   }
 }
