@@ -155,7 +155,7 @@ export class DashjsSettingsControl {
       }
       this.searchPopover = await popoverController.create({
         component: 'dashjs-popover-select',
-        cssClass: 'my-custom-class',
+        cssClass: 'settings-search-popover',
         showBackdrop: false,
         event: event,
         keyboardClose: false,

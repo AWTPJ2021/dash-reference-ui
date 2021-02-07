@@ -30,7 +30,7 @@ export namespace Components {
         "version": string;
     }
     interface DashjsPopoverSelect {
-        "options": [];
+        "options": string[];
     }
     interface DashjsReferenceUi {
         "selectedType": string;
@@ -196,7 +196,7 @@ declare namespace LocalJSX {
         "version"?: string;
     }
     interface DashjsPopoverSelect {
-        "options"?: [];
+        "options"?: string[];
     }
     interface DashjsReferenceUi {
         "selectedType"?: string;
