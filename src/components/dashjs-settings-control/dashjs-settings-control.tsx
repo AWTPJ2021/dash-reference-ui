@@ -194,11 +194,25 @@ export class DashjsSettingsControl {
     }
   }
 
+  async showSettingsJSON() {
+    const modal = await modalController.create({
+      component: 'dashjs-generic-modal',
+      componentProps: {
+        content: <code>{JSON.stringify(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings), null, 2)}</code>,
+        textTitle: 'Settings JSON',
+      },
+    });
+    await modal.present();
+  }
+
   render() {
     return (
       <Host>
         <ion-accordion titleText="Settings">
           <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
+            <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showSettingsJSON()}>
+              Copy Settings
+            </ion-button>
             {this.autoUpdate ? undefined : <ion-button onClick={() => this.settingsUpdate(true)}>Update</ion-button>}
             Auto Update <ion-toggle id="autol" checked={this.autoUpdate} onIonChange={change => (this.autoUpdate = change.detail.checked)}></ion-toggle>
           </div>
@@ -248,12 +262,7 @@ export class DashjsSettingsControl {
                             ></dashjs-settings-control-element>
                           </ion-col>
                           <ion-col size="auto" style={ioncolcss}>
-                            <ion-icon
-                              name="help-circle-outline"
-                              onClick={event => {
-                                event.stopPropagation();
-                              }}
-                            ></ion-icon>
+                            <dashjs-help-button helperText={setting.description} titleText={'Help - ' + setting.name}></dashjs-help-button>
                           </ion-col>
                         </ion-row>
                       );
