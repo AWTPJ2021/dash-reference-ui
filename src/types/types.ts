@@ -19,20 +19,20 @@ export interface Setting {
 
 export interface DashFunction {
   name: string;
-  description : string;
-  parameters : DashPara[];
-  paramExplanation : DashParaExplaination[];
+  description: string;
+  parameters: DashPara[];
+  paramExplanation: DashParaExplaination[];
 }
 
 export interface DashPara {
   name: string;
-  description : string;
-  type: Type; 
+  description: string;
+  type: Type;
 }
 
 export interface DashParaExplaination {
   name: string;
-  description : string;
+  description: string;
 }
 
 export enum Type {
@@ -43,5 +43,11 @@ export enum Type {
   group = 'group',
   HTML5MediaElement = 'HTMLElement',
   function = '(e: any) => void',
-  value = 'value'
+  value = 'value',
+}
+
+export interface Tree {
+  name: string;
+  child?: { [name: string]: Tree };
+  elements: string[];
 }

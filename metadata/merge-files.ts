@@ -12,6 +12,7 @@ export async function mergeFiles(pathToFileA: string, pathToFileB: string, out: 
       fileB.forEach(elOfB => {
         let found = fileA.find(elOfA => elOfA.id === elOfB.id);
         if (!found) {
+          // TODO: Should check if the element is correct!
           merge.push(elOfB);
         }
       });

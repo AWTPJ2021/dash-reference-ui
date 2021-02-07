@@ -3,6 +3,7 @@ www/
 loader/
 build/
 DELETEMETORELOAD
+**/static/gen/
 
 *~
 *.sw[mnpcod]

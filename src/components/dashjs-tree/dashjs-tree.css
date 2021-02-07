@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+ion-item-divider {
+  min-height: auto;
+  height: 0;
+  margin-bottom: 5px;
+}

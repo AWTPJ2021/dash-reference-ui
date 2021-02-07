@@ -24,6 +24,7 @@
     "gen-meta": "ts-node -P tsconfig.metadata.json generate-metadata.ts"
   },
   "dependencies": {
+    "@beck24/stencil-component-prefetch": "^1.0.1",
     "@ionic/core": "^5.5.2",
     "@stencil/core": "^2.0.1",
     "@stencil/router": "^1.0.1",

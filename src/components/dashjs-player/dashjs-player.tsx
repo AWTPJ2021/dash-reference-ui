@@ -1,5 +1,6 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
-import { MediaPlayer, MediaPlayerClass } from 'dashjs';
+import { MediaPlayerClass } from 'dashjs';
+declare var dashjs: any;
 
 @Component({
   tag: 'dashjs-player',
@@ -12,6 +13,21 @@ export class DashjsPlayer {
   private player: MediaPlayerClass;
 
   @Prop() url: string = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
+  @Watch('url')
+  protected watchHandlerUrl(newUrl: string): void {
+    console.log('Changed value: ' + newUrl);
+    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), newUrl, this.autoPlay);
+  }
+  @Prop() version: string = undefined;
+  @Watch('version')
+  protected watchHandlerVersion() {
+    this.loadOrUpdateDashJsScript();
+  }
+  @Prop() type: string = undefined;
+  @Watch('type')
+  protected watchHandlerType() {
+    this.loadOrUpdateDashJsScript();
+  }
 
   @State() autoPlay: boolean;
   @State() streamInterval: any;
@@ -21,8 +37,10 @@ export class DashjsPlayer {
     switch (event.detail.type) {
       case 'load':
         console.log('Re-initializing the player:\n' + JSON.stringify(event.detail));
-        this.player.reset();
-        this.player = MediaPlayer().create();
+        if (this.player) {
+          this.player.reset();
+        }
+        this.player = dashjs.MediaPlayer().create();
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
         this.streamInterval = setInterval(() => {
           this.streamMetricsEventHandler(this.player);
@@ -67,12 +85,6 @@ export class DashjsPlayer {
     });
   }
 
-  @Watch('url')
-  protected url_watcher(newUrl: string): void {
-    console.log('Changed value: ' + newUrl);
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), newUrl, this.autoPlay);
-  }
-
   @Prop() streamUrl: string;
   @State() currentUrl = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
   // @State() isPaused: boolean;
@@ -84,13 +96,27 @@ export class DashjsPlayer {
   }
 
   componentDidLoad() {
-    console.log(this.element);
-    this.player = MediaPlayer().create();
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
-    // this.isPaused = this.player.isPaused();
-    //let url = this.currentUrl;
-    //let player = MediaPlayer().create();
-    //player.initialize(this.element.shadowRoot.querySelector('#myMainVideoPlayer'), url, true);
+    this.loadOrUpdateDashJsScript();
+  }
+
+  private loadOrUpdateDashJsScript() {
+    if (this.version == undefined) {
+      return;
+    }
+    if (this.player) {
+      this.player.reset();
+    }
+    const id = 'dashjssource';
+    var previousScript = document.getElementById(id);
+    if (previousScript) {
+      previousScript.remove();
+    }
+    var script = document.createElement('script');
+    script.id = id;
+    script.onload = () => {};
+    script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
+
+    document.head.appendChild(script);
   }
 
   componentWillLoad() {

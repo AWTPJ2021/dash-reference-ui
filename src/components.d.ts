@@ -5,10 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DashFunction, Setting, Type } from "./types/types";
+import { DashFunction, Setting, Tree, Type } from "./types/types";
 import { RouterHistory } from "@stencil/router";
 export namespace Components {
     interface DashjsApiControl {
+        "version": string;
     }
     interface DashjsApiControlElement {
         "name": string;
@@ -24,19 +25,24 @@ export namespace Components {
     }
     interface DashjsPlayer {
         "streamUrl": string;
+        "type": string;
         "url": string;
+        "version": string;
     }
     interface DashjsPopoverSelect {
         "options": [];
     }
     interface DashjsReferenceUi {
+        "selectedType": string;
         "selectedVersion": string;
+        "type": string[];
         "url": string;
         "versions": string[];
     }
     interface DashjsSettingsControl {
         "history": RouterHistory;
         "resetSettings": () => Promise<void>;
+        "version": string;
     }
     interface DashjsSettingsControlElement {
         "defaultValue": any;
@@ -47,11 +53,21 @@ export namespace Components {
     interface DashjsSettingsControlModal {
         "selectedSettings": Map<string, any>;
         "settingsList": Setting[];
+        "settingsTree": Tree;
     }
     interface DashjsStatistics {
         "audio_data": any;
         "videoInstance": any;
         "video_data": any;
+    }
+    interface DashjsTree {
+        "elements": string[];
+        "path": string[];
+        "renderFunc": (key) => void;
+        "renderFuncSuffix": () => void;
+        "renderFuncTitle": (path) => void;
+        "root": boolean;
+        "tree": Tree;
     }
     interface IonAccordion {
         "titleText": string;
@@ -124,6 +140,12 @@ declare global {
         prototype: HTMLDashjsStatisticsElement;
         new (): HTMLDashjsStatisticsElement;
     };
+    interface HTMLDashjsTreeElement extends Components.DashjsTree, HTMLStencilElement {
+    }
+    var HTMLDashjsTreeElement: {
+        prototype: HTMLDashjsTreeElement;
+        new (): HTMLDashjsTreeElement;
+    };
     interface HTMLIonAccordionElement extends Components.IonAccordion, HTMLStencilElement {
     }
     var HTMLIonAccordionElement: {
@@ -142,12 +164,14 @@ declare global {
         "dashjs-settings-control-element": HTMLDashjsSettingsControlElementElement;
         "dashjs-settings-control-modal": HTMLDashjsSettingsControlModalElement;
         "dashjs-statistics": HTMLDashjsStatisticsElement;
+        "dashjs-tree": HTMLDashjsTreeElement;
         "ion-accordion": HTMLIonAccordionElement;
     }
 }
 declare namespace LocalJSX {
     interface DashjsApiControl {
         "onPlayerEvent"?: (event: CustomEvent<String>) => void;
+        "version"?: string;
     }
     interface DashjsApiControlElement {
         "name"?: string;
@@ -167,19 +191,24 @@ declare namespace LocalJSX {
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
         "streamUrl"?: string;
+        "type"?: string;
         "url"?: string;
+        "version"?: string;
     }
     interface DashjsPopoverSelect {
         "options"?: [];
     }
     interface DashjsReferenceUi {
+        "selectedType"?: string;
         "selectedVersion"?: string;
+        "type"?: string[];
         "url"?: string;
         "versions"?: string[];
     }
     interface DashjsSettingsControl {
         "history"?: RouterHistory;
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
+        "version"?: string;
     }
     interface DashjsSettingsControlElement {
         "defaultValue"?: any;
@@ -191,11 +220,21 @@ declare namespace LocalJSX {
     interface DashjsSettingsControlModal {
         "selectedSettings"?: Map<string, any>;
         "settingsList"?: Setting[];
+        "settingsTree"?: Tree;
     }
     interface DashjsStatistics {
         "audio_data"?: any;
         "videoInstance"?: any;
         "video_data"?: any;
+    }
+    interface DashjsTree {
+        "elements"?: string[];
+        "path"?: string[];
+        "renderFunc"?: (key) => void;
+        "renderFuncSuffix"?: () => void;
+        "renderFuncTitle"?: (path) => void;
+        "root"?: boolean;
+        "tree"?: Tree;
     }
     interface IonAccordion {
         "titleText"?: string;
@@ -212,6 +251,7 @@ declare namespace LocalJSX {
         "dashjs-settings-control-element": DashjsSettingsControlElement;
         "dashjs-settings-control-modal": DashjsSettingsControlModal;
         "dashjs-statistics": DashjsStatistics;
+        "dashjs-tree": DashjsTree;
         "ion-accordion": IonAccordion;
     }
 }
@@ -230,6 +270,7 @@ declare module "@stencil/core" {
             "dashjs-settings-control-element": LocalJSX.DashjsSettingsControlElement & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElementElement>;
             "dashjs-settings-control-modal": LocalJSX.DashjsSettingsControlModal & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlModalElement>;
             "dashjs-statistics": LocalJSX.DashjsStatistics & JSXBase.HTMLAttributes<HTMLDashjsStatisticsElement>;
+            "dashjs-tree": LocalJSX.DashjsTree & JSXBase.HTMLAttributes<HTMLDashjsTreeElement>;
             "ion-accordion": LocalJSX.IonAccordion & JSXBase.HTMLAttributes<HTMLIonAccordionElement>;
         }
     }

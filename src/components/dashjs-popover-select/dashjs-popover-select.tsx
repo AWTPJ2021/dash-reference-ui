@@ -17,6 +17,7 @@ export class DashjsPopoverSelect {
             <ion-label>{el}</ion-label>
           </ion-item>
         ))}
+        {this.options.length == 0 ? <div>No Results</div> : undefined}
       </ion-list>,
     ];
   }

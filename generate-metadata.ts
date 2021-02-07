@@ -14,7 +14,7 @@ const outputFolder = './src/static/gen/';
 /**
  * Switch on or off for generation of all files or only the current version
  */
-let onlyFirst = true;
+let onlyFirst = process.env.ONLY_FIRST === undefined ? true : process.env.ONLY_FIRST == '1';
 
 let first = true;
 
