@@ -8,7 +8,6 @@ import { generateFunctionsMapFromList } from '../../utils/utils';
   styleUrl: 'dashjs-api-control.css',
   shadow: false,
 })
-
 export class DashjsApiControl {
   @Prop() version: string = undefined;
   @Watch('version')
@@ -131,7 +130,7 @@ export class DashjsApiControl {
       component: 'dashjs-api-link-selector',
       event: ev,
       translucent: true,
-      componentProps: {sourceList : this.sourceList}
+      componentProps: { sourceList: this.sourceList },
     });
     return await popover.present();
   }
@@ -140,11 +139,34 @@ export class DashjsApiControl {
   async playerResponseHandler(event) {
     const toast = await toastController.create({
       message: 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
 
+  async showMPDInfo() {
+    fetch(this.mediaUrl).then(async response => {
+      const modal = await modalController.create({
+        component: 'dashjs-generic-modal',
+        componentProps: {
+          content: (
+            <div>
+              <code>{await response.text()}</code>
+            </div>
+          ),
+          textTitle: [
+            <ion-title>Settings JSON</ion-title>,
+            <ion-buttons slot="secondary">
+              <ion-button shape="round" fill="outline" color="dark" href={this.mediaUrl} target="_blank" rel="noopener noreferrer">
+                Download
+              </ion-button>
+            </ion-buttons>,
+          ],
+        },
+      });
+      await modal.present();
+    });
+  }
 
   render() {
     return (
@@ -156,7 +178,9 @@ export class DashjsApiControl {
           <ion-grid>
             <ion-row>
               <ion-col size="2">
-              <ion-button  shape="round" onClick={(ev) => this.presentPopover(ev)} class="fill_width">Select Stream<ion-icon name="arrow-dropdown"></ion-icon></ion-button>
+                <ion-button shape="round" onClick={ev => this.presentPopover(ev)} class="fill_width">
+                  Select Stream<ion-icon name="arrow-dropdown"></ion-icon>
+                </ion-button>
               </ion-col>
               <ion-col size="8">
                 <ion-item>
@@ -164,6 +188,9 @@ export class DashjsApiControl {
                 </ion-item>
               </ion-col>
               <ion-col>
+                <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showMPDInfo()}>
+                  Info
+                </ion-button>
                 <ion-button shape="round" color="dark" onClick={() => this.stopMedia()}>
                   Reset
                 </ion-button>

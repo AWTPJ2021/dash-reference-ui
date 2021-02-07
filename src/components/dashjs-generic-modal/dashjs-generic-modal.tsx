@@ -12,9 +12,7 @@ export class DashjsGenericModal {
     return (
       <Host>
         <ion-header translucent>
-          <ion-toolbar>
-            <ion-title>{this.textTitle}</ion-title>
-          </ion-toolbar>
+          <ion-toolbar>{typeof this.textTitle === 'string' ? <ion-title>{this.textTitle}</ion-title> : this.textTitle}</ion-toolbar>
         </ion-header>
         <ion-content fullscreen>
           <ion-grid>{this.content}</ion-grid>

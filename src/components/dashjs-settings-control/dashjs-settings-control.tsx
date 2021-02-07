@@ -198,7 +198,11 @@ export class DashjsSettingsControl {
     const modal = await modalController.create({
       component: 'dashjs-generic-modal',
       componentProps: {
-        content: <code>{JSON.stringify(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings), null, 2)}</code>,
+        content: (
+          <pre>
+            <code>{JSON.stringify(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings), null, 2)}</code>
+          </pre>
+        ),
         textTitle: 'Settings JSON',
       },
     });
