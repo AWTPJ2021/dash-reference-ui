@@ -25,10 +25,10 @@ export class DashjsStatistics {
   audio_data: any;
 
   @State()
-  videoDisable: string = 'Disable';
+  videoDisable: boolean = false;
 
   @State()
-  audioDisable: string = 'Disable';
+  audioDisable: boolean = false;
 
   @State()
   chartInterval: any;
@@ -76,17 +76,16 @@ export class DashjsStatistics {
         toChange.options.scales.yAxes[index].display = checked ? true : false;
       }
     });
-    if ((isVideo && this.videoDisable == 'Disable') || (!isVideo && this.audioDisable == 'Disable')) {
+    if ((isVideo && !this.videoDisable) || (!isVideo && !this.audioDisable)) {
       toChange.data.datasets[0].data.shift();
       toChange.data.datasets[0].data.push(122);
+      toChange.update();
     }
-    toChange.update();
   }
 
   disableChart(isVideo) {
-    if (isVideo) this.videoDisable = this.videoDisable == 'Disable' ? 'Enable' : 'Disable';
-    else this.audioDisable = this.audioDisable == 'Disable' ? 'Enable' : 'Disable';
-
+    if (isVideo) this.videoDisable = this.videoDisable ? false : true;
+    else this.audioDisable = this.audioDisable ? false : true;
     console.log('video: + ' + this.videoDisable);
     console.log('audio: ' + this.audioDisable);
   }
@@ -265,10 +264,7 @@ export class DashjsStatistics {
   protected render() {
     return (
       <Host>
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title class="centered-header">Statistics</ion-card-title>
-          </ion-card-header>
+        <ion-accordion titleText="Statistics">
           <ion-grid>
             <ion-row class="r-border">
               <ion-col size="6">
@@ -297,7 +293,7 @@ export class DashjsStatistics {
             <ion-item-divider></ion-item-divider>
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(true)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable}</ion-button>
+              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable ? 'Disabled' : 'Enabled'}</ion-button>
               <ion-row>
                 <div class="display">
                   <canvas id="video_canvas">a chart</canvas>
@@ -307,7 +303,7 @@ export class DashjsStatistics {
             <ion-item-divider></ion-item-divider>
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(false)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable}</ion-button>
+              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable ? 'Disabled' : 'Enabled'}</ion-button>
               <ion-row>
                 <div class="display">
                   <canvas id="audio_canvas">another chart</canvas>
@@ -315,7 +311,7 @@ export class DashjsStatistics {
               </ion-row>
             </ion-card-content>
           </ion-grid>
-        </ion-card>
+        </ion-accordion>
       </Host>
     );
   }

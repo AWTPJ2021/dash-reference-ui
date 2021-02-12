@@ -1,10 +1,13 @@
 :host {
   display: block;
-  --ion-grid-padding: 0px;
-  --ion-grid-column-padding: 0px;
 }
 
-ion-col {
+.header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+
+  h2 {
+    margin: 0;
+  }
 }

@@ -1,6 +1,9 @@
 dist/
 www/
 loader/
+build/
+DELETEMETORELOAD
+**/static/gen/
 
 *~
 *.sw[mnpcod]
@@ -11,7 +14,7 @@ loader/
 log.txt
 *.sublime-project
 *.sublime-workspace
-
+.vs
 .stencil/
 .idea/
 .vscode/

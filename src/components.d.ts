@@ -5,9 +5,11 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DashFunction, Setting, Type } from "./types/types";
+import { DashFunction, Setting, Tree, Type } from "./types/types";
+import { RouterHistory } from "@stencil/router";
 export namespace Components {
     interface DashjsApiControl {
+        "version": string;
     }
     interface DashjsApiControlElement {
         "name": string;
@@ -18,15 +20,29 @@ export namespace Components {
         "functionList": DashFunction[];
         "selectedFunctions": Map<string, any>;
     }
+    interface DashjsApiLinkSelector {
+        "sourceList": any[];
+    }
     interface DashjsPlayer {
         "streamUrl": string;
+        "type": string;
         "url": string;
+        "version": string;
+    }
+    interface DashjsPopoverSelect {
+        "options": [];
     }
     interface DashjsReferenceUi {
+        "selectedType": string;
+        "selectedVersion": string;
+        "type": string[];
         "url": string;
+        "versions": string[];
     }
     interface DashjsSettingsControl {
+        "history": RouterHistory;
         "resetSettings": () => Promise<void>;
+        "version": string;
     }
     interface DashjsSettingsControlElement {
         "defaultValue": any;
@@ -37,11 +53,24 @@ export namespace Components {
     interface DashjsSettingsControlModal {
         "selectedSettings": Map<string, any>;
         "settingsList": Setting[];
+        "settingsTree": Tree;
     }
     interface DashjsStatistics {
         "audio_data": any;
         "videoInstance": any;
         "video_data": any;
+    }
+    interface DashjsTree {
+        "elements": string[];
+        "path": string[];
+        "renderFunc": (key) => void;
+        "renderFuncSuffix": () => void;
+        "renderFuncTitle": (path) => void;
+        "root": boolean;
+        "tree": Tree;
+    }
+    interface IonAccordion {
+        "titleText": string;
     }
 }
 declare global {
@@ -63,11 +92,23 @@ declare global {
         prototype: HTMLDashjsApiControlModalElement;
         new (): HTMLDashjsApiControlModalElement;
     };
+    interface HTMLDashjsApiLinkSelectorElement extends Components.DashjsApiLinkSelector, HTMLStencilElement {
+    }
+    var HTMLDashjsApiLinkSelectorElement: {
+        prototype: HTMLDashjsApiLinkSelectorElement;
+        new (): HTMLDashjsApiLinkSelectorElement;
+    };
     interface HTMLDashjsPlayerElement extends Components.DashjsPlayer, HTMLStencilElement {
     }
     var HTMLDashjsPlayerElement: {
         prototype: HTMLDashjsPlayerElement;
         new (): HTMLDashjsPlayerElement;
+    };
+    interface HTMLDashjsPopoverSelectElement extends Components.DashjsPopoverSelect, HTMLStencilElement {
+    }
+    var HTMLDashjsPopoverSelectElement: {
+        prototype: HTMLDashjsPopoverSelectElement;
+        new (): HTMLDashjsPopoverSelectElement;
     };
     interface HTMLDashjsReferenceUiElement extends Components.DashjsReferenceUi, HTMLStencilElement {
     }
@@ -99,21 +140,38 @@ declare global {
         prototype: HTMLDashjsStatisticsElement;
         new (): HTMLDashjsStatisticsElement;
     };
+    interface HTMLDashjsTreeElement extends Components.DashjsTree, HTMLStencilElement {
+    }
+    var HTMLDashjsTreeElement: {
+        prototype: HTMLDashjsTreeElement;
+        new (): HTMLDashjsTreeElement;
+    };
+    interface HTMLIonAccordionElement extends Components.IonAccordion, HTMLStencilElement {
+    }
+    var HTMLIonAccordionElement: {
+        prototype: HTMLIonAccordionElement;
+        new (): HTMLIonAccordionElement;
+    };
     interface HTMLElementTagNameMap {
         "dashjs-api-control": HTMLDashjsApiControlElement;
         "dashjs-api-control-element": HTMLDashjsApiControlElementElement;
         "dashjs-api-control-modal": HTMLDashjsApiControlModalElement;
+        "dashjs-api-link-selector": HTMLDashjsApiLinkSelectorElement;
         "dashjs-player": HTMLDashjsPlayerElement;
+        "dashjs-popover-select": HTMLDashjsPopoverSelectElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
         "dashjs-settings-control": HTMLDashjsSettingsControlElement;
         "dashjs-settings-control-element": HTMLDashjsSettingsControlElementElement;
         "dashjs-settings-control-modal": HTMLDashjsSettingsControlModalElement;
         "dashjs-statistics": HTMLDashjsStatisticsElement;
+        "dashjs-tree": HTMLDashjsTreeElement;
+        "ion-accordion": HTMLIonAccordionElement;
     }
 }
 declare namespace LocalJSX {
     interface DashjsApiControl {
         "onPlayerEvent"?: (event: CustomEvent<String>) => void;
+        "version"?: string;
     }
     interface DashjsApiControlElement {
         "name"?: string;
@@ -125,16 +183,32 @@ declare namespace LocalJSX {
         "functionList"?: DashFunction[];
         "selectedFunctions"?: Map<string, any>;
     }
+    interface DashjsApiLinkSelector {
+        "onSetStream"?: (event: CustomEvent<String>) => void;
+        "sourceList"?: any[];
+    }
     interface DashjsPlayer {
+        "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
         "streamUrl"?: string;
+        "type"?: string;
         "url"?: string;
+        "version"?: string;
+    }
+    interface DashjsPopoverSelect {
+        "options"?: [];
     }
     interface DashjsReferenceUi {
+        "selectedType"?: string;
+        "selectedVersion"?: string;
+        "type"?: string[];
         "url"?: string;
+        "versions"?: string[];
     }
     interface DashjsSettingsControl {
+        "history"?: RouterHistory;
         "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
+        "version"?: string;
     }
     interface DashjsSettingsControlElement {
         "defaultValue"?: any;
@@ -146,22 +220,39 @@ declare namespace LocalJSX {
     interface DashjsSettingsControlModal {
         "selectedSettings"?: Map<string, any>;
         "settingsList"?: Setting[];
+        "settingsTree"?: Tree;
     }
     interface DashjsStatistics {
         "audio_data"?: any;
         "videoInstance"?: any;
         "video_data"?: any;
     }
+    interface DashjsTree {
+        "elements"?: string[];
+        "path"?: string[];
+        "renderFunc"?: (key) => void;
+        "renderFuncSuffix"?: () => void;
+        "renderFuncTitle"?: (path) => void;
+        "root"?: boolean;
+        "tree"?: Tree;
+    }
+    interface IonAccordion {
+        "titleText"?: string;
+    }
     interface IntrinsicElements {
         "dashjs-api-control": DashjsApiControl;
         "dashjs-api-control-element": DashjsApiControlElement;
         "dashjs-api-control-modal": DashjsApiControlModal;
+        "dashjs-api-link-selector": DashjsApiLinkSelector;
         "dashjs-player": DashjsPlayer;
+        "dashjs-popover-select": DashjsPopoverSelect;
         "dashjs-reference-ui": DashjsReferenceUi;
         "dashjs-settings-control": DashjsSettingsControl;
         "dashjs-settings-control-element": DashjsSettingsControlElement;
         "dashjs-settings-control-modal": DashjsSettingsControlModal;
         "dashjs-statistics": DashjsStatistics;
+        "dashjs-tree": DashjsTree;
+        "ion-accordion": IonAccordion;
     }
 }
 export { LocalJSX as JSX };
@@ -171,12 +262,16 @@ declare module "@stencil/core" {
             "dashjs-api-control": LocalJSX.DashjsApiControl & JSXBase.HTMLAttributes<HTMLDashjsApiControlElement>;
             "dashjs-api-control-element": LocalJSX.DashjsApiControlElement & JSXBase.HTMLAttributes<HTMLDashjsApiControlElementElement>;
             "dashjs-api-control-modal": LocalJSX.DashjsApiControlModal & JSXBase.HTMLAttributes<HTMLDashjsApiControlModalElement>;
+            "dashjs-api-link-selector": LocalJSX.DashjsApiLinkSelector & JSXBase.HTMLAttributes<HTMLDashjsApiLinkSelectorElement>;
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
+            "dashjs-popover-select": LocalJSX.DashjsPopoverSelect & JSXBase.HTMLAttributes<HTMLDashjsPopoverSelectElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;
             "dashjs-settings-control": LocalJSX.DashjsSettingsControl & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElement>;
             "dashjs-settings-control-element": LocalJSX.DashjsSettingsControlElement & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlElementElement>;
             "dashjs-settings-control-modal": LocalJSX.DashjsSettingsControlModal & JSXBase.HTMLAttributes<HTMLDashjsSettingsControlModalElement>;
             "dashjs-statistics": LocalJSX.DashjsStatistics & JSXBase.HTMLAttributes<HTMLDashjsStatisticsElement>;
+            "dashjs-tree": LocalJSX.DashjsTree & JSXBase.HTMLAttributes<HTMLDashjsTreeElement>;
+            "ion-accordion": LocalJSX.IonAccordion & JSXBase.HTMLAttributes<HTMLIonAccordionElement>;
         }
     }
 }

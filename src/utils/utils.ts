@@ -1,4 +1,4 @@
-import { Setting, DashFunction } from '../types/types';
+import { Setting, DashFunction, Tree } from '../types/types';
 import * as objectPath from 'object-path';
 
 export function generateSettingsMapFromList(list: Setting[]) {
@@ -35,4 +35,29 @@ export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map:
     objectPath.set(object, element.name, map.get(element.name));
   });
   return object.functions;
+}
+export function settingsListToTree(list: Setting[]): Tree {
+  // Ignore first element in path as this is the root
+  let root: Tree = {
+    name: list[0].path[0],
+    // child: {},
+    elements: [],
+  };
+  list.forEach(element => {
+    let nav = root;
+    element.path.slice(1).forEach(subPath => {
+      if (root.child == undefined) {
+        root.child = {};
+      }
+      if (root.child[subPath] == undefined) {
+        root.child[subPath] = {
+          name: subPath,
+          elements: [],
+        };
+      }
+      nav = root.child[subPath];
+    });
+    nav.elements.push(element.id);
+  });
+  return root;
 }
