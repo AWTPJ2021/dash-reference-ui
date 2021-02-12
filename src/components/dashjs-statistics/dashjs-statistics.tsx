@@ -47,21 +47,21 @@ export class DashjsStatistics {
 
   @State()
   videoMetricsDataMap = {
-    'v_Buffer Length': [],
-    'v_Bitrate Downloading': [],
-    'v_Dropped Frames': [],
-    'v_Frame Rate': [],
-    'v_Index': [],
-    'v_Max Index': [],
-    'v_latency': [],
+    'Buffer Length': [],
+    'Bitrate Downloading': [],
+    'Dropped Frames': [],
+    'Frame Rate': [],
+    'Index': [],
+    'Max Index': [],
+    'latency': [],
   };
 
   @State()
   audioMetricsDataMap = {
-    'a_Buffer Length': [],
-    'a_Bitrate Downloading': [],
-    'a_Dropped Frames': [],
-    'a_Max Index': [],
+    'Buffer Length': [],
+    'Bitrate Downloading': [],
+    'Dropped Frames': [],
+    'Max Index': [],
   };
 
   @State()
@@ -104,10 +104,9 @@ export class DashjsStatistics {
     this.streamMetrics(event.detail);
   }
 
-  chartYAxisOptions(metricsData: any, category: string) {
+  chartYAxisOptions(metricsData: any) {
     const yAxesArray = [];
     Object.keys(metricsData).map((metric, index) => {
-      let first = metric.charAt(0);
       let newEntry = {
         gridLines: {
           color: 'rgba(0, 0, 0, 0)',
@@ -119,7 +118,7 @@ export class DashjsStatistics {
         scaleLabel: {
           display: true,
           labelString: metric,
-          fontColor: this.chartColors[metric.substring(2)],
+          fontColor: this.chartColors[metric],
         },
         id: 'y' + index,
         ticks: {
@@ -127,25 +126,24 @@ export class DashjsStatistics {
           beginAtZero: false,
         },
       };
-      first === category ? yAxesArray.push(newEntry) : null;
+      yAxesArray.push(newEntry);
     });
     return yAxesArray;
   }
 
-  chartDataset(metricsData: any, category: string) {
+  chartDataset(metricsData: any) {
     const dataset = [];
     Object.keys(metricsData).map((metric, index) => {
-      let first = metric.charAt(0);
       let newEntry = {
         data: [0, 0, 0, 0, 0, 0],
         label: metric,
         lineTension: 0,
         hidden: true,
-        borderColor: this.chartColors[metric.substring(2)],
+        borderColor: this.chartColors[metric],
         yAxisID: 'y' + index,
         fill: false,
       };
-      first === category ? dataset.push(newEntry) : null;
+      dataset.push(newEntry);
     });
     return dataset;
   }
@@ -160,7 +158,7 @@ export class DashjsStatistics {
       let currentTimeInSec = player.time().toFixed(0);
       this.currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
       this.currentTimeArr.push(this.currentTime);
-      this.videoMetricsDataMap.v_latency.push(
+      this.videoMetricsDataMap.latency.push(
         Number(
           setTimeout(() => {
             player.getCurrentLiveLatency();
@@ -172,12 +170,12 @@ export class DashjsStatistics {
       let videoRepSwitch = dashMetrics.getCurrentRepresentationSwitch('video');
       let videoAdaptation = dashAdapter.getAdaptationForType(periodIdx, 'video', streamInfo);
 
-      this.videoMetricsDataMap['v_Buffer Length'].push(dashMetrics.getCurrentBufferLevel('video'));
-      this.videoMetricsDataMap['v_Dropped Frames'].push(dashMetrics.getCurrentDroppedFrames('video').droppedFrames);
-      this.videoMetricsDataMap['v_Bitrate Downloading'].push(videoRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(videoRepSwitch.to, periodIdx) / 1000) : NaN);
-      this.videoMetricsDataMap['v_Index'].push(dashAdapter.getIndexForRepresentation(videoRepSwitch.to, periodIdx));
-      this.videoMetricsDataMap['v_Max Index'].push(dashAdapter.getMaxIndexForBufferType('video', periodIdx));
-      this.videoMetricsDataMap['v_Frame Rate'].push(
+      this.videoMetricsDataMap['Buffer Length'].push(dashMetrics.getCurrentBufferLevel('video'));
+      this.videoMetricsDataMap['Dropped Frames'].push(dashMetrics.getCurrentDroppedFrames('video').droppedFrames);
+      this.videoMetricsDataMap['Bitrate Downloading'].push(videoRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(videoRepSwitch.to, periodIdx) / 1000) : NaN);
+      this.videoMetricsDataMap['Index'].push(dashAdapter.getIndexForRepresentation(videoRepSwitch.to, periodIdx));
+      this.videoMetricsDataMap['Max Index'].push(dashAdapter.getMaxIndexForBufferType('video', periodIdx));
+      this.videoMetricsDataMap['Frame Rate'].push(
         videoAdaptation.Representation_asArray.find(function (rep) {
           return rep.id === videoRepSwitch.to;
         }).frameRate,
@@ -186,10 +184,10 @@ export class DashjsStatistics {
       // Audio Metrics
       let audioRepSwitch = dashMetrics.getCurrentRepresentationSwitch('audio');
 
-      this.audioMetricsDataMap['a_Buffer Length'].push(dashMetrics.getCurrentBufferLevel('audio'));
-      this.audioMetricsDataMap['a_Dropped Frames'].push(dashMetrics.getCurrentDroppedFrames('audio').droppedFrames);
-      this.audioMetricsDataMap['a_Bitrate Downloading'].push(audioRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN);
-      this.audioMetricsDataMap['a_Max Index'].push(dashAdapter.getMaxIndexForBufferType('audio', periodIdx));
+      this.audioMetricsDataMap['Buffer Length'].push(dashMetrics.getCurrentBufferLevel('audio'));
+      this.audioMetricsDataMap['Dropped Frames'].push(dashMetrics.getCurrentDroppedFrames('audio').droppedFrames);
+      this.audioMetricsDataMap['Bitrate Downloading'].push(audioRepSwitch ? Math.round(dashAdapter.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN);
+      this.audioMetricsDataMap['Max Index'].push(dashAdapter.getMaxIndexForBufferType('audio', periodIdx));
     }
   }
 
@@ -204,11 +202,11 @@ export class DashjsStatistics {
     var dataExample = [
       {
         labels: ['00:00', '00:01', '00:02', '00:03', '00:04', '00:05'],
-        datasets: this.chartDataset(this.videoMetricsDataMap, 'v'),
+        datasets: this.chartDataset(this.videoMetricsDataMap),
       },
       {
         labels: ['00:00', '00:01', '00:02', '00:03', '00:04', '00:05'],
-        datasets: this.chartDataset(this.audioMetricsDataMap, 'a'),
+        datasets: this.chartDataset(this.audioMetricsDataMap),
       },
     ];
 
@@ -222,7 +220,7 @@ export class DashjsStatistics {
         animation: false,
         maintainAspectRatio: false,
         scales: {
-          yAxes: this.chartYAxisOptions(this.videoMetricsDataMap, 'v'),
+          yAxes: this.chartYAxisOptions(this.videoMetricsDataMap),
         },
       },
     };
@@ -237,7 +235,7 @@ export class DashjsStatistics {
         animation: false,
         maintainAspectRatio: false,
         scales: {
-          yAxes: this.chartYAxisOptions(this.audioMetricsDataMap, 'a'),
+          yAxes: this.chartYAxisOptions(this.audioMetricsDataMap),
         },
       },
     };
@@ -246,24 +244,21 @@ export class DashjsStatistics {
   }
 
   @Watch('video_data')
-  video_watcher(isVideo: boolean, newData: any, newLabels: any, category: string) {
+  video_watcher(isVideo: boolean, newData: any, newLabels: any) {
     let toChange = isVideo ? this.videoInstance : this.audioInstance;
     Object.keys(newData).map((metric, index) => {
-      let first = metric.charAt(0);
-      if (first === category) {
-        toChange.data.datasets[index].data = newData[metric].slice(1).slice(-6);
-        toChange.data.labels = newLabels.slice(1).slice(-6);
-        toChange.update();
-      }
+      toChange.data.datasets[index].data = newData[metric].slice(1).slice(-6);
+      toChange.data.labels = newLabels.slice(1).slice(-6);
+      toChange.update();
     });
   }
 
   componentWillLoad() {
     this.chartInterval = setInterval(() => {
-      this.video_watcher(false, this.audioMetricsDataMap, this.currentTimeArr, 'a');
+      this.video_watcher(false, this.audioMetricsDataMap, this.currentTimeArr);
     }, 1000);
     this.chartInterval = setInterval(() => {
-      this.video_watcher(true, this.videoMetricsDataMap, this.currentTimeArr, 'v');
+      this.video_watcher(true, this.videoMetricsDataMap, this.currentTimeArr);
     }, 1000);
   }
 
@@ -278,34 +273,28 @@ export class DashjsStatistics {
             <ion-row class="r-border">
               <ion-col size="6">
                 <ion-title>Video</ion-title>
-                {Object.keys(this.videoMetricsDataMap).map(metric =>
-                  metric.charAt(0) === 'v' ? (
-                    <ion-item class="inline-item">
-                      <ion-label class="rmv-b-border">
-                        {metric.substring(2)}: {this.videoMetricsDataMap[metric].slice(-1)[0]}
-                      </ion-label>
-                      <ion-checkbox color="primary" slot="start" onIonChange={ev => this.chartVisibility(true, [metric], ev.detail.checked)}></ion-checkbox>
-                    </ion-item>
-                  ) : null,
-                )}
+                {Object.keys(this.videoMetricsDataMap).map(metric => (
+                  <ion-item class="inline-item">
+                    <ion-label class="rmv-b-border">
+                      {metric}: {this.videoMetricsDataMap[metric].slice(-1)[0]}
+                    </ion-label>
+                    <ion-checkbox color="primary" slot="start" onIonChange={ev => this.chartVisibility(true, [metric], ev.detail.checked)}></ion-checkbox>
+                  </ion-item>
+                ))}
               </ion-col>
               <ion-col size="6">
                 <ion-title>Audio</ion-title>
-                {Object.keys(this.audioMetricsDataMap).map(metric =>
-                  metric.charAt(0) === 'a' ? (
-                    <ion-item class="inline-item">
-                      <ion-label class="rmv-b-border">
-                        {metric.substring(2)}: {this.audioMetricsDataMap[metric].slice(-1)[0]}
-                      </ion-label>
-                      <ion-checkbox color="primary" slot="start" onIonChange={ev => this.chartVisibility(false, [metric], ev.detail.checked)}></ion-checkbox>
-                    </ion-item>
-                  ) : null,
-                )}
+                {Object.keys(this.audioMetricsDataMap).map(metric => (
+                  <ion-item class="inline-item">
+                    <ion-label class="rmv-b-border">
+                      {metric}: {this.audioMetricsDataMap[metric].slice(-1)[0]}
+                    </ion-label>
+                    <ion-checkbox color="primary" slot="start" onIonChange={ev => this.chartVisibility(false, [metric], ev.detail.checked)}></ion-checkbox>
+                  </ion-item>
+                ))}
               </ion-col>
             </ion-row>
-
             <ion-item-divider></ion-item-divider>
-
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(true)}>Clear</ion-button>
               <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable}</ion-button>
@@ -315,9 +304,7 @@ export class DashjsStatistics {
                 </div>
               </ion-row>
             </ion-card-content>
-
             <ion-item-divider></ion-item-divider>
-
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(false)}>Clear</ion-button>
               <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable}</ion-button>
