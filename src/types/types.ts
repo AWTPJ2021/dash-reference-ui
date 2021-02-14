@@ -22,6 +22,7 @@ export interface DashFunction {
   description: string;
   parameters: DashPara[];
   paramExplanation: DashParaExplaination[];
+  type: Type;
 }
 
 export interface DashPara {
@@ -44,6 +45,7 @@ export enum Type {
   HTML5MediaElement = 'HTMLElement',
   function = '(e: any) => void',
   value = 'value',
+  void = 'void'
 }
 
 export interface Tree {

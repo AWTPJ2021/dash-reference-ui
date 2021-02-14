@@ -1,3 +1,14 @@
 :host {
   display: block;
 }
+
+.middle {
+  display: table-cell;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.gap {
+  width: 15px;
+}
+

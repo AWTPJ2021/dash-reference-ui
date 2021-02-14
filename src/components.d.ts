@@ -12,9 +12,12 @@ export namespace Components {
         "version": string;
     }
     interface DashjsApiControlElement {
+        "defaultValue": any;
         "name": string;
+        "options": string[];
         "param": any;
         "paramDesc": any;
+        "type": Type;
     }
     interface DashjsApiControlModal {
         "functionList": DashFunction[];
@@ -174,10 +177,13 @@ declare namespace LocalJSX {
         "version"?: string;
     }
     interface DashjsApiControlElement {
+        "defaultValue"?: any;
         "name"?: string;
         "onValueChanged"?: (event: CustomEvent<any>) => void;
+        "options"?: string[];
         "param"?: any;
         "paramDesc"?: any;
+        "type"?: Type;
     }
     interface DashjsApiControlModal {
         "functionList"?: DashFunction[];

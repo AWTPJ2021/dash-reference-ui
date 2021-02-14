@@ -61,3 +61,35 @@ export function settingsListToTree(list: Setting[]): Tree {
   });
   return root;
 }
+
+
+export function deleteLocalKey(key : string, id : string) {
+  var toUpdate = JSON.parse(localStorage.getItem(key));
+  delete toUpdate[id];
+  localStorage.setItem('api_functions', JSON.stringify(toUpdate));
+}
+
+export function updateLocalKey(key : string, id : string, value : any) {
+    var toUpdate = JSON.parse(localStorage.getItem(key));
+    toUpdate[id] = value;
+    localStorage.setItem(key, JSON.stringify(toUpdate));
+}
+
+export function saveMapToLocalKey(localKey: string, map : Map<string, any>) {
+  var toSave = {};
+  map.forEach((value, key) => {
+    if(value != undefined) {
+      toSave[key] = value;
+    }
+  });
+  localStorage.setItem(localKey, JSON.stringify(toSave));
+}
+
+export function getLocalInformation(key : string) {
+  var info = localStorage.getItem(key);
+  return info != null ? JSON.parse(info) : null;
+}
+
+export function deleteLocalInformation(key : string) {
+  localStorage.removeItem(key);
+}
