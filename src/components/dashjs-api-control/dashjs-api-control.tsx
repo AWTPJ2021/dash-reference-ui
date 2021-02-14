@@ -223,7 +223,6 @@ export class DashjsApiControl {
       return;
     }
     if (this.selectedFunctions.has(key)) {
-      let setting = this.functionList.find(el => el.name === key);
       this.updateFunction(key, "");
       this.searchElement.value = '';
     }
