@@ -181,7 +181,7 @@ export class DashjsApiControl {
       }
       this.searchPopover = await popoverController.create({
         component: 'dashjs-popover-select',
-        cssClass: 'my-custom-class',
+        cssClass: 'settings-search-popover',
         showBackdrop: false,
         event: event,
         keyboardClose: false,
@@ -189,10 +189,11 @@ export class DashjsApiControl {
         enterAnimation: undefined,
         componentProps: {
           options: matchingSettings,
+          isAPI: true
         },
       });
       await this.searchPopover.present();
-      this.searchElement.focus();
+      this.searchElement.focus(); //.select();
       const { data } = await this.searchPopover.onWillDismiss();
       if (data) {
         this.tryAddSetting(data);
@@ -213,10 +214,11 @@ export class DashjsApiControl {
       return;
     }
     if (this.selectedFunctions.has(key)) {
-      this.selectedFunctions.set(key, []);
+      this.selectedFunctions.set(key, this.functionList.filter(s => s.name === key)[0].parameters);
       this.selectedFunctions = new Map(this.selectedFunctions);
-      updateLocalKey('api_functions', key, []);
+      updateLocalKey('api_functions', key, this.functionList.filter(s => s.name === key)[0].parameters);
     }
+  }
 
   async showMPDInfo() {
     fetch(this.mediaUrl).then(async response => {
@@ -257,40 +259,25 @@ export class DashjsApiControl {
                   Select Stream<ion-icon name="arrow-dropdown"></ion-icon>
                 </ion-button>
               </ion-col>
-              <ion-col size="7">
+              <ion-col size="6">
                 <ion-item>
                   <ion-input id="stream_url" value={this.mediaUrl}></ion-input>
                 </ion-item>
               </ion-col>
               <ion-col>
-                <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showMPDInfo()}>
+                <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showMPDInfo()} class="ion-float-right">
                   Info
                 </ion-button>
-                <ion-button shape="round" color="dark" onClick={() => this.stopMedia()}>
+                <ion-button shape="round" color="dark" onClick={() => this.stopMedia()} class="ion-float-right">
                   Reset
                 </ion-button>
-                <ion-button shape="round" id="load" onClick={() => this.loadMedia()}>
+                <ion-button shape="round" id="load" onClick={() => this.loadMedia()} class="ion-float-right">
                   (Re)Load
                 </ion-button>
               </ion-col>
             </ion-row>
-            <ion-row class="top-space">
-                  <ion-input
-                    id="searchInput"
-                    placeholder="Add more settings..."
-                    onIonChange={event => this.updateSearch(event)}
-                    onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
-                  ></ion-input>
-                  <ion-button shape="round" color="dark" onClick={() => this.openFunctions()}>
-                    Browse API Calls
-                    <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-                  </ion-button>
-                  <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetFunctions()}>
-                    Reset
-                  </ion-button>
-                </ion-row>
-            <ion-row>
-              <ion-list style={{ width: '100%' }}>
+            <ion-row > 
+              <ion-list style={{ width: '100%' }} lines="full">
                 {Array.from(this.selectedFunctions.keys())
                   .filter(k => this.selectedFunctions.get(k) != undefined)
                   .map(key => {
@@ -326,18 +313,29 @@ export class DashjsApiControl {
                         ></dashjs-api-control-element>
                         </ion-col>
                         <ion-col size="auto" style={ioncolcss}>
-                            <ion-icon
-                              name="help-circle-outline"
-                              onClick={event => {
-                                event.stopPropagation();
-                              }}
-                            ></ion-icon>
-                          </ion-col>
-                    </ion-row>
+                        <dashjs-help-button helperText={currFunction.description} titleText={'Help - ' + currFunction.name}></dashjs-help-button>
+                        </ion-col>
+                      </ion-row>
                     )
                   })}
+                  
               </ion-list>
             </ion-row>
+            <ion-row>
+                  <ion-input
+                    id="searchInput"
+                    placeholder="Add more settings..."
+                    onIonChange={event => this.updateSearch(event)}
+                    onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
+                  ></ion-input>
+                  <ion-button shape="round" color="dark" onClick={() => this.openFunctions()}>
+                    Browse API Calls
+                    <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+                  </ion-button>
+                  <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetFunctions()}>
+                    Reset
+                  </ion-button>
+              </ion-row>
           </ion-grid>
         </ion-accordion>
       </Host>

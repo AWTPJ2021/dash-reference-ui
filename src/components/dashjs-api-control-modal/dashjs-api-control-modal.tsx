@@ -13,10 +13,8 @@ export class DashjsSettingsControlModal {
   }
   @Prop() functionList: DashFunction[] = [];
   @Prop() selectedFunctions: Map<string, any> = new Map();
-  @Watch('selectedFunctions') test(newFunctions: DashFunction) {
-    console.log(newFunctions);
-  }
   @State() viewedFunctions: DashFunction[] = [];
+  @State() triggerRerender = 0;
 
   filterSettings(str: string) {
     if (str === '') {
@@ -50,14 +48,13 @@ export class DashjsSettingsControlModal {
           </ion-row>
           <ion-grid>
           {this.viewedFunctions.map(item => item.parameters.length <= 1 ? (
-            <ion-row>
+            <ion-row onClick={() => {
+              this.selectedFunctions.set(item.name, this.selectedFunctions.get(item.name) === undefined ? item.parameters : undefined);
+              this.triggerRerender++;
+            }}>
                 <ion-col size="1">
                     <ion-checkbox
                       checked={this.selectedFunctions.get(item.name) != undefined}
-                      onIonChange={() => {
-                        /* TODO: Document settings.js with better example values*/
-                        this.selectedFunctions.set(item.name, this.selectedFunctions.get(item.name) === undefined ? item.parameters : undefined);
-                      }}
                     ></ion-checkbox>
                   </ion-col>
                 <ion-col size="3">{item.name}</ion-col>
