@@ -64,10 +64,6 @@ export class DashjsApiControl {
             this.selectedFunctions.set(key, savedSettings[key]);
           }
         }
-        //console.log("Functionlist: ");
-        //console.log(this.functionList);
-        //console.log("selectedFunctions:");  
-        //console.log(this.selectedFunctions);
       });
   }
 
@@ -126,16 +122,13 @@ export class DashjsApiControl {
   }
 
   async resetFunctions() {
-    this.selectedFunctions.forEach((value, key) => {
-      if(value != undefined) {
-        this.selectedFunctions[key] = undefined;
-      }
-    });
+    this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
     deleteLocalInformation('api_functions');
   }
 
   protected componentDidLoad(): void {
     this.playerEventHandler({ type: 'autoload', autoPlay: this.element.querySelector('#autol').getAttribute('aria-checked') });
+    this.searchElement = this.element.querySelector('#searchInput');
   }
 
   @Event({
@@ -200,7 +193,7 @@ export class DashjsApiControl {
         },
       });
       await this.searchPopover.present();
-      this.searchElement.focus(); //.select();
+      this.searchElement.focus();
       const { data } = await this.searchPopover.onWillDismiss();
       if (data) {
         this.tryAddSetting(data);
@@ -214,16 +207,16 @@ export class DashjsApiControl {
   }
 
   tryAddSetting(key: string) {
-    let regex = new RegExp(key, 'i');
-    let matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e.match(regex));
+    let matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
     } else {
       return;
     }
     if (this.selectedFunctions.has(key)) {
-      this.updateFunction(key, "");
-      this.searchElement.value = '';
+      this.selectedFunctions.set(key, []);
+      this.selectedFunctions = new Map(this.selectedFunctions);
+      updateLocalKey('api_functions', key, []);
     }
   }
 
@@ -291,7 +284,6 @@ export class DashjsApiControl {
                           >
                             <ion-icon slot="icon-only" color="dark" name="close-circle-outline"></ion-icon>
                           </ion-button>
-                          {/* <ion-icon name="close-circle"></ion-icon> */}
                         </ion-col>
                         <ion-col>
                         <dashjs-api-control-element
@@ -317,7 +309,6 @@ export class DashjsApiControl {
                     )
                   })}
               </ion-list>
-              {/* <dashjs-settings-control-element type={this.settingsList.filter(s => s.id === this.displayedSetting)[0].type}></dashjs-settings-control-element> */}
             </ion-row>
           </ion-grid>
         </ion-accordion>
