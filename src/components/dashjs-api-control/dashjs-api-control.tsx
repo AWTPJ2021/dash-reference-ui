@@ -36,7 +36,6 @@ export class DashjsApiControl {
       .then((response: Response) => response.json())
       .then(response => {
         this.sourceList = response.items;
-        console.log('Here is the source: ' + this.sourceList.length);
       });
     if (this.version) {
       this.loadSettingsMetaData();
@@ -65,10 +64,10 @@ export class DashjsApiControl {
             this.selectedFunctions.set(key, savedSettings[key]);
           }
         }
-        console.log("Functionlist: ");
-        console.log(this.functionList);
-        console.log("selectedFunctions:");  
-        console.log(this.selectedFunctions);
+        //console.log("Functionlist: ");
+        //console.log(this.functionList);
+        //console.log("selectedFunctions:");  
+        //console.log(this.selectedFunctions);
       });
   }
 
