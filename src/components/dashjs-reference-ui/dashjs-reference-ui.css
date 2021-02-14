@@ -5,3 +5,7 @@
 ion-buttons {
   margin-right: 10px;
 }
+
+.version-warning {
+  --min-height: 30px;
+}

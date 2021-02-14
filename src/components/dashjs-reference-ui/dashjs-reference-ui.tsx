@@ -62,6 +62,16 @@ export class DashjsReferenceUi {
             </ion-select>
           </ion-buttons>
         </ion-toolbar>
+        {this.selectedVersion != undefined ? (
+          Number(this.selectedVersion.slice(1).split('.')[0]) < 3 ? (
+            <ion-toolbar color="warning" class="version-warning">
+              <ion-title>
+                <ion-icon slot="icon-only" md="info"></ion-icon>
+                Support for Versions below v3.0.0 is experimental - expect bugs!
+              </ion-title>
+            </ion-toolbar>
+          ) : undefined
+        ) : undefined}
         <dashjs-api-control version={this.selectedVersion}></dashjs-api-control>
         <dashjs-settings-control version={this.selectedVersion} onSettingsUpdated={event => console.log(event.detail)}></dashjs-settings-control>
         {/* <dashjs-settings-control></dashjs-settings-control> */}
