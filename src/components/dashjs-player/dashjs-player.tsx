@@ -1,6 +1,7 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass } from 'dashjs';
 declare var dashjs: any;
+declare var ControlBar: any;
 
 @Component({
   tag: 'dashjs-player',
@@ -12,11 +13,14 @@ export class DashjsPlayer {
   private element: HTMLElement;
   private player: MediaPlayerClass;
 
+  @State()
+  controlbar: any;
+
   @Prop() url: string = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
   @Watch('url')
   protected watchHandlerUrl(newUrl: string): void {
     console.log('Changed value: ' + newUrl);
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), newUrl, this.autoPlay);
+    this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), newUrl, this.autoPlay);
   }
   @Prop() version: string = undefined;
   @Watch('version')
@@ -41,7 +45,9 @@ export class DashjsPlayer {
           this.player.reset();
         }
         this.player = dashjs.MediaPlayer().create();
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), event.detail.url, event.detail.autoPlay == 'true');
+        this.controlbar = new ControlBar(this.player);
+        this.controlbar.initialize();
         this.streamInterval = setInterval(() => {
           this.streamMetricsEventHandler(this.player);
         }, 1000);
@@ -96,7 +102,14 @@ export class DashjsPlayer {
   }
 
   componentDidLoad() {
+    // this.isPaused = this.player.isPaused();
+
     this.loadOrUpdateDashJsScript();
+    // this.player = dashjs.MediaPlayer().create();
+    // this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
+    // this.controlbar = new ControlBar(this.player);
+    // console.log('controlbar', this.controlbar);
+    // this.controlbar.initialize();
   }
 
   private loadOrUpdateDashJsScript() {
@@ -117,6 +130,13 @@ export class DashjsPlayer {
     script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
     document.head.appendChild(script);
+
+    // Akamai Controlbar script load
+    var scriptAkamai = document.createElement('script');
+    scriptAkamai.onload = () => {};
+    scriptAkamai.src = `https://reference.dashif.org/dash.js/latest/contrib/akamai/controlbar/ControlBar.js`;
+
+    document.body.appendChild(scriptAkamai);
   }
 
   componentWillLoad() {
@@ -139,7 +159,40 @@ export class DashjsPlayer {
       <Host>
         <slot>
           <ion-card>
-            <video controls={true} id="myMainVideoPlayer"></video>
+            <div class="myMainVideoPlayer" id="myMainVideoPlayer">
+              <video id="myMainVideoPlayer"></video>
+              <div id="videoController" class="video-controller unselectable">
+                <div id="playPauseBtn" class="btn-play-pause" title="Play/Pause">
+                  <span id="iconPlayPause" class="icon-play"></span>
+                </div>
+                <span id="videoTime" class="time-display">
+                  00:00:00
+                </span>
+                <div id="fullscreenBtn" class="btn-fullscreen control-icon-layout" title="Fullscreen">
+                  <span class="icon-fullscreen-enter"></span>
+                </div>
+                <div id="bitrateListBtn" class="control-icon-layout" title="Bitrate List">
+                  <span class="icon-bitrate"></span>
+                </div>
+                <input type="range" id="volumebar" class="volumebar" value="1" min="0" max="1" step=".01" />
+                <div id="muteBtn" class="btn-mute control-icon-layout" title="Mute">
+                  <span id="iconMute" class="icon-mute-off"></span>
+                </div>
+                <div id="trackSwitchBtn" class="control-icon-layout" title="A/V Tracks">
+                  <span class="icon-tracks"></span>
+                </div>
+                <div id="captionBtn" class="btn-caption control-icon-layout" title="Closed Caption">
+                  <span class="icon-caption"></span>
+                </div>
+                <span id="videoDuration" class="duration-display">
+                  00:00:00
+                </span>
+                <div class="seekContainer">
+                  <input type="range" id="seekbar" value="0" class="seekbar" min="0" step="0.01" />
+                </div>
+              </div>
+            </div>
+            {/* <video controls={true} id="myMainVideoPlayer"></video> */}
           </ion-card>
         </slot>
       </Host>
