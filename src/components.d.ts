@@ -35,9 +35,7 @@ export namespace Components {
         "titleText": string;
     }
     interface DashjsPlayer {
-        "streamUrl": string;
         "type": string;
-        "url": string;
         "version": string;
     }
     interface DashjsPopoverSelect {
@@ -227,9 +225,7 @@ declare namespace LocalJSX {
     interface DashjsPlayer {
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
-        "streamUrl"?: string;
         "type"?: string;
-        "url"?: string;
         "version"?: string;
     }
     interface DashjsPopoverSelect {

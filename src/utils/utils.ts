@@ -93,3 +93,28 @@ export function getLocalInformation(key : string) {
 export function deleteLocalInformation(key : string) {
   localStorage.removeItem(key);
 }
+
+
+export function getMediaURL() {
+  return localStorage.getItem("mediaUrl") === null ? 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd' : localStorage.getItem('mediaUrl');
+}
+
+export function setMediaURL(url : string) {
+  localStorage.setItem('mediaUrl', url);
+}
+
+export function resetMediaURL() {
+  localStorage.removeItem('mediaUrl');
+}
+
+export function saveStringLocally(key: string, value: string) {
+  localStorage.setItem(key, value);
+}
+
+export function deleteStringLocally(key: string) {
+  localStorage.removeItem(key);
+}
+
+export function getStringLocally(key : string) {
+  return localStorage.getItem(key);
+}

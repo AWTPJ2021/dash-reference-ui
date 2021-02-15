@@ -1,7 +1,7 @@
 import { Component, Host, h, State, Event, Element, EventEmitter, Listen, Prop, Watch } from '@stencil/core';
 import { DashFunction } from '../../types/types';
 import { modalController, popoverController, toastController, InputChangeEventDetail } from '@ionic/core';
-import { generateFunctionsMapFromList, updateLocalKey, deleteLocalKey, saveMapToLocalKey, getLocalInformation, deleteLocalInformation } from '../../utils/utils';
+import { generateFunctionsMapFromList, updateLocalKey, deleteLocalKey, saveMapToLocalKey, getLocalInformation, deleteLocalInformation, getMediaURL, setMediaURL, resetMediaURL, saveStringLocally, getStringLocally } from '../../utils/utils';
 
 @Component({
   tag: 'dashjs-api-control',
@@ -21,7 +21,7 @@ export class DashjsApiControl {
 
   @State() autoPlay: boolean;
 
-  @State() mediaUrl: string = 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd';
+  @State() mediaUrl: string;
 
   @State() functionList: DashFunction[] = [];
   @State() selectedFunctions: Map<string, any> = new Map();
@@ -39,6 +39,7 @@ export class DashjsApiControl {
     if (this.version) {
       this.loadSettingsMetaData();
     }
+    this.mediaUrl = getMediaURL();
   }
 
   private loadSettingsMetaData() {
@@ -94,6 +95,8 @@ export class DashjsApiControl {
 
   stopMedia() {
     this.playerEventHandler({ type: 'stop' });
+    resetMediaURL();
+    this.mediaUrl = getMediaURL();
   }
 
   loadMedia() {
@@ -103,6 +106,7 @@ export class DashjsApiControl {
   @Listen('setStream', { target: 'document' })
   setStreamEventHandler(event) {
     this.mediaUrl = event.detail;
+    setMediaURL(event.detail);
     popoverController.dismiss();
     this.loadMedia();
   }
@@ -126,7 +130,6 @@ export class DashjsApiControl {
   }
 
   protected componentDidLoad(): void {
-    this.playerEventHandler({ type: 'autoload', autoPlay: this.element.querySelector('#autol').getAttribute('aria-checked') });
     this.searchElement = this.element.querySelector('#searchInput');
   }
 
@@ -157,6 +160,17 @@ export class DashjsApiControl {
       duration: 2000,
     });
     toast.present();
+  }
+
+  updateInformation(action : number, event : any) {
+    if(action === 0) {
+      console.log("saving: " + event.detail.checked);
+      saveStringLocally('api_autostart', event.detail.checked);
+    } else if(action === 1) {
+      if (event.detail.value == '') resetMediaURL();
+      else  setMediaURL(event.detail.value);
+      this.mediaUrl = event.detail.value;
+    }
   }
 
   async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
@@ -250,7 +264,7 @@ export class DashjsApiControl {
       <Host>
         <ion-accordion titleText="API">
           <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
-            Auto start <ion-toggle id="autol" checked></ion-toggle>
+            Auto start <ion-toggle id="autol" onIonChange={event => this.updateInformation(0, event)} checked={getStringLocally('api_autostart') === null ? false : getStringLocally('api_autostart') === 'true'}></ion-toggle>
           </div>
           <ion-grid>
             <ion-row>
@@ -261,7 +275,7 @@ export class DashjsApiControl {
               </ion-col>
               <ion-col size="6">
                 <ion-item>
-                  <ion-input id="stream_url" value={this.mediaUrl}></ion-input>
+                  <ion-input id="stream_url" value={this.mediaUrl} onIonChange={event => this.updateInformation(1 ,event)}></ion-input>
                 </ion-item>
               </ion-col>
               <ion-col>
