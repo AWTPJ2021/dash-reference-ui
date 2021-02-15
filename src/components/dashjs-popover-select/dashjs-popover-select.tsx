@@ -11,7 +11,6 @@ export class DashjsPopoverSelect {
   @Prop() options: string[] = [];
 
   render() {
-    console.log("THIS API: " + this.isAPI);
     return [
       <ion-list>
         {this.options.map(el => (
