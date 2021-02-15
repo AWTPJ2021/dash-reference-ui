@@ -66,7 +66,7 @@ export function settingsListToTree(list: Setting[]): Tree {
 export function deleteLocalKey(key : string, id : string) {
   var toUpdate = JSON.parse(localStorage.getItem(key));
   delete toUpdate[id];
-  localStorage.setItem('api_functions', JSON.stringify(toUpdate));
+  localStorage.setItem(key, JSON.stringify(toUpdate));
 }
 
 export function updateLocalKey(key : string, id : string, value : any) {

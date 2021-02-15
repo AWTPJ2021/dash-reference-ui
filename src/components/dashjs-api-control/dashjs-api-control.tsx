@@ -130,7 +130,7 @@ export class DashjsApiControl {
   }
 
   protected componentDidLoad(): void {
-    this.searchElement = this.element.querySelector('#searchInput');
+    this.searchElement = this.element.querySelector('#searchApiInput');
   }
 
   @Event({
@@ -337,7 +337,7 @@ export class DashjsApiControl {
             </ion-row>
             <ion-row>
                   <ion-input
-                    id="searchInput"
+                    id="searchApiInput"
                     placeholder="Add more settings..."
                     onIonChange={event => this.updateSearch(event)}
                     onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
