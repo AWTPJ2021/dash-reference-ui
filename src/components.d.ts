@@ -56,7 +56,6 @@ export namespace Components {
         "settingsTree": Tree;
     }
     interface DashjsStatistics {
-        "audio_data": any;
         "videoInstance": any;
         "video_data": any;
     }
@@ -223,7 +222,6 @@ declare namespace LocalJSX {
         "settingsTree"?: Tree;
     }
     interface DashjsStatistics {
-        "audio_data"?: any;
         "videoInstance"?: any;
         "video_data"?: any;
     }

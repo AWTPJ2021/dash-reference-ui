@@ -98,7 +98,7 @@ export class DashjsPlayer {
   @Event() streamMetricsEvent: EventEmitter<Object>;
 
   streamMetricsEventHandler(player: any) {
-    this.streamMetricsEvent.emit(player);
+    player && this.streamMetricsEvent.emit(player);
   }
 
   componentDidLoad() {
