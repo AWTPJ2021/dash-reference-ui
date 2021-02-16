@@ -1,7 +1,8 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass } from 'dashjs';
+import ControlBar from '../contrib/ControlBar.js';
+// import '../contrib/controlbar.scss';
 declare var dashjs: any;
-declare var ControlBar: any;
 
 @Component({
   tag: 'dashjs-player',
@@ -103,13 +104,7 @@ export class DashjsPlayer {
 
   componentDidLoad() {
     // this.isPaused = this.player.isPaused();
-
     this.loadOrUpdateDashJsScript();
-    // this.player = dashjs.MediaPlayer().create();
-    // this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), this.url, this.autoPlay);
-    // this.controlbar = new ControlBar(this.player);
-    // console.log('controlbar', this.controlbar);
-    // this.controlbar.initialize();
   }
 
   private loadOrUpdateDashJsScript() {
@@ -130,13 +125,6 @@ export class DashjsPlayer {
     script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
     document.head.appendChild(script);
-
-    // Akamai Controlbar script load
-    var scriptAkamai = document.createElement('script');
-    scriptAkamai.onload = () => {};
-    scriptAkamai.src = `https://reference.dashif.org/dash.js/latest/contrib/akamai/controlbar/ControlBar.js`;
-
-    document.body.appendChild(scriptAkamai);
   }
 
   componentWillLoad() {
@@ -158,9 +146,9 @@ export class DashjsPlayer {
     return (
       <Host>
         <slot>
-          <ion-card>
+          <div class="player-wrapper">
             <div class="myMainVideoPlayer" id="myMainVideoPlayer">
-              <video id="myMainVideoPlayer"></video>
+              <video id="myMainVideoPlayer" preload="auto"></video>
               <div id="videoController" class="video-controller unselectable">
                 <div id="playPauseBtn" class="btn-play-pause" title="Play/Pause">
                   <span id="iconPlayPause" class="icon-play"></span>
@@ -193,7 +181,7 @@ export class DashjsPlayer {
               </div>
             </div>
             {/* <video controls={true} id="myMainVideoPlayer"></video> */}
-          </ion-card>
+          </div>
         </slot>
       </Host>
     );
