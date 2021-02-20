@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { PagePopover } from '../dashjs-api-link-selector';
 
-describe('dashjs-api-link-selector', () => {
+xdescribe('dashjs-api-link-selector', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [PagePopover],

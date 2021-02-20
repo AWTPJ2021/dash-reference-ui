@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { DashjsTree } from '../dashjs-tree';
 
-describe('dashjs-tree', () => {
+xdescribe('dashjs-tree', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [DashjsTree],

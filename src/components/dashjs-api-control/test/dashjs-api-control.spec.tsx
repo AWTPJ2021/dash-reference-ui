@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { DashjsApiControl } from '../dashjs-api-control';
 
-describe('dashjs-api-control', () => {
+xdescribe('dashjs-api-control', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [DashjsApiControl],

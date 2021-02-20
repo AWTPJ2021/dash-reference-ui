@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('dashjs-tree', () => {
+xdescribe('dashjs-tree', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<dashjs-tree></dashjs-tree>');

@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('dashjs-settings-control-element', () => {
+xdescribe('dashjs-settings-control-element', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<dashjs-settings-control-element></dashjs-settings-control-element>');

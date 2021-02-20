@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('dashjs-player', () => {
+xdescribe('dashjs-player', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<dashjs-player></dashjs-player>');
