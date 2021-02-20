@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { DashjsSettingsControlModal } from '../dashjs-api-control-modal';
 
-describe('dashjs-api-control-modal', () => {
+xdescribe('dashjs-api-control-modal', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [DashjsSettingsControlModal],
