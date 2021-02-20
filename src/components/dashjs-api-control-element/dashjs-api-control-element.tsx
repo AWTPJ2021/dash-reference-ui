@@ -1,5 +1,5 @@
 import { Component, EventEmitter, h, Prop, Event, State } from '@stencil/core';
-import { Type } from '../../types/types';
+import { Type, MediaType } from '../../types/types';
 
 @Component({
   tag: 'dashjs-api-control-element',
@@ -14,57 +14,41 @@ export class DashjsAPIControlElement {
   @Event() valueChanged: EventEmitter<any>;
   @Prop() param: any;
   @Prop() paramDesc: any;
-  @State() control = (<div>No known type!</div>);
+  @State() control = [];
 
-  @State() functionValue : any;
+  @State() functionValue : any = "";
 
   setValue(val) {
     this.functionValue = val;
   }
 
   componentWillLoad() {
-    if (this.options != undefined) {
-      this.control = [
-        <ion-select placeholder="Select One" interface="popover" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}>
-          {this.options.map(val => (
-            <ion-select-option value={val}>{val}</ion-select-option>
-          ))}
-        </ion-select>,
-        // <ion-label position="floating">{this.name}</ion-label>,
-        // <ion-select placeholder="Select One" interface="popover" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}>
-        //   {this.options.map(val => (
-        //     <ion-select-option value={val}>{val}</ion-select-option>
-        //   ))}
-        // </ion-select>,
-      ];
-    } else if (this.param.length < 1) {
-      this.control = [
-        <ion-item lines="none"><ion-button shape="round" size="small" onClick={ () => this.valueChanged.emit("")}>Call</ion-button></ion-item>
-      ];
-    } else if (this.param.length === 1) {
-      switch (this.param[0].type) {
-        case "string":
-          this.control = [
-          <ion-item lines="none"><ion-input debounce={300} value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>
-          <div class="gap"></div><ion-button size="small" class="left_gap" shape="round" onClick={ () => this.valueChanged.emit("")}>Call</ion-button></ion-item>
-        ];
-          break;
-        case "number":
-          this.control = [
-            <ion-item lines="none"><ion-input debounce={300} type="number" value={this.defaultValue} onIonChange={change => this.setValue(change.detail.value)}></ion-input>
-            <div class="gap"></div><ion-button size="small" shape="round" onClick={ () => this.valueChanged.emit(this.functionValue)}>Call</ion-button></ion-item>
-            // <ion-range min={20} max={80} step={2}>
-            //   <ion-icon size="small" slot="start" name="sunny"></ion-icon>
-            //   <ion-icon slot="end" name="sunny"></ion-icon>
-            // </ion-range>
-          ];
-          break;
-        case "boolean":
-          this.control = [
-          <ion-item lines="none"><ion-toggle value={this.defaultValue} onIonChange={change => this.setValue(change.detail.checked)}></ion-toggle>
-          <ion-button size="small" shape="round" onClick={ () => this.valueChanged.emit(this.functionValue)}>Call</ion-button></ion-item>
-          ];
-          break;
+    if (this.param.length > 0) {
+      for(var i = 0; i <this.param.length; i++) {
+        switch (this.param[i].type) {
+          case "string":
+            this.control.push(<ion-input class="input-border" debounce={300} value={this.defaultValue} onIonChange={change => this.setValue(change.detail.value)}></ion-input>);
+            this.control.push(<div class="gap"></div>);
+            break;
+          case "number":
+            this.control.push(<ion-input class="input-border" debounce={300} type="number" value={this.defaultValue} onIonChange={change => this.setValue(change.detail.value)}></ion-input>);
+            this.control.push(<div class="gap"></div>);
+            break;
+          case "boolean":
+            this.control.push(<ion-toggle value={this.defaultValue} onIonChange={change => this.setValue(change.detail.checked)}></ion-toggle>)
+            this.control.push(<div class="gap"></div>);
+            break;
+          case "MediaType": 
+            this.control.push(
+            <ion-select class="input-border" placeholder="Select MediaType" interface="popover" value={this.defaultValue} onIonChange={change => this.setValue(change.detail.value)}>
+            {Object.keys(MediaType).map(val => (
+              <ion-select-option value={MediaType[val]}>{MediaType[val]}</ion-select-option>
+            ))}
+            </ion-select>
+            );
+            this.control.push(<div class="gap"></div>);
+            break;
+        }
       }
     }
   }
@@ -73,7 +57,7 @@ export class DashjsAPIControlElement {
       <ion-grid>
         <ion-row>
           <ion-col class="middle">{this.name}</ion-col>
-          <ion-col size="auto">{this.control}</ion-col>
+          <ion-col size="auto"><ion-item lines="none">{this.control}<ion-button shape="round" size="small" onClick={ () => this.valueChanged.emit("")}>Call</ion-button></ion-item></ion-col>
         </ion-row>
       </ion-grid>
     );

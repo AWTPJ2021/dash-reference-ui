@@ -48,16 +48,22 @@ export class DashjsApiControl {
       .then(response => {
         this.functionList = response;
         for (var i = this.functionList.length - 1; i >= 0; i--) {
-          if (this.functionList[i].parameters.length > 1) {
-            this.functionList.splice(i, 1);
+          //if (this.functionList[i].parameters.length > 1) {
+          //  this.functionList.splice(i, 1);
+         // }
+          var valid = true;
+          for(var j = 0; j < this.functionList[i].parameters.length; j++) {
+            //if (this.functionList[i].parameters.length == 1) {
+              if (!this.validType(this.functionList[i].parameters[j].type)) {
+                this.functionList.splice(i, 1);
+                valid = false;
+              }
+            //}
           }
-          if (this.functionList[i].parameters.length == 1) {
-            if (!this.validType(this.functionList[i].parameters[0].type)) {
-              this.functionList.splice(i, 1);
-            }
-          }
+          if(valid && this.functionList[i].parameters.length > 1) console.log(this.functionList[i].name);
         }
         this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
+        console.log(this.selectedFunctions);
         var savedSettings = getLocalInformation('api_functions');
         if(savedSettings != null) {
           for(var key in savedSettings) {
@@ -68,7 +74,7 @@ export class DashjsApiControl {
   }
 
   validType(any) {
-    var types = ['boolean', 'number', 'string'];
+    var types = ['boolean', 'number', 'string', 'MediaType'];
     for (var i in types) {
       if (types[i] == any) return true;
     }
@@ -155,22 +161,23 @@ export class DashjsApiControl {
 
   @Listen('playerResponse', { target: 'document' })
   async playerResponseHandler(event) {
+    console.log(event.detail.return);
+    console.log(event.detail.return === null);
     const toast = await toastController.create({
-      message: 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
+      message: event.detail.return === null ?  "Please initialize the player." : 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
       duration: 2000,
     });
     toast.present();
   }
 
-  updateInformation(action : number, event : any) {
-    if(action === 0) {
-      console.log("saving: " + event.detail.checked);
+  updateAutostart(event : any) {
       saveStringLocally('api_autostart', event.detail.checked);
-    } else if(action === 1) {
-      if (event.detail.value == '') resetMediaURL();
-      else  setMediaURL(event.detail.value);
-      this.mediaUrl = event.detail.value;
-    }
+  }
+
+  updateMediaUrl(event: any) {
+    if (event.detail.value == '') resetMediaURL();
+    else  setMediaURL(event.detail.value);
+    this.mediaUrl = event.detail.value;
   }
 
   async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
@@ -221,13 +228,18 @@ export class DashjsApiControl {
   }
 
   tryAddSetting(key: string) {
+    console.log("looking for:" + key);
     let matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
+      console.log("key:");
+      console.log(key);
     } else {
       return;
     }
     if (this.selectedFunctions.has(key)) {
+      console.log("i set to this: " );
+      console.log(this.functionList.filter(s => s.name === key)[0].parameters);
       this.selectedFunctions.set(key, this.functionList.filter(s => s.name === key)[0].parameters);
       this.selectedFunctions = new Map(this.selectedFunctions);
       updateLocalKey('api_functions', key, this.functionList.filter(s => s.name === key)[0].parameters);
@@ -264,23 +276,23 @@ export class DashjsApiControl {
       <Host>
         <ion-accordion titleText="API">
           <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
-            Auto start <ion-toggle id="autol" onIonChange={event => this.updateInformation(0, event)} checked={getStringLocally('api_autostart') === null ? false : getStringLocally('api_autostart') === 'true'}></ion-toggle>
+            Auto start <ion-toggle id="autol" onIonChange={event => this.updateAutostart(event)} checked={getStringLocally('api_autostart') === null ? false : getStringLocally('api_autostart') === 'true'}></ion-toggle>
           </div>
           <ion-grid>
             <ion-row>
               <ion-col size="2">
                 <ion-button shape="round" onClick={ev => this.presentPopover(ev)} class="fill_width">
-                  Select Stream<ion-icon name="arrow-dropdown"></ion-icon>
+                  Select Stream&nbsp;<ion-icon name="caret-down-circle"></ion-icon>
                 </ion-button>
               </ion-col>
               <ion-col size="6">
                 <ion-item>
-                  <ion-input id="stream_url" value={this.mediaUrl} onIonChange={event => this.updateInformation(1 ,event)}></ion-input>
+                  <ion-input id="stream_url" value={this.mediaUrl} onIonChange={event => this.updateMediaUrl(event)}></ion-input>
                 </ion-item>
               </ion-col>
               <ion-col>
                 <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showMPDInfo()} class="ion-float-right">
-                  Info
+                  <ion-icon name="information"></ion-icon>
                 </ion-button>
                 <ion-button shape="round" color="dark" onClick={() => this.stopMedia()} class="ion-float-right">
                   Reset
@@ -301,7 +313,7 @@ export class DashjsApiControl {
                     };
                     let currFunction = this.functionList.filter(s => s.name === key)[0];
                     return (
-                      <ion-row>
+                      <ion-row class="bottom-border">
                         <ion-col size="auto" style={ioncolcss}>
                           <ion-button
                             size="small"
@@ -338,13 +350,13 @@ export class DashjsApiControl {
             <ion-row>
                   <ion-input
                     id="searchApiInput"
-                    placeholder="Add more settings..."
+                    placeholder="Add more API calls..."
                     onIonChange={event => this.updateSearch(event)}
                     onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
                   ></ion-input>
                   <ion-button shape="round" color="dark" onClick={() => this.openFunctions()}>
                     Browse API Calls
-                    <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+                    <ion-icon slot="end" name="search"></ion-icon>
                   </ion-button>
                   <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetFunctions()}>
                     Reset

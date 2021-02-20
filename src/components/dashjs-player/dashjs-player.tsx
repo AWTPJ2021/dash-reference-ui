@@ -45,12 +45,16 @@ export class DashjsPlayer {
         clearInterval(this.streamInterval);
         break;
       case 'function':
-        var returnValue = this.player[event.detail.name](event.detail.param);
-        var toSend = {
-          "event": event.detail.name,
-          "return": returnValue
+        if(!this.player) {
+          this.playerResponseHandler({"event" : event.detail.name, "return": null})
+        } else {
+          var returnValue = this.player[event.detail.name](event.detail.param);
+          var toSend = {
+            "event": event.detail.name,
+            "return": returnValue
+          }
+          this.playerResponseHandler(toSend);
         }
-        this.playerResponseHandler(toSend);
     }
   }
 
