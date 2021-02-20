@@ -152,8 +152,6 @@ export class DashjsApiControl {
 
   @Listen('playerResponse', { target: 'document' })
   async playerResponseHandler(event) {
-    console.log(event.detail.return);
-    console.log(event.detail.return === null);
     const toast = await toastController.create({
       message: event.detail.return === null ?  "Please initialize the player." : 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
       duration: 2000,
@@ -298,10 +296,8 @@ export class DashjsApiControl {
                       alignItems: 'center',
                     };
                     let currFunction = this.functionList.filter(s => s.name === key)[0];
-                    console.log("rerendering: "+ key);
-                    console.log(currFunction.parameters);
                     return (
-                      <ion-row class={key + " bottom-border"}>
+                      <ion-row class="bottom-border">
                         <ion-col size="auto" style={ioncolcss}>
                           <ion-button
                             size="small"
