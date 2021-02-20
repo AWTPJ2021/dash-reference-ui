@@ -1,11 +1,11 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { DashjsSettingsControlElement } from '../dashjs-api-control-element';
+import { DashjsAPIControlElement } from '../dashjs-api-control-element';
 
 xdescribe('dashjs-api-control-element', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [DashjsSettingsControlElement],
-      html: `<dashjs-settings-control-element></dashjs-api-control-element>`,
+      components: [DashjsAPIControlElement],
+      html: `<dashjs-api-control-element></dashjs-api-control-element>`,
     });
     expect(page.root).toEqualHtml(`
       <dashjs-api-control-element>
