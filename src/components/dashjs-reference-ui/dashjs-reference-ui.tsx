@@ -40,11 +40,30 @@ export class DashjsReferenceUi {
     }
   }
   render() {
+    let centercss = {
+      display: 'flex',
+      alignItems: 'center',
+      flexFlow: 'row',
+    };
     return (
       <Host>
         <stencil-component-prefetch />
         <ion-toolbar>
-          <ion-title>DashJS Reference UI</ion-title>
+          <ion-title>
+            <div style={centercss}>
+              <a href="https://dashif.org/" style={{ 'color': 'var(--color)', 'text-decoration': 'none' }}>
+                DashJS Reference UI
+              </a>
+              <iframe
+                style={{ 'margin-left': '15px' }}
+                id="star-button"
+                src="//ghbtns.com/github-btn.html?user=Dash-Industry-Forum&repo=dash.js&type=watch&count=true&size=large"
+                height="30"
+                width="150"
+              ></iframe>
+              <iframe id="fork-button" src="//ghbtns.com/github-btn.html?user=Dash-Industry-Forum&repo=dash.js&type=fork&count=true&size=large" height="30" width="150"></iframe>
+            </div>
+          </ion-title>
           <ion-buttons slot="end">
             Type:
             <ion-select interface="popover" value={this.selectedType} onIonChange={change => (this.selectedType = change.detail.value)}>
