@@ -14,7 +14,6 @@ close() {
   modalController.dismiss();
 }
   
-
   render() {
     return (
       <Host>

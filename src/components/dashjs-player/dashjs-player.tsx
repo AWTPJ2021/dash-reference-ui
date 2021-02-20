@@ -40,7 +40,6 @@ export class DashjsPlayer {
         }, 1000);
         break;
       case 'stop':
-        console.log('Resetting the player');
         this.player.reset();
         clearInterval(this.streamInterval);
         break;

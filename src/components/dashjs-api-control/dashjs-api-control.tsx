@@ -48,22 +48,13 @@ export class DashjsApiControl {
       .then(response => {
         this.functionList = response;
         for (var i = this.functionList.length - 1; i >= 0; i--) {
-          //if (this.functionList[i].parameters.length > 1) {
-          //  this.functionList.splice(i, 1);
-         // }
-          var valid = true;
           for(var j = 0; j < this.functionList[i].parameters.length; j++) {
-            //if (this.functionList[i].parameters.length == 1) {
               if (!this.validType(this.functionList[i].parameters[j].type)) {
                 this.functionList.splice(i, 1);
-                valid = false;
               }
-            //}
           }
-          if(valid && this.functionList[i].parameters.length > 1) console.log(this.functionList[i].name);
         }
         this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
-        console.log(this.selectedFunctions);
         var savedSettings = getLocalInformation('api_functions');
         if(savedSettings != null) {
           for(var key in savedSettings) {
@@ -228,19 +219,14 @@ export class DashjsApiControl {
   }
 
   tryAddSetting(key: string) {
-    console.log("looking for:" + key);
     let matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
-      console.log("key:");
-      console.log(key);
     } else {
       return;
     }
     if (this.selectedFunctions.has(key)) {
-      console.log("i set to this: " );
-      console.log(this.functionList.filter(s => s.name === key)[0].parameters);
-      this.selectedFunctions.set(key, this.functionList.filter(s => s.name === key)[0].parameters);
+      this.selectedFunctions.set(key, []);
       this.selectedFunctions = new Map(this.selectedFunctions);
       updateLocalKey('api_functions', key, this.functionList.filter(s => s.name === key)[0].parameters);
     }
@@ -312,8 +298,10 @@ export class DashjsApiControl {
                       alignItems: 'center',
                     };
                     let currFunction = this.functionList.filter(s => s.name === key)[0];
+                    console.log("rerendering: "+ key);
+                    console.log(currFunction.parameters);
                     return (
-                      <ion-row class="bottom-border">
+                      <ion-row class={key + " bottom-border"}>
                         <ion-col size="auto" style={ioncolcss}>
                           <ion-button
                             size="small"
@@ -330,7 +318,6 @@ export class DashjsApiControl {
                         <dashjs-api-control-element
                           name={key}
                           type={currFunction.type}
-                          defaultValue={this.selectedFunctions.get(key)}  
                           param={currFunction.parameters}
                           paramDesc={currFunction.paramExplanation}
                           onValueChanged={change => {

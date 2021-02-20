@@ -12,7 +12,6 @@ export namespace Components {
         "version": string;
     }
     interface DashjsApiControlElement {
-        "defaultValue": any;
         "name": string;
         "options": string[];
         "param": any;
@@ -198,7 +197,6 @@ declare namespace LocalJSX {
         "version"?: string;
     }
     interface DashjsApiControlElement {
-        "defaultValue"?: any;
         "name"?: string;
         "onValueChanged"?: (event: CustomEvent<any>) => void;
         "options"?: string[];
