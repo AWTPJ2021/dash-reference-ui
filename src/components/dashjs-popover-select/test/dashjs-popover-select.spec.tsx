@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { DashjsPopoverSelect } from '../dashjs-popover-select';
 
-describe('dashjs-popover-select', () => {
+xdescribe('dashjs-popover-select', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [DashjsPopoverSelect],

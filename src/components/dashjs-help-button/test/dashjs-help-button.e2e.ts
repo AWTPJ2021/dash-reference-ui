@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('dashjs-help-button', () => {
+xdescribe('dashjs-help-button', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<dashjs-help-button></dashjs-help-button>');

@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { DashjsGenericModal } from '../dashjs-generic-modal';
 
-describe('dashjs-generic-modal', () => {
+xdescribe('dashjs-generic-modal', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [DashjsGenericModal],

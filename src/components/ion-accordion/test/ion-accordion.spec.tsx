@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { IonAccordion } from '../ion-accordion';
 
-describe('ion-accordion', () => {
+xdescribe('ion-accordion', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [IonAccordion],
