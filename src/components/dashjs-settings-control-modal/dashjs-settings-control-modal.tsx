@@ -14,10 +14,6 @@ export class DashjsSettingsControlModal {
   @Prop() settingsList: Setting[] = [];
   @Prop() settingsTree: Tree = undefined;
   @Prop() selectedSettings: Map<string, any> = new Map();
-  @Watch('selectedSettings')
-  test(newSettings: Setting) {
-    // console.log(newSettings);
-  }
   @State() viewedSettings: Setting[] = [];
   @State() triggerRerender = 0;
 
