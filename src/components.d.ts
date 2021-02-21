@@ -7,7 +7,6 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DashFunction, Setting, Tree, Type } from "./types/types";
 import { MediaPlayerSettingClass } from "dashjs";
-import { RouterHistory } from "@stencil/router";
 export namespace Components {
     interface DashjsApiControl {
         "version": string;
@@ -57,9 +56,14 @@ export namespace Components {
     interface DashjsReferenceUi {
     }
     interface DashjsSettingsControl {
-        "history": RouterHistory;
+        /**
+          * Resets the internal Settings
+         */
         "resetSettings": () => Promise<void>;
-        "version": string;
+        /**
+          * The version of which the settings should be loaded.
+         */
+        "version": string | undefined;
     }
     interface DashjsSettingsControlElement {
         "defaultValue": any;
@@ -252,9 +256,14 @@ declare namespace LocalJSX {
     interface DashjsReferenceUi {
     }
     interface DashjsSettingsControl {
-        "history"?: RouterHistory;
-        "onSettingsUpdated"?: (event: CustomEvent<any>) => void;
-        "version"?: string;
+        /**
+          * Emitted everytime the Settings are updated
+         */
+        "onSettingsUpdated"?: (event: CustomEvent<MediaPlayerSettingClass>) => void;
+        /**
+          * The version of which the settings should be loaded.
+         */
+        "version"?: string | undefined;
     }
     interface DashjsSettingsControlElement {
         "defaultValue"?: any;

@@ -1,7 +1,8 @@
 import { InputChangeEventDetail, modalController, popoverController } from '@ionic/core';
 import { Component, Host, h, Watch, Method, Event, EventEmitter, State, Prop, Element } from '@stencil/core';
-import { RouterHistory } from '@stencil/router';
+import { MediaPlayerSettingClass } from 'dashjs';
 import { Setting, Tree } from '../../types/types';
+import { LocalVariableStore } from '../../utils/localStorage';
 import { removeQueryParams, setParam } from '../../utils/queryParams';
 import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap, settingsListToTree } from '../../utils/utils';
 
@@ -11,10 +12,12 @@ import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap, sett
   shadow: false,
 })
 export class DashjsSettingsControl {
-  @Prop() history: RouterHistory;
-  @Prop() version: string = undefined;
+  /**
+   * The version of which the settings should be loaded.
+   */
+  @Prop() version: string | undefined = undefined;
   @Watch('version')
-  watchHandler() {
+  watchHandlerVersion(): void {
     this.loadSettingsMetaData();
   }
   /**
@@ -26,6 +29,25 @@ export class DashjsSettingsControl {
    * Settings which are not displayed are undefined
    */
   @State() selectedSettings: Map<string, any> = new Map();
+  @Watch('selectedSettings')
+  settingsUpdate(force: boolean = false): void {
+    if (this.autoUpdate || force === true) {
+      this.settingsUpdated.emit(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings));
+    }
+  }
+  /**
+   * Resets the internal Settings
+   */
+  @Method()
+  async resetSettings(): Promise<void> {
+    this.selectedSettings = generateSettingsMapFromList(this.settingsList);
+    removeQueryParams();
+  }
+  /**
+   * Emitted everytime the Settings are updated
+   */
+  @Event()
+  settingsUpdated: EventEmitter<MediaPlayerSettingClass>;
   /**
    * Tree Representation of the Settings
    */
@@ -34,21 +56,17 @@ export class DashjsSettingsControl {
    * Whether Changes of Settings should be automatically emitted or if it should be done manually
    */
   @State() autoUpdate: boolean = true;
+  @Watch('autoUpdate')
+  watchHandlerAutoUpdate(value: boolean): void {
+    LocalVariableStore.settings_autoupdate = value;
+  }
+  @Element() el: HTMLDashjsSettingsControlElement;
+
   private searchElement: HTMLInputElement;
   private debounceTimer: NodeJS.Timeout | undefined;
   private searchPopover: any;
-  @Element() el: HTMLDashjsSettingsControlElement;
 
-  @Method()
-  async resetSettings() {
-    this.selectedSettings = generateSettingsMapFromList(this.settingsList);
-    removeQueryParams();
-  }
-
-  @Event()
-  settingsUpdated: EventEmitter<any>;
-
-  async openSettings() {
+  private async openSettings() {
     const modal = await modalController.create({
       component: 'dashjs-settings-control-modal',
       cssClass: 'browse-settings-modal',
@@ -65,8 +83,9 @@ export class DashjsSettingsControl {
       this.selectedSettings = data;
     }
   }
-  componentWillLoad() {
-    if (this.version) {
+  componentWillLoad(): void {
+    this.autoUpdate = LocalVariableStore.settings_autoupdate;
+    if (this.version != undefined) {
       this.loadSettingsMetaData();
     }
   }
@@ -91,20 +110,13 @@ export class DashjsSettingsControl {
       });
   }
 
-  @Watch('selectedSettings')
-  settingsUpdate(force: boolean = false) {
-    if (this.autoUpdate || force === true) {
-      this.settingsUpdated.emit(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings));
-    }
-  }
-
-  removeSetting(id: string) {
+  private removeSetting(id: string): void {
     this.selectedSettings.set(id, undefined);
     setParam(id, undefined);
     this.selectedSettings = new Map(this.selectedSettings);
   }
 
-  updateSetting(id: string, value: any) {
+  private updateSetting(id: string, value: any): void {
     this.selectedSettings.set(id, value);
     setParam(id, value);
     this.selectedSettings = new Map(this.selectedSettings);
@@ -149,7 +161,7 @@ export class DashjsSettingsControl {
       }
     };
 
-    if (this.debounceTimer) {
+    if (this.debounceTimer != undefined) {
       clearTimeout(this.debounceTimer);
     }
     this.debounceTimer = setTimeout(next, 500);
