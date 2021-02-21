@@ -16,8 +16,15 @@ export class DashjsSettingsControlElement {
   render() {
     let control = <div>No known type!</div>;
     if (this.options != undefined) {
+      debugger;
       control = [
-        <ion-select class="input-border" placeholder="Select One" interface="popover" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}>
+        <ion-select
+          class="input-border"
+          placeholder="Select One"
+          interface="popover"
+          value={String(this.defaultValue)}
+          onIonChange={change => this.valueChanged.emit(change.detail.value)}
+        >
           {this.options.map(val => (
             <ion-select-option value={val.toString()}>{val}</ion-select-option>
           ))}
