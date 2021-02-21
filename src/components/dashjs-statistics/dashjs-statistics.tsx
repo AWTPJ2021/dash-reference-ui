@@ -16,7 +16,6 @@ export class DashjsStatistics {
   video_context: CanvasRenderingContext2D;
   audio_context: CanvasRenderingContext2D;
 
-  @Prop()
   videoInstance: any;
   audioInstance: any;
 
@@ -167,7 +166,7 @@ export class DashjsStatistics {
       let audioHttpMetrics = calculateHTTPMetrics('audio', dashMetrics?.getHttpRequests('audio'));
 
       this.audioMetricsDataMap['Buffer Length'].push(dashMetrics?.getCurrentBufferLevel('audio'));
-      this.audioMetricsDataMap['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('audio').droppedFrames);
+      this.audioMetricsDataMap['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('audio')?.droppedFrames);
       this.audioMetricsDataMap['Bitrate Downloading'].push(audioRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN);
       this.audioMetricsDataMap['Max Index'].push(dashAdapter?.getMaxIndexForBufferType('audio', periodIdx));
       if (audioHttpMetrics) {
