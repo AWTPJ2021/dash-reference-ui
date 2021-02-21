@@ -75,7 +75,6 @@ export namespace Components {
     }
     interface DashjsStatistics {
         "audio_data": any;
-        "videoInstance": any;
         "video_data": any;
     }
     interface DashjsTree {
@@ -274,7 +273,6 @@ declare namespace LocalJSX {
     }
     interface DashjsStatistics {
         "audio_data"?: any;
-        "videoInstance"?: any;
         "video_data"?: any;
     }
     interface DashjsTree {
