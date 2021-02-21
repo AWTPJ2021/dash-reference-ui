@@ -1,4 +1,4 @@
-import { Component, EventEmitter, h, Prop, Event, State } from '@stencil/core';
+import { Component, EventEmitter, h, Prop, Event } from '@stencil/core';
 import { Type } from '../../types/types';
 
 @Component({
@@ -13,10 +13,10 @@ export class DashjsSettingsControlElement {
   @Prop() defaultValue: any;
   @Event()
   valueChanged: EventEmitter<any>;
-  @State() control = (<div>No known type!</div>);
-  componentWillLoad() {
+  render() {
+    let control = <div>No known type!</div>;
     if (this.options != undefined) {
-      this.control = [
+      control = [
         <ion-select placeholder="Select One" interface="popover" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}>
           {this.options.map(val => (
             <ion-select-option value={val}>{val}</ion-select-option>
@@ -30,9 +30,9 @@ export class DashjsSettingsControlElement {
         // </ion-select>,
       ];
     } else if (this.type == Type.string) {
-      this.control = [<ion-input debounce={300} value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>];
+      control = [<ion-input debounce={300} value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>];
     } else if (this.type == Type.number) {
-      this.control = [
+      control = [
         <ion-input debounce={300} type="number" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>,
         // <ion-range min={20} max={80} step={2}>
         //   <ion-icon size="small" slot="start" name="sunny"></ion-icon>
@@ -40,15 +40,13 @@ export class DashjsSettingsControlElement {
         // </ion-range>
       ];
     } else if (this.type == Type.boolean) {
-      this.control = <ion-toggle value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.checked)}></ion-toggle>;
+      control = <ion-toggle value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.checked)}></ion-toggle>;
     }
-  }
-  render() {
     return (
       <ion-grid>
         <ion-row>
           <ion-col>{this.name}</ion-col>
-          <ion-col size="auto">{this.control}</ion-col>
+          <ion-col size="auto">{control}</ion-col>
         </ion-row>
       </ion-grid>
     );

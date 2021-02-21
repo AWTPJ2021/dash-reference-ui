@@ -232,7 +232,7 @@ export class DashjsSettingsControl {
                     tree={this.settingsTree}
                     elements={Array.from(this.selectedSettings.keys()).filter(k => this.selectedSettings.get(k) != undefined)}
                     renderFunc={key => {
-                      // Due to this beeing a function used in another component css cant be applied from the stylesheet
+                      // Due to this being a function used in another component css cant be applied from the stylesheet
                       const ioncolcss = {
                         display: 'flex',
                         alignItems: 'center',

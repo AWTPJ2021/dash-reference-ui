@@ -327,7 +327,7 @@ export class DashjsApiControl {
                         </ion-col>
                         <ion-col>
                           <dashjs-api-control-element
-                            name={key}
+                            name={currFunction.name}
                             type={currFunction.type}
                             param={currFunction.parameters}
                             paramDesc={currFunction.paramExplanation}
