@@ -56,7 +56,7 @@ export class DashjsSettingsControlModal {
                 }}
                 renderFuncSuffix={() => undefined}
                 renderFunc={key => {
-                  let setting = this.viewedSettings.filter(s => s.id === key)[0];
+                  const setting = this.viewedSettings.filter(s => s.id === key)[0];
                   return [
                     <ion-row
                       onClick={() => {

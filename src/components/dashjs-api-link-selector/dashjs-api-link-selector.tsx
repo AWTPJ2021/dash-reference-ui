@@ -12,7 +12,7 @@ export class PagePopover {
     composed: true,
     bubbles: true,
   })
-  setStream: EventEmitter<String>;
+  setStream: EventEmitter<string>;
 
   setStreamHandler(todo: any) {
     this.setStream.emit(todo);

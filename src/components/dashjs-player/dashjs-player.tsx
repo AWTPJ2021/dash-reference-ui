@@ -1,7 +1,7 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass } from 'dashjs';
 import { getMediaURL, getStringLocally } from '../../utils/utils';
-declare var dashjs: any;
+declare let dashjs: any;
 
 @Component({
   tag: 'dashjs-player',
@@ -46,8 +46,8 @@ export class DashjsPlayer {
         if (!this.player) {
           this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
-          var returnValue = this.player[event.detail.name](event.detail.param);
-          var toSend = {
+          const returnValue = this.player[event.detail.name](event.detail.param);
+          const toSend = {
             event: event.detail.name,
             return: returnValue,
           };
@@ -75,7 +75,7 @@ export class DashjsPlayer {
   }
 
   @Event()
-  streamMetricsEvent: EventEmitter<Object>;
+  streamMetricsEvent: EventEmitter<any>;
 
   streamMetricsEventHandler(player: any) {
     this.streamMetricsEvent.emit(player);
@@ -98,13 +98,13 @@ export class DashjsPlayer {
       this.player.reset();
     }
     const id = 'dashjssource';
-    var previousScript = document.getElementById(id);
+    const previousScript = document.getElementById(id);
     if (previousScript) {
       previousScript.remove();
     }
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.id = id;
-    script.onload = () => {};
+    // script.onload = () => {};
     script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
     document.head.appendChild(script);

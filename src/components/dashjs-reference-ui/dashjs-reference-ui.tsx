@@ -42,7 +42,7 @@ export class DashjsReferenceUi {
     }
   }
   render() {
-    let centercss = {
+    const centercss = {
       display: 'flex',
       alignItems: 'center',
       flexFlow: 'row',

@@ -28,7 +28,7 @@ export class DashjsAPIControlElement {
   updateControl() {
     this.control = [];
     if (this.param.length > 0) {
-      for (var i = 0; i < this.param.length; i++) {
+      for (let i = 0; i < this.param.length; i++) {
         switch (this.param[i].type) {
           case 'string':
             this.control.push(<ion-input class="input-border" debounce={300} value={''} onIonChange={change => this.setValue(change.detail.value)}></ion-input>);

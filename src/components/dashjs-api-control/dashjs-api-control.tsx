@@ -59,17 +59,17 @@ export class DashjsApiControl {
       .then((response: Response) => response.json())
       .then(response => {
         this.functionList = response;
-        for (var i = this.functionList.length - 1; i >= 0; i--) {
-          for (var j = 0; j < this.functionList[i].parameters.length; j++) {
+        for (let i = this.functionList.length - 1; i >= 0; i--) {
+          for (let j = 0; j < this.functionList[i].parameters.length; j++) {
             if (!this.validType(this.functionList[i].parameters[j].type)) {
               this.functionList.splice(i, 1);
             }
           }
         }
         this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
-        var savedSettings = getLocalInformation('api_functions');
+        const savedSettings = getLocalInformation('api_functions');
         if (savedSettings != null) {
-          for (var key in savedSettings) {
+          for (const key in savedSettings) {
             this.selectedFunctions.set(key, savedSettings[key]);
           }
         }
@@ -77,8 +77,8 @@ export class DashjsApiControl {
   }
 
   validType(any) {
-    var types = ['boolean', 'number', 'string', 'MediaType'];
-    for (var i in types) {
+    const types = ['boolean', 'number', 'string', 'MediaType'];
+    for (const i in types) {
       if (types[i] == any) return true;
     }
     return false;
@@ -146,7 +146,7 @@ export class DashjsApiControl {
     composed: true,
     bubbles: true,
   })
-  playerEvent: EventEmitter<String>;
+  playerEvent: EventEmitter<string>;
 
   playerEventHandler(todo: any) {
     this.playerEvent.emit(todo);
@@ -195,8 +195,8 @@ export class DashjsApiControl {
       return;
     }
     const next = async () => {
-      let regex = new RegExp(event.detail.value, 'i');
-      let matchingSettings = Array.from(this.selectedFunctions.keys())
+      const regex = new RegExp(event.detail.value, 'i');
+      const matchingSettings = Array.from(this.selectedFunctions.keys())
         // Filter only matching keys
         .filter(e => e.match(regex))
         // Filter Settings which are already shown
@@ -232,7 +232,7 @@ export class DashjsApiControl {
   }
 
   tryAddSetting(key: string) {
-    let matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
+    const matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
     } else {
@@ -310,11 +310,11 @@ export class DashjsApiControl {
                 {Array.from(this.selectedFunctions.keys())
                   .filter(k => this.selectedFunctions.get(k) != undefined)
                   .map(key => {
-                    let ioncolcss = {
+                    const ioncolcss = {
                       display: 'flex',
                       alignItems: 'center',
                     };
-                    let currFunction = this.functionList.filter(s => s.name === key)[0];
+                    const currFunction = this.functionList.filter(s => s.name === key)[0];
                     return (
                       <ion-row class="bottom-border">
                         <ion-col size="auto" style={ioncolcss}>

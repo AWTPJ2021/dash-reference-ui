@@ -60,10 +60,10 @@ export class DashjsStatistics {
   maxAudioIndex: number;
   latency: any;
   currentTime: any;
-  currentTimeArr: string[] = new Array();
+  currentTimeArr: string[] = [];
 
   chartVisibility(isVideo, title, checked) {
-    let toChange = isVideo ? this.videoInstance : this.audioInstance;
+    const toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds, index) {
       if (ds.label == title) {
         ds.hidden = checked ? false : true;
@@ -86,7 +86,7 @@ export class DashjsStatistics {
 
   clearChart(isVideo) {
     clearInterval(this.chartInterval);
-    let toChange = isVideo ? this.videoInstance : this.audioInstance;
+    const toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds) {
       ds.data = [0, 0, 0, 0, 0, 0];
     });
@@ -96,7 +96,7 @@ export class DashjsStatistics {
   @Watch('audio_data')
   audio_watcher(newData: any) {
     if (!this.audioDisable) {
-      for (let index in newData) {
+      for (const index in newData) {
         this.audioInstance.data.datasets[index].data.shift();
         this.audioInstance.data.datasets[index].data.push(newData[index]);
       }
@@ -125,7 +125,7 @@ export class DashjsStatistics {
 
     if (dashMetrics && streamInfo) {
       const periodIdx = streamInfo.index;
-      let currentTimeInSec = player.time().toFixed(0);
+      const currentTimeInSec = player.time().toFixed(0);
       this.currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
       this.currentTimeArr.push(this.currentTime);
       this.latency = Number(
@@ -136,8 +136,8 @@ export class DashjsStatistics {
       this.metricsDataMap.latency.push(this.latency);
 
       // Video Metrics
-      let videoRepSwitch = dashMetrics.getCurrentRepresentationSwitch('video');
-      let videoAdaptation = dashAdapter.getAdaptationForType(periodIdx, 'video', streamInfo);
+      const videoRepSwitch = dashMetrics.getCurrentRepresentationSwitch('video');
+      const videoAdaptation = dashAdapter.getAdaptationForType(periodIdx, 'video', streamInfo);
 
       this.videoBufferLength = dashMetrics.getCurrentBufferLevel('video');
       this.metricsDataMap['v_Buffer Length'].push(this.videoBufferLength);
@@ -160,7 +160,7 @@ export class DashjsStatistics {
       this.metricsDataMap['v_Max Index'].push(this.maxVideoIndex);
 
       // Audio Metrics
-      let audioRepSwitch = dashMetrics.getCurrentRepresentationSwitch('audio');
+      const audioRepSwitch = dashMetrics.getCurrentRepresentationSwitch('audio');
 
       this.audioBufferLevel = dashMetrics.getCurrentBufferLevel('audio');
       this.metricsDataMap['a_Buffer Level'].push(this.audioBufferLevel);
@@ -179,7 +179,7 @@ export class DashjsStatistics {
   @Watch('video_data')
   video_watcher(isVideo: boolean, newData: any, newLabels: any) {
     if (!this.videoDisable) {
-      let toChange = isVideo ? this.videoInstance : this.audioInstance;
+      const toChange = isVideo ? this.videoInstance : this.audioInstance;
       // for (let index in newData) {
       toChange.data.datasets[0].data = newData.slice(1).slice(-6);
       toChange.data.labels = newLabels.slice(1).slice(-6);
@@ -195,7 +195,7 @@ export class DashjsStatistics {
 
     this.video_context = this.video_canvas.getContext('2d');
     this.audio_context = this.audio_canvas.getContext('2d');
-    var dataExample = [
+    const dataExample = [
       {
         labels: ['00:00', '00:01', '00:02', '00:03', '00:04', '00:05'],
         datasets: [

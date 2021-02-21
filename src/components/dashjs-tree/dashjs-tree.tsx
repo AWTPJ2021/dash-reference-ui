@@ -23,7 +23,7 @@ export class DashjsTree {
   @State() elementsOnRoot: string[];
   componentWillRender() {
     if (!this.root) {
-      let regex = new RegExp(this.tree.name, 'i');
+      const regex = new RegExp(this.tree.name, 'i');
       this.elementsOnRoot = this.elements.filter(e => e.match(regex));
     } else {
       this.elementsOnRoot = this.elements;
