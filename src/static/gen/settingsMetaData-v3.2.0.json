@@ -19,7 +19,7 @@
     ],
     "name": "logLevel",
     "parent": "debug",
-    "enum-description": [
+    "enumLabels": [
       "None",
       "Fatal",
       "Error",
