@@ -2,33 +2,43 @@ import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEm
 import { MediaPlayerClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
 import { getMediaURL, getStringLocally } from '../../utils/utils';
-declare var dashjs: any;
-
+declare let dashjs: any;
+/**
+ * Loads dashjs player.
+ * It makes use of dashjs cdn to load the script
+ */
 @Component({
   tag: 'dashjs-player',
   styleUrl: 'dashjs-player.scss',
   shadow: false,
 })
 export class DashjsPlayer {
-  @Element()
-  private element: HTMLElement;
+  @Element() private element: HTMLDashjsPlayerElement;
   private player: MediaPlayerClass;
 
-  @State()
-  controlbar: any;
-
+  /**
+   * The Version of dashjs that should be loaded.
+   * e.g. v3.2.0
+   */
   @Prop() version: string = undefined;
   @Watch('version')
-  protected watchHandlerVersion() {
+  protected watchHandlerVersion(): void {
     this.loadOrUpdateDashJsScript();
   }
+  /**
+   * The Type of dashjs that should be loaded.
+   * e.g. debug or min
+   */
   @Prop() type: string = undefined;
   @Watch('type')
-  protected watchHandlerType() {
+  protected watchHandlerType(): void {
     this.loadOrUpdateDashJsScript();
   }
 
   @State() streamInterval: any;
+
+  @State()
+  controlbar: any;
 
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
@@ -44,6 +54,7 @@ export class DashjsPlayer {
         this.streamInterval = setInterval(() => {
           this.streamMetricsEventHandler(this.player);
         }, 1000);
+        // this.initPlayer(event.detail.autoPlay == 'true');
         break;
       case 'stop':
         this.player.reset();
@@ -53,8 +64,8 @@ export class DashjsPlayer {
         if (!this.player) {
           this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
-          var returnValue = this.player[event.detail.name](event.detail.param);
-          var toSend = {
+          const returnValue = this.player[event.detail.name].apply(this, event.detail.param);
+          const toSend = {
             event: event.detail.name,
             return: returnValue,
           };
@@ -81,24 +92,29 @@ export class DashjsPlayer {
     });
   }
 
-  @Event() streamMetricsEvent: EventEmitter<Object>;
+  @Event()
+  streamMetricsEvent: EventEmitter<any>;
 
   streamMetricsEventHandler(player: any) {
     player && this.streamMetricsEvent.emit(player);
   }
 
   componentDidLoad() {
-    // this.isPaused = this.player.isPaused();
     this.loadOrUpdateDashJsScript();
-    this.player = dashjs.MediaPlayer().create();
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), getMediaURL(), getStringLocally('api_autostart') == 'true');
-    this.controlbar.initialize();
-    // this.streamInterval = setInterval(() => {
-    //   this.streamMetricsEventHandler(this.player);
-    // }, 1000);
+    this.loadOrUpdateDashJsScript(getStringLocally('api_autostart') == 'true');
   }
 
-  private loadOrUpdateDashJsScript() {
+  private initPlayer(autoPlay: boolean = false): void {
+    this.player = dashjs.MediaPlayer().create();
+    this.player.initialize(this.element.querySelector('#myMainVideoPlayer, video'), getMediaURL(), autoPlay);
+    this.controlbar = new ControlBar(this.player);
+    this.controlbar.initialize();
+    this.streamInterval = setInterval(() => {
+      this.streamMetricsEventHandler(this.player);
+    }, 1000);
+  }
+
+  private loadOrUpdateDashJsScript(autoPlay: boolean = false) {
     if (this.version == undefined) {
       return;
     }
@@ -106,13 +122,15 @@ export class DashjsPlayer {
       this.player.reset();
     }
     const id = 'dashjssource';
-    var previousScript = document.getElementById(id);
+    const previousScript = document.getElementById(id);
     if (previousScript) {
       previousScript.remove();
     }
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.id = id;
-    script.onload = () => {};
+    script.onload = () => {
+      this.initPlayer(autoPlay);
+    };
     script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
     document.head.appendChild(script);

@@ -12,6 +12,9 @@ export namespace Components {
         "version": string;
     }
     interface DashjsApiControlElement {
+        /**
+          * The displayed name of the control element.
+         */
         "name": string;
         "options": string[];
         "param": any;
@@ -34,7 +37,13 @@ export namespace Components {
         "titleText": string;
     }
     interface DashjsPlayer {
+        /**
+          * The Type of dashjs that should be loaded. e.g. debug or min
+         */
         "type": string;
+        /**
+          * The Version of dashjs that should be loaded. e.g. v3.2.0
+         */
         "version": string;
     }
     interface DashjsPopoverSelect {
@@ -192,10 +201,13 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DashjsApiControl {
-        "onPlayerEvent"?: (event: CustomEvent<String>) => void;
+        "onPlayerEvent"?: (event: CustomEvent<string>) => void;
         "version"?: string;
     }
     interface DashjsApiControlElement {
+        /**
+          * The displayed name of the control element.
+         */
         "name"?: string;
         "onValueChanged"?: (event: CustomEvent<any>) => void;
         "options"?: string[];
@@ -208,7 +220,7 @@ declare namespace LocalJSX {
         "selectedFunctions"?: Map<string, any>;
     }
     interface DashjsApiLinkSelector {
-        "onSetStream"?: (event: CustomEvent<String>) => void;
+        "onSetStream"?: (event: CustomEvent<string>) => void;
         "sourceList"?: any[];
     }
     interface DashjsGenericModal {
@@ -221,8 +233,14 @@ declare namespace LocalJSX {
     }
     interface DashjsPlayer {
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
-        "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
+        "onStreamMetricsEvent"?: (event: CustomEvent<any>) => void;
+        /**
+          * The Type of dashjs that should be loaded. e.g. debug or min
+         */
         "type"?: string;
+        /**
+          * The Version of dashjs that should be loaded. e.g. v3.2.0
+         */
         "version"?: string;
     }
     interface DashjsPopoverSelect {
@@ -238,7 +256,7 @@ declare namespace LocalJSX {
     }
     interface DashjsSettingsControl {
         "history"?: RouterHistory;
-        "onSettingsUpdated"?: (event: CustomEvent<Object>) => void;
+        "onSettingsUpdated"?: (event: CustomEvent<any>) => void;
         "version"?: string;
     }
     interface DashjsSettingsControlElement {

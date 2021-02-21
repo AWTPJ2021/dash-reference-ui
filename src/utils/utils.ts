@@ -1,16 +1,16 @@
 import { Setting, DashFunction, Tree } from '../types/types';
 import * as objectPath from 'object-path';
 
-export function generateSettingsMapFromList(list: Setting[]) {
-  let map = new Map();
+export function generateSettingsMapFromList(list: Setting[]): Map<string, any> {
+  const map = new Map();
   list.forEach(element => {
     map.set(element.id, undefined);
   });
   return map;
 }
 
-export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, boolean>) {
-  let object = {
+export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, boolean>): { [key: string]: any } {
+  const object = {
     settings: undefined,
   };
   list.forEach(element => {
@@ -19,16 +19,16 @@ export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<s
   return object.settings;
 }
 
-export function generateFunctionsMapFromList(list: DashFunction[]) {
-  let map = new Map();
+export function generateFunctionsMapFromList(list: DashFunction[]): Map<string, any> {
+  const map = new Map();
   list.forEach(element => {
     map.set(element.name, undefined);
   });
   return map;
 }
 
-export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map: Map<string, boolean>) {
-  let object = {
+export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map: Map<string, boolean>): { [key: string]: any } {
+  const object = {
     functions: undefined,
   };
   list.forEach(element => {
@@ -38,7 +38,7 @@ export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map:
 }
 export function settingsListToTree(list: Setting[]): Tree {
   // Ignore first element in path as this is the root
-  let root: Tree = {
+  const root: Tree = {
     name: list[0].path[0],
     // child: {},
     elements: [],
@@ -186,58 +186,57 @@ export function chartDataset(metricsData: any, colors: Object) {
   return dataset;
 }
 
-export function deleteLocalKey(key : string, id : string) {
-  var toUpdate = JSON.parse(localStorage.getItem(key));
+export function deleteLocalKey(key: string, id: string): void {
+  const toUpdate = JSON.parse(localStorage.getItem(key));
   delete toUpdate[id];
   localStorage.setItem(key, JSON.stringify(toUpdate));
 }
 
-export function updateLocalKey(key : string, id : string, value : any) {
-    var toUpdate = JSON.parse(localStorage.getItem(key));
-    toUpdate[id] = value;
-    localStorage.setItem(key, JSON.stringify(toUpdate));
+export function updateLocalKey(key: string, id: string, value: any): void {
+  const toUpdate = JSON.parse(localStorage.getItem(key));
+  toUpdate[id] = value;
+  localStorage.setItem(key, JSON.stringify(toUpdate));
 }
 
-export function saveMapToLocalKey(localKey: string, map : Map<string, any>) {
-  var toSave = {};
+export function saveMapToLocalKey(localKey: string, map: Map<string, any>): void {
+  const toSave = {};
   map.forEach((value, key) => {
-    if(value != undefined) {
+    if (value != undefined) {
       toSave[key] = value;
     }
   });
   localStorage.setItem(localKey, JSON.stringify(toSave));
 }
 
-export function getLocalInformation(key : string) {
-  var info = localStorage.getItem(key);
+export function getLocalInformation(key: string): any {
+  const info = localStorage.getItem(key);
   return info != null ? JSON.parse(info) : null;
 }
 
-export function deleteLocalInformation(key : string) {
+export function deleteLocalInformation(key: string): void {
   localStorage.removeItem(key);
 }
 
-
-export function getMediaURL() {
-  return localStorage.getItem("mediaUrl") === null ? 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd' : localStorage.getItem('mediaUrl');
+export function getMediaURL(): string {
+  return localStorage.getItem('mediaUrl') === null ? 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd' : localStorage.getItem('mediaUrl');
 }
 
-export function setMediaURL(url : string) {
+export function setMediaURL(url: string): void {
   localStorage.setItem('mediaUrl', url);
 }
 
-export function resetMediaURL() {
+export function resetMediaURL(): void {
   localStorage.removeItem('mediaUrl');
 }
 
-export function saveStringLocally(key: string, value: string) {
+export function saveStringLocally(key: string, value: string): void {
   localStorage.setItem(key, value);
 }
 
-export function deleteStringLocally(key: string) {
+export function deleteStringLocally(key: string): void {
   localStorage.removeItem(key);
 }
 
-export function getStringLocally(key : string) {
+export function getStringLocally(key: string): string {
   return localStorage.getItem(key);
 }

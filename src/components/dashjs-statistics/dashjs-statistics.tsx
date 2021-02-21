@@ -23,11 +23,9 @@ export class DashjsStatistics {
   @Prop()
   video_data: any;
 
-  @State()
-  videoDisable: boolean = false;
+  @State() videoDisable: boolean = false;
 
-  @State()
-  audioDisable: boolean = false;
+  @State() audioDisable: boolean = false;
 
   @State()
   audioChartInterval: any;
@@ -75,10 +73,10 @@ export class DashjsStatistics {
 
   @State()
   currentTime: any;
-  currentTimeArr: string[] = new Array();
+  currentTimeArr: string[] = [];
 
   chartVisibility(isVideo, title, checked) {
-    let toChange = isVideo ? this.videoInstance : this.audioInstance;
+    const toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds, index) {
       if (ds.label == title) {
         ds.hidden = checked ? false : true;
@@ -187,8 +185,7 @@ export class DashjsStatistics {
 
     this.video_context = this.video_canvas.getContext('2d');
     this.audio_context = this.audio_canvas.getContext('2d');
-
-    var dataExample = [
+    const dataExample = [
       {
         labels: ['00:00', '00:01', '00:02', '00:03', '00:04', '00:05', '00:06', '00:07'],
         datasets: chartDataset(this.videoMetricsDataMap, this.chartColors),
