@@ -54,5 +54,8 @@ jobs:
             This PR is available as a preview [here](https://${{ env.STORAGE_NAME }}.z16.web.core.windows.net).
           reaction-type: "rocket"
 
-      - name: Build package
+      - name: Test
         run: npm run test
+
+      - name: Lint
+        run: npm run lint

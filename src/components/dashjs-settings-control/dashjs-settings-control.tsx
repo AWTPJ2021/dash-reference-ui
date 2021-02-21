@@ -36,7 +36,7 @@ export class DashjsSettingsControl {
   @State() searchElement: HTMLInputElement;
   debounceTimer: NodeJS.Timeout | undefined;
   searchPopover: any;
-  @Element() el: HTMLElement;
+  @Element() el: HTMLDashjsSettingsControlElement;
 
   @Method()
   async resetSettings() {
@@ -44,7 +44,8 @@ export class DashjsSettingsControl {
     this.removeQueryParams();
   }
 
-  @Event() settingsUpdated: EventEmitter<Object>;
+  @Event()
+  settingsUpdated: EventEmitter<any>;
 
   async openSettings() {
     const modal = await modalController.create({
@@ -74,7 +75,7 @@ export class DashjsSettingsControl {
       .then((response: Response) => response.json())
       .then(response => {
         this.settingsList = response;
-        let settings = generateSettingsMapFromList(this.settingsList);
+        const settings = generateSettingsMapFromList(this.settingsList);
         const urlParams = new URLSearchParams(window.location.search);
         settings.forEach((_value, key) => {
           if (urlParams.has(key)) {
@@ -144,8 +145,8 @@ export class DashjsSettingsControl {
       return;
     }
     const next = async () => {
-      let regex = new RegExp(event.detail.value, 'i');
-      let matchingSettings = Array.from(this.selectedSettings.keys())
+      const regex = new RegExp(event.detail.value, 'i');
+      const matchingSettings = Array.from(this.selectedSettings.keys())
         // Filter only matching keys
         .filter(e => e.match(regex))
         // Filter Settings which are already shown
@@ -163,7 +164,7 @@ export class DashjsSettingsControl {
         enterAnimation: undefined,
         componentProps: {
           options: matchingSettings,
-          isAPI: false
+          isAPI: false,
         },
       });
       await this.searchPopover.present();
@@ -181,15 +182,15 @@ export class DashjsSettingsControl {
   }
 
   tryAddSetting(key: string) {
-    let regex = new RegExp(key, 'i');
-    let matchingSettings = Array.from(this.selectedSettings.keys()).filter(e => e.match(regex));
+    const regex = new RegExp(key, 'i');
+    const matchingSettings = Array.from(this.selectedSettings.keys()).filter(e => e.match(regex));
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
     } else {
       return;
     }
     if (this.selectedSettings.has(key)) {
-      let setting = this.settingsList.find(el => el.id === key);
+      const setting = this.settingsList.find(el => el.id === key);
       this.updateSetting(key, setting != undefined ? (setting.example == undefined ? '' : setting.example) : undefined);
       this.searchElement.value = '';
     }
@@ -235,11 +236,11 @@ export class DashjsSettingsControl {
                     elements={Array.from(this.selectedSettings.keys()).filter(k => this.selectedSettings.get(k) != undefined)}
                     renderFunc={key => {
                       // Due to this beeing a function used in another component css cant be applied from the stylesheet
-                      let ioncolcss = {
+                      const ioncolcss = {
                         display: 'flex',
                         alignItems: 'center',
                       };
-                      let setting = this.settingsList.filter(s => s.id === key)[0];
+                      const setting = this.settingsList.filter(s => s.id === key)[0];
                       return (
                         <ion-row>
                           <ion-col size="auto" style={ioncolcss}>

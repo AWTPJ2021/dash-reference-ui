@@ -7,15 +7,18 @@ import { Type, MediaType } from '../../types/types';
   shadow: true,
 })
 export class DashjsAPIControlElement {
+  /**
+   * The displayed name of the control element.
+   */
   @Prop() name: string;
   @Prop() options: string[];
   @Prop() type: Type;
-  @Event() valueChanged: EventEmitter<any>;
+  @Event()
+  valueChanged: EventEmitter<any>;
   @Prop() param: any;
   @Prop() paramDesc: any;
   @State() control = [];
-
-  @State() functionValue : any = [""];
+  @State() functionValue: any = [""];
 
   setValue(counter : number, val : any) {
       this.functionValue[counter] = val;
@@ -24,22 +27,22 @@ export class DashjsAPIControlElement {
   updateControl() {
     this.control = [];
     if (this.param.length > 0) {
-      for(var i = 0; i<this.param.length; i++) {
+      for(let i = 0; i < this.param.length; i++) {
         const index = i;
         switch (this.param[i].type) {
-          case "string":
+          case 'string':
             this.control.push(<ion-input class="input-border" debounce={300} value={""} onIonChange={change => this.setValue(index, change.detail.value)}></ion-input>);
             this.control.push(<div class="gap"></div>);
             break;
-          case "number":
+          case 'number':
             this.control.push(<ion-input class="input-border" debounce={300} type="number" value={0} onIonChange={change => this.setValue(index, Number(change.detail.value))}></ion-input>);
             this.control.push(<div class="gap"></div>);
             break;
-          case "boolean":
+          case 'boolean':
             this.control.push(<ion-toggle onIonChange={change => this.setValue(index, change.detail.checked)}></ion-toggle>)
             this.control.push(<div class="gap"></div>);
             break;
-          case "MediaType": 
+          case 'MediaType':
             this.control.push(
             <ion-select class="input-border" placeholder="Select MediaType" interface="popover" onIonChange={change => this.setValue(index, change.detail.value)}>
             {Object.keys(MediaType).map(val => (
@@ -61,8 +64,14 @@ export class DashjsAPIControlElement {
     return (
       <ion-grid>
         <ion-row>
-          <ion-col class="middle">{this.name}</ion-col>
-          <ion-col size="auto"><ion-item lines="none">{this.control}</ion-item></ion-col>
+          <ion-col class="middle">
+            {this.name}
+          </ion-col>
+          <ion-col size="auto">
+             <ion-item lines="none">
+               {this.control}
+            </ion-item>
+          </ion-col>
         </ion-row>
       </ion-grid>
     );

@@ -3,11 +3,11 @@ import { generateSettingsMapFromList } from './utils';
 
 describe('generateSettingsMapFromList', () => {
   it('empty', async () => {
-    let list: Setting[] = [];
+    const list: Setting[] = [];
     expect(generateSettingsMapFromList(list)).toEqual(new Map());
   });
   it('filled', async () => {
-    let list: Setting[] = [
+    const list: Setting[] = [
       {
         id: 'test',
         activated: false,

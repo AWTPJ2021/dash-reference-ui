@@ -11,7 +11,8 @@ export class DashjsSettingsControlElement {
   @Prop() options: string[];
   @Prop() type: Type;
   @Prop() defaultValue: any;
-  @Event() valueChanged: EventEmitter<any>;
+  @Event()
+  valueChanged: EventEmitter<any>;
   @State() control = (<div>No known type!</div>);
   componentWillLoad() {
     if (this.options != undefined) {
