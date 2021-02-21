@@ -138,15 +138,14 @@ export class DashjsSettingsControl {
         leaveAnimation: undefined,
         enterAnimation: undefined,
         componentProps: {
-          options: matchingSettings,
-          isAPI: false,
+          options: matchingSettings.map(el => el.slice(9)),
         },
       });
       await this.searchPopover.present();
-      this.searchElement.focus(); //.select();
+      this.searchElement.focus();
       const { data } = await this.searchPopover.onWillDismiss();
       if (data) {
-        this.tryAddSetting(data);
+        this.tryAddSetting(data) ? (this.searchElement.value = '') : undefined;
       }
     };
 
@@ -156,19 +155,21 @@ export class DashjsSettingsControl {
     this.debounceTimer = setTimeout(next, 500);
   }
 
-  private tryAddSetting(key: string): void {
+  private tryAddSetting(key: string): boolean {
     const regex = new RegExp(key, 'i');
     const matchingSettings = Array.from(this.selectedSettings.keys()).filter(e => e.match(regex));
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
     } else {
-      return;
+      return false;
     }
     if (this.selectedSettings.has(key)) {
       const setting = this.settingsList.find(el => el.id === key);
       this.updateSetting(key, setting != undefined ? (setting.example == undefined ? '' : setting.example) : undefined);
       this.searchElement.value = '';
+      return true;
     }
+    return false;
   }
 
   private async showSettingsJSON() {

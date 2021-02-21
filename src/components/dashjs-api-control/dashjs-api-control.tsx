@@ -210,7 +210,6 @@ export class DashjsApiControl {
         enterAnimation: undefined,
         componentProps: {
           options: matchingSettings,
-          isAPI: true,
         },
       });
       await this.searchPopover.present();
