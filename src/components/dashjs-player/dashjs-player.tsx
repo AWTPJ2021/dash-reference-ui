@@ -39,6 +39,12 @@ export class DashjsPlayer {
 
   @State()
   controlbar: any;
+  // TODO: Really Bad practice! Use a better flow to get updates to statistics
+  @Event({
+    composed: true,
+    bubbles: true,
+  })
+  playerEvent: EventEmitter<any>;
 
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
@@ -47,7 +53,13 @@ export class DashjsPlayer {
         if (this.player) {
           this.player.reset();
         }
-        this.initPlayer(event.detail.autoPlay == 'true');
+        this.player = dashjs.MediaPlayer().create();
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), event.detail.autoPlay == 'true');
+        this.controlbar = new ControlBar(this.player);
+        this.controlbar.initialize();
+        this.streamInterval = setInterval(() => {
+          this.streamMetricsEventHandler(this.player);
+        }, 1000);
         break;
       case 'stop':
         this.player.reset();
@@ -97,16 +109,6 @@ export class DashjsPlayer {
     this.loadOrUpdateDashJsScript(getStringLocally('api_autostart') == 'true');
   }
 
-  private initPlayer(autoPlay: boolean = false): void {
-    this.player = dashjs.MediaPlayer().create();
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), autoPlay);
-    this.controlbar = new ControlBar(this.player);
-    this.controlbar.initialize();
-    this.streamInterval = setInterval(() => {
-      this.streamMetricsEventHandler(this.player);
-    }, 1000);
-  }
-
   private loadOrUpdateDashJsScript(autoPlay: boolean = false) {
     if (this.version == undefined) {
       return;
@@ -122,7 +124,7 @@ export class DashjsPlayer {
     const script = document.createElement('script');
     script.id = id;
     script.onload = () => {
-      this.initPlayer(autoPlay);
+      this.playerEvent.emit({ type: 'load', url: getMediaURL(), autoPlay: autoPlay });
     };
     script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 

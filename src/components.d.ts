@@ -232,6 +232,7 @@ declare namespace LocalJSX {
         "titleText"?: string;
     }
     interface DashjsPlayer {
+        "onPlayerEvent"?: (event: CustomEvent<any>) => void;
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<any>) => void;
         /**
