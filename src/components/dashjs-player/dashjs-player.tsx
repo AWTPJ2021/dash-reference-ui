@@ -1,7 +1,7 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
-import { getMediaURL, getStringLocally } from '../../utils/utils';
+import { LocalVariableStore } from '../../utils/localStorage';
 declare const dashjs: any;
 /**
  * Loads dashjs player.
@@ -66,7 +66,7 @@ export class DashjsPlayer {
         }
         this.player = dashjs.MediaPlayer().create();
         this.player.updateSettings(this.settings);
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), event.detail.autoPlay == 'true');
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
         this.streamInterval = setInterval(() => {
@@ -117,7 +117,7 @@ export class DashjsPlayer {
   }
 
   componentDidLoad() {
-    this.loadOrUpdateDashJsScript(getStringLocally('api_autostart') == 'true');
+    this.loadOrUpdateDashJsScript(LocalVariableStore.api_autostart);
   }
 
   private loadOrUpdateDashJsScript(autoPlay: boolean = false) {
@@ -148,14 +148,14 @@ export class DashjsPlayer {
       script.setAttribute(versionAttribute_string, this.version);
       script.setAttribute(typeAttribute_string, this.type);
       script.onload = () => {
-        this.playerEvent.emit({ type: 'load', url: getMediaURL(), autoPlay: autoPlay });
+        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
       };
       script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
       document.head.appendChild(script);
     } else {
       if (typeof dashjs != 'undefined') {
-        this.playerEvent.emit({ type: 'load', url: getMediaURL(), autoPlay: autoPlay });
+        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
       }
     }
   }

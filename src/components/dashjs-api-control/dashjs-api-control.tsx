@@ -1,20 +1,10 @@
-import { Component, Host, h, State, Event, Element, EventEmitter, Listen, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, State, Event, EventEmitter, Listen, Prop, Watch } from '@stencil/core';
 import { DashFunction } from '../../types/types';
 import { modalController, popoverController, toastController, InputChangeEventDetail } from '@ionic/core';
-import {
-  generateFunctionsMapFromList,
-  updateLocalKey,
-  deleteLocalKey,
-  saveMapToLocalKey,
-  getLocalInformation,
-  deleteLocalInformation,
-  getMediaURL,
-  setMediaURL,
-  resetMediaURL,
-  saveStringLocally,
-  getStringLocally,
-} from '../../utils/utils';
+import { LocalStorage, LocalVariableStore } from '../../utils/localStorage';
+import { generateFunctionsMapFromList } from '../../utils/utils';
 
+const STRING_API_FUNCTIONS = 'api_functions';
 @Component({
   tag: 'dashjs-api-control',
   styleUrl: 'dashjs-api-control.css',
@@ -23,15 +13,17 @@ import {
 export class DashjsApiControl {
   @Prop() version: string = undefined;
   @Watch('version')
-  watchHandler() {
+  protected watchHandlerVersion(): void {
     this.loadSettingsMetaData();
   }
 
-  @Element() private element: HTMLDashjsApiControlElement;
-
   @State() sourceList: any[] = [];
 
-  @State() autoPlay: boolean;
+  @State() autostart: boolean;
+  @Watch('autostart')
+  protected watchHandlerAutostart(value): void {
+    LocalVariableStore.api_autostart = value;
+  }
 
   @State() mediaUrl: string;
 
@@ -51,7 +43,8 @@ export class DashjsApiControl {
     if (this.version) {
       this.loadSettingsMetaData();
     }
-    this.mediaUrl = getMediaURL();
+    this.mediaUrl = LocalVariableStore.mediaUrl;
+    this.autostart = LocalVariableStore.api_autostart;
   }
 
   private loadSettingsMetaData() {
@@ -67,7 +60,7 @@ export class DashjsApiControl {
           }
         }
         this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
-        const savedSettings = getLocalInformation('api_functions');
+        const savedSettings = LocalStorage.getKeyValueObject(STRING_API_FUNCTIONS);
         if (savedSettings != null) {
           for (const key in savedSettings) {
             this.selectedFunctions.set(key, savedSettings[key]);
@@ -76,7 +69,7 @@ export class DashjsApiControl {
       });
   }
 
-  validType(any) {
+  private validType(any) {
     const types = ['boolean', 'number', 'string', 'MediaType'];
     for (const i in types) {
       if (types[i] == any) return true;
@@ -84,7 +77,7 @@ export class DashjsApiControl {
     return false;
   }
 
-  async openFunctions() {
+  private async openFunctions() {
     const modal = await modalController.create({
       component: 'dashjs-api-control-modal',
       cssClass: 'browse-settings-modal',
@@ -98,44 +91,44 @@ export class DashjsApiControl {
     const { data } = await modal.onWillDismiss();
     if (data) {
       this.selectedFunctions = data;
-      saveMapToLocalKey('api_functions', this.selectedFunctions);
+      LocalStorage.saveMapToLocalKey(STRING_API_FUNCTIONS, this.selectedFunctions);
     }
   }
 
-  stopMedia() {
+  private stopMedia() {
     this.playerEventHandler({ type: 'stop' });
-    resetMediaURL();
-    this.mediaUrl = getMediaURL();
+    LocalVariableStore.resetMediaUrl();
+    this.mediaUrl = LocalVariableStore.mediaUrl;
   }
 
-  loadMedia() {
-    this.playerEventHandler({ type: 'load', url: this.mediaUrl, autoPlay: this.element.querySelector('#autol').getAttribute('aria-checked') });
+  private loadMedia() {
+    this.playerEventHandler({ type: 'load', url: this.mediaUrl, autoPlay: this.autostart });
   }
 
   @Listen('setStream', { target: 'document' })
   setStreamEventHandler(event) {
     this.mediaUrl = event.detail;
-    setMediaURL(event.detail);
+    LocalVariableStore.mediaUrl = event.detail;
     popoverController.dismiss();
     this.loadMedia();
   }
 
-  removeFunction(id: string) {
+  private removeFunction(id: string) {
     this.selectedFunctions.set(id, undefined);
     this.selectedFunctions = new Map(this.selectedFunctions);
-    deleteLocalKey('api_functions', id);
+    LocalStorage.deleteKeyInKeyValueObject(STRING_API_FUNCTIONS, id);
   }
 
-  updateFunction(id: string, value: any) {
+  private updateFunction(id: string, value: any) {
     this.selectedFunctions.set(id, value);
     this.selectedFunctions = new Map(this.selectedFunctions);
     this.playerEventHandler({ type: 'function', name: id, param: value });
-    updateLocalKey('api_functions', id, value);
+    LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, id, value);
   }
 
-  async resetFunctions() {
+  private async resetFunctions() {
     this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
-    deleteLocalInformation('api_functions');
+    LocalStorage.deleteKey(STRING_API_FUNCTIONS);
   }
 
   @Event({
@@ -148,7 +141,7 @@ export class DashjsApiControl {
     this.playerEvent.emit(todo);
   }
 
-  async presentPopover(ev: any) {
+  private async presentPopover(ev: any) {
     const popover = await popoverController.create({
       component: 'dashjs-api-link-selector',
       event: ev,
@@ -170,17 +163,12 @@ export class DashjsApiControl {
     toast.present();
   }
 
-  updateAutostart(event: any) {
-    saveStringLocally('api_autostart', event.detail.checked);
-  }
-
-  updateMediaUrl(event: any) {
-    if (event.detail.value == '') resetMediaURL();
-    else setMediaURL(event.detail.value);
+  private updateMediaUrl(event: any) {
+    LocalVariableStore.mediaUrl = event.detail.value;
     this.mediaUrl = event.detail.value;
   }
 
-  async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
+  private async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
     if (event.detail.value == '') {
       if (this.debounceTimer) {
         clearTimeout(this.debounceTimer);
@@ -216,7 +204,7 @@ export class DashjsApiControl {
       this.searchElement.focus(); //.select();
       const { data } = await this.searchPopover.onWillDismiss();
       if (data) {
-        this.tryAddSetting(data);
+        this.tryAddApiFunction(data);
       }
     };
 
@@ -226,7 +214,7 @@ export class DashjsApiControl {
     this.debounceTimer = setTimeout(next, 500);
   }
 
-  tryAddSetting(key: string) {
+  private tryAddApiFunction(key: string) {
     const matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
@@ -236,11 +224,11 @@ export class DashjsApiControl {
     if (this.selectedFunctions.has(key)) {
       this.selectedFunctions.set(key, []);
       this.selectedFunctions = new Map(this.selectedFunctions);
-      updateLocalKey('api_functions', key, this.functionList.filter(s => s.name === key)[0].parameters);
+      LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, key, this.functionList.filter(s => s.name === key)[0].parameters);
     }
   }
 
-  async showMPDInfo() {
+  private async showMPDInfo() {
     fetch(this.mediaUrl).then(async response => {
       const modal = await modalController.create({
         component: 'dashjs-generic-modal',
@@ -272,8 +260,10 @@ export class DashjsApiControl {
             Auto start{' '}
             <ion-toggle
               id="autol"
-              onIonChange={event => this.updateAutostart(event)}
-              checked={getStringLocally('api_autostart') === null ? false : getStringLocally('api_autostart') === 'true'}
+              onIonChange={event => {
+                this.autostart = event.detail.checked;
+              }}
+              checked={this.autostart}
             ></ion-toggle>
           </div>
           <ion-grid>
@@ -348,7 +338,7 @@ export class DashjsApiControl {
                 ref={el => (this.searchElement = (el as unknown) as HTMLInputElement)}
                 placeholder="Add more API calls..."
                 onIonChange={event => this.updateSearch(event)}
-                onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
+                onKeyPress={event => (event.code === 'Enter' ? this.tryAddApiFunction((event.target as any).value) : null)}
               ></ion-input>
               <ion-button shape="round" color="dark" onClick={() => this.openFunctions()}>
                 Browse API Calls
