@@ -195,7 +195,7 @@ export class DashjsSettingsControl {
               Copy Settings
             </ion-button>
             {this.autoUpdate ? undefined : (
-              <ion-button onClick={() => this.settingsUpdate(true)} style={{ marginRight: '15px' }}>
+              <ion-button onClick={() => this.settingsUpdate(true)} shape="round" color="dark" style={{ marginRight: '15px' }}>
                 Update
               </ion-button>
             )}
