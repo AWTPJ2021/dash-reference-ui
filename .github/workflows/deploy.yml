@@ -22,6 +22,7 @@ jobs:
         run: npm run gen-meta
         env:
           ONLY_FIRST: "false"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build package
         run: npm run build
