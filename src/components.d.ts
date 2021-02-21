@@ -6,6 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DashFunction, Setting, Tree, Type } from "./types/types";
+import { MediaPlayerSettingClass } from "dashjs";
 import { RouterHistory } from "@stencil/router";
 export namespace Components {
     interface DashjsApiControl {
@@ -38,6 +39,10 @@ export namespace Components {
     }
     interface DashjsPlayer {
         /**
+          * The Settings of dashjs that should be used. e.g. v3.2.0
+         */
+        "settings": MediaPlayerSettingClass;
+        /**
           * The Type of dashjs that should be loaded. e.g. debug or min
          */
         "type": string;
@@ -51,10 +56,6 @@ export namespace Components {
         "options": string[];
     }
     interface DashjsReferenceUi {
-        "selectedType": string;
-        "selectedVersion": string;
-        "type": string[];
-        "versions": string[];
     }
     interface DashjsSettingsControl {
         "history": RouterHistory;
@@ -234,6 +235,10 @@ declare namespace LocalJSX {
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<any>) => void;
         /**
+          * The Settings of dashjs that should be used. e.g. v3.2.0
+         */
+        "settings"?: MediaPlayerSettingClass;
+        /**
           * The Type of dashjs that should be loaded. e.g. debug or min
          */
         "type"?: string;
@@ -247,10 +252,6 @@ declare namespace LocalJSX {
         "options"?: string[];
     }
     interface DashjsReferenceUi {
-        "selectedType"?: string;
-        "selectedVersion"?: string;
-        "type"?: string[];
-        "versions"?: string[];
     }
     interface DashjsSettingsControl {
         "history"?: RouterHistory;
