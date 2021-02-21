@@ -19,3 +19,9 @@
   max-width: 80%;
 }
 
+.bottom-border {
+  margin-left: 5px !important;
+  margin-right: 5px !important;
+  border-bottom: 1px solid;
+  border-color: rgb(0,0,0,0.2);
+}

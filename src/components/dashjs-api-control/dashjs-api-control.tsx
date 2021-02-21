@@ -1,7 +1,7 @@
 import { Component, Host, h, State, Event, Element, EventEmitter, Listen, Prop, Watch } from '@stencil/core';
 import { DashFunction } from '../../types/types';
-import { modalController, popoverController, toastController } from '@ionic/core';
-import { generateFunctionsMapFromList } from '../../utils/utils';
+import { modalController, popoverController, toastController, InputChangeEventDetail } from '@ionic/core';
+import { generateFunctionsMapFromList, updateLocalKey, deleteLocalKey, saveMapToLocalKey, getLocalInformation, deleteLocalInformation, getMediaURL, setMediaURL, resetMediaURL, saveStringLocally, getStringLocally } from '../../utils/utils';
 
 @Component({
   tag: 'dashjs-api-control',
@@ -21,22 +21,25 @@ export class DashjsApiControl {
 
   @State() autoPlay: boolean;
 
-  @State() mediaUrl: string = 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd';
+  @State() mediaUrl: string;
 
   @State() functionList: DashFunction[] = [];
   @State() selectedFunctions: Map<string, any> = new Map();
   @State() displayedFunction: string = '';
+  @State() searchElement: HTMLInputElement;
+  debounceTimer: NodeJS.Timeout | undefined;
+  searchPopover: any;
 
   componentWillLoad() {
     fetch('/static/sources.json')
       .then((response: Response) => response.json())
       .then(response => {
         this.sourceList = response.items;
-        console.log('Here is the source: ' + this.sourceList.length);
       });
     if (this.version) {
       this.loadSettingsMetaData();
     }
+    this.mediaUrl = getMediaURL();
   }
 
   private loadSettingsMetaData() {
@@ -45,23 +48,24 @@ export class DashjsApiControl {
       .then(response => {
         this.functionList = response;
         for (var i = this.functionList.length - 1; i >= 0; i--) {
-          if (this.functionList[i].parameters.length > 1) {
-            this.functionList.splice(i, 1);
-          }
-          if (this.functionList[i].parameters.length == 1) {
-            if (!this.validType(this.functionList[i].parameters[0].type)) {
-              this.functionList.splice(i, 1);
-            }
+          for(var j = 0; j < this.functionList[i].parameters.length; j++) {
+              if (!this.validType(this.functionList[i].parameters[j].type)) {
+                this.functionList.splice(i, 1);
+              }
           }
         }
         this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
-        console.log(this.functionList);
-        console.log(this.selectedFunctions);
+        var savedSettings = getLocalInformation('api_functions');
+        if(savedSettings != null) {
+          for(var key in savedSettings) {
+            this.selectedFunctions.set(key, savedSettings[key]);
+          }
+        }
       });
   }
 
   validType(any) {
-    var types = ['boolean', 'number', 'string'];
+    var types = ['boolean', 'number', 'string', 'MediaType'];
     for (var i in types) {
       if (types[i] == any) return true;
     }
@@ -82,11 +86,14 @@ export class DashjsApiControl {
     const { data } = await modal.onWillDismiss();
     if (data) {
       this.selectedFunctions = data;
+      saveMapToLocalKey('api_functions', this.selectedFunctions);
     }
   }
 
   stopMedia() {
     this.playerEventHandler({ type: 'stop' });
+    resetMediaURL();
+    this.mediaUrl = getMediaURL();
   }
 
   loadMedia() {
@@ -96,6 +103,7 @@ export class DashjsApiControl {
   @Listen('setStream', { target: 'document' })
   setStreamEventHandler(event) {
     this.mediaUrl = event.detail;
+    setMediaURL(event.detail);
     popoverController.dismiss();
     this.loadMedia();
   }
@@ -103,16 +111,23 @@ export class DashjsApiControl {
   removeFunction(id: string) {
     this.selectedFunctions.set(id, undefined);
     this.selectedFunctions = new Map(this.selectedFunctions);
+    deleteLocalKey('api_functions', id);
   }
 
   updateFunction(id: string, value: any) {
     this.selectedFunctions.set(id, value);
     this.selectedFunctions = new Map(this.selectedFunctions);
     this.playerEventHandler({ type: 'function', name: id, param: value });
+    updateLocalKey('api_functions', id, value);
+  }
+
+  async resetFunctions() {
+    this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
+    deleteLocalInformation('api_functions');
   }
 
   protected componentDidLoad(): void {
-    this.playerEventHandler({ type: 'autoload', autoPlay: this.element.querySelector('#autol').getAttribute('aria-checked') });
+    this.searchElement = this.element.querySelector('#searchApiInput');
   }
 
   @Event({
@@ -138,10 +153,81 @@ export class DashjsApiControl {
   @Listen('playerResponse', { target: 'document' })
   async playerResponseHandler(event) {
     const toast = await toastController.create({
-      message: 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
+      message: event.detail.return === null ?  "Please initialize the player." : 'API function "' + event.detail.event + '" was called.\nReturn value: ' + JSON.stringify(event.detail.return),
       duration: 2000,
     });
     toast.present();
+  }
+
+  updateAutostart(event : any) {
+      saveStringLocally('api_autostart', event.detail.checked);
+  }
+
+  updateMediaUrl(event: any) {
+    if (event.detail.value == '') resetMediaURL();
+    else  setMediaURL(event.detail.value);
+    this.mediaUrl = event.detail.value;
+  }
+
+  async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
+    if (event.detail.value == '') {
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer);
+      }
+      if (this.searchPopover) {
+        await this.searchPopover.dismiss();
+      }
+      return;
+    }
+    const next = async () => {
+      let regex = new RegExp(event.detail.value, 'i');
+      let matchingSettings = Array.from(this.selectedFunctions.keys())
+        // Filter only matching keys
+        .filter(e => e.match(regex))
+        // Filter Settings which are already shown
+        .filter(e => this.selectedFunctions.get(e) == undefined);
+      if (this.searchPopover) {
+        await this.searchPopover.dismiss();
+      }
+      this.searchPopover = await popoverController.create({
+        component: 'dashjs-popover-select',
+        cssClass: 'settings-search-popover',
+        showBackdrop: false,
+        event: event,
+        keyboardClose: false,
+        leaveAnimation: undefined,
+        enterAnimation: undefined,
+        componentProps: {
+          options: matchingSettings,
+          isAPI: true
+        },
+      });
+      await this.searchPopover.present();
+      this.searchElement.focus(); //.select();
+      const { data } = await this.searchPopover.onWillDismiss();
+      if (data) {
+        this.tryAddSetting(data);
+      }
+    };
+
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+    this.debounceTimer = setTimeout(next, 500);
+  }
+
+  tryAddSetting(key: string) {
+    let matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
+    if (matchingSettings.length === 1) {
+      key = matchingSettings[0];
+    } else {
+      return;
+    }
+    if (this.selectedFunctions.has(key)) {
+      this.selectedFunctions.set(key, []);
+      this.selectedFunctions = new Map(this.selectedFunctions);
+      updateLocalKey('api_functions', key, this.functionList.filter(s => s.name === key)[0].parameters);
+    }
   }
 
   async showMPDInfo() {
@@ -166,6 +252,7 @@ export class DashjsApiControl {
       });
       await modal.present();
     });
+
   }
 
   render() {
@@ -173,76 +260,91 @@ export class DashjsApiControl {
       <Host>
         <ion-accordion titleText="API">
           <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
-            Auto start <ion-toggle id="autol" checked></ion-toggle>
+            Auto start <ion-toggle id="autol" onIonChange={event => this.updateAutostart(event)} checked={getStringLocally('api_autostart') === null ? false : getStringLocally('api_autostart') === 'true'}></ion-toggle>
           </div>
           <ion-grid>
             <ion-row>
               <ion-col size="2">
                 <ion-button shape="round" onClick={ev => this.presentPopover(ev)} class="fill_width">
-                  Select Stream<ion-icon name="arrow-dropdown"></ion-icon>
+                  Select Stream&nbsp;<ion-icon name="caret-down-circle"></ion-icon>
                 </ion-button>
               </ion-col>
-              <ion-col size="8">
+              <ion-col size="6">
                 <ion-item>
-                  <ion-input id="stream_url" value={this.mediaUrl}></ion-input>
+                  <ion-input id="stream_url" value={this.mediaUrl} onIonChange={event => this.updateMediaUrl(event)}></ion-input>
                 </ion-item>
               </ion-col>
               <ion-col>
-                <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showMPDInfo()}>
-                  Info
+                <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showMPDInfo()} class="ion-float-right">
+                  <ion-icon name="information"></ion-icon>
                 </ion-button>
-                <ion-button shape="round" color="dark" onClick={() => this.stopMedia()}>
+                <ion-button shape="round" color="dark" onClick={() => this.stopMedia()} class="ion-float-right">
                   Reset
                 </ion-button>
-                <ion-button shape="round" id="load" onClick={() => this.loadMedia()}>
+                <ion-button shape="round" id="load" onClick={() => this.loadMedia()} class="ion-float-right">
                   (Re)Load
                 </ion-button>
               </ion-col>
             </ion-row>
-            <ion-row>
-              {Array.from(this.selectedFunctions.keys())
-                .filter(k => this.selectedFunctions.get(k) != undefined)
-                .map(s => (
-                  <ion-chip
-                    color={s === this.displayedFunction ? 'primary' : 'secondary'}
-                    onClick={() => {
-                      this.displayedFunction = s;
-                    }}
-                  >
-                    <ion-label>{s}</ion-label>
-                    <ion-icon
-                      name="close-circle"
-                      onClick={event => {
-                        event.stopPropagation();
-                        this.removeFunction(s);
-                      }}
-                    ></ion-icon>
-                  </ion-chip>
-                ))}
-              {/* <ion-input placeholder="Add more settings..."></ion-input> */}
-            </ion-row>
-            <ion-row>
-              <ion-button shape="round" id="load" color="dark" onClick={() => this.openFunctions()}>
-                Browse API calls <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
-              </ion-button>
-            </ion-row>
-            <ion-row>
-              <ion-list style={{ width: '100%' }}>
+            <ion-row > 
+              <ion-list style={{ width: '100%' }} lines="full">
                 {Array.from(this.selectedFunctions.keys())
                   .filter(k => this.selectedFunctions.get(k) != undefined)
-                  .map(key => (
-                    <dashjs-api-control-element
-                      name={key}
-                      param={this.functionList.filter(s => s.name === key)[0].parameters}
-                      paramDesc={this.functionList.filter(s => s.name === key)[0].paramExplanation}
-                      onValueChanged={change => {
-                        this.updateFunction(key, change.detail);
-                      }}
-                    ></dashjs-api-control-element>
-                  ))}
+                  .map(key => {
+                    let ioncolcss = {
+                      display: 'flex',
+                      alignItems: 'center',
+                    };
+                    let currFunction = this.functionList.filter(s => s.name === key)[0];
+                    return (
+                      <ion-row class="bottom-border">
+                        <ion-col size="auto" style={ioncolcss}>
+                          <ion-button
+                            size="small"
+                            fill="clear"
+                            onClick={event => {
+                              event.stopPropagation();
+                              this.removeFunction(key);
+                            }}
+                          >
+                            <ion-icon slot="icon-only" color="dark" name="close-circle-outline"></ion-icon>
+                          </ion-button>
+                        </ion-col>
+                        <ion-col>
+                        <dashjs-api-control-element
+                          name={key}
+                          type={currFunction.type}
+                          param={currFunction.parameters}
+                          paramDesc={currFunction.paramExplanation}
+                          onValueChanged={change => {
+                            this.updateFunction(key, change.detail);
+                          }}
+                        ></dashjs-api-control-element>
+                        </ion-col>
+                        <ion-col size="auto" style={ioncolcss}>
+                        <dashjs-help-button helperText={currFunction.description} titleText={'Help - ' + currFunction.name}></dashjs-help-button>
+                        </ion-col>
+                      </ion-row>
+                    )
+                  })}
+                  
               </ion-list>
-              {/* <dashjs-settings-control-element type={this.settingsList.filter(s => s.id === this.displayedSetting)[0].type}></dashjs-settings-control-element> */}
             </ion-row>
+            <ion-row>
+                  <ion-input
+                    id="searchApiInput"
+                    placeholder="Add more API calls..."
+                    onIonChange={event => this.updateSearch(event)}
+                    onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
+                  ></ion-input>
+                  <ion-button shape="round" color="dark" onClick={() => this.openFunctions()}>
+                    Browse API Calls
+                    <ion-icon slot="end" name="search"></ion-icon>
+                  </ion-button>
+                  <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetFunctions()}>
+                    Reset
+                  </ion-button>
+              </ion-row>
           </ion-grid>
         </ion-accordion>
       </Host>

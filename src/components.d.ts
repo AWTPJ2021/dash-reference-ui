@@ -13,8 +13,10 @@ export namespace Components {
     }
     interface DashjsApiControlElement {
         "name": string;
+        "options": string[];
         "param": any;
         "paramDesc": any;
+        "type": Type;
     }
     interface DashjsApiControlModal {
         "functionList": DashFunction[];
@@ -32,12 +34,11 @@ export namespace Components {
         "titleText": string;
     }
     interface DashjsPlayer {
-        "streamUrl": string;
         "type": string;
-        "url": string;
         "version": string;
     }
     interface DashjsPopoverSelect {
+        "isAPI": boolean;
         "options": string[];
     }
     interface DashjsReferenceUi {
@@ -198,8 +199,10 @@ declare namespace LocalJSX {
     interface DashjsApiControlElement {
         "name"?: string;
         "onValueChanged"?: (event: CustomEvent<any>) => void;
+        "options"?: string[];
         "param"?: any;
         "paramDesc"?: any;
+        "type"?: Type;
     }
     interface DashjsApiControlModal {
         "functionList"?: DashFunction[];
@@ -220,12 +223,11 @@ declare namespace LocalJSX {
     interface DashjsPlayer {
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
-        "streamUrl"?: string;
         "type"?: string;
-        "url"?: string;
         "version"?: string;
     }
     interface DashjsPopoverSelect {
+        "isAPI"?: boolean;
         "options"?: string[];
     }
     interface DashjsReferenceUi {

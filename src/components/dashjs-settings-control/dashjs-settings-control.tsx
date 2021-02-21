@@ -163,6 +163,7 @@ export class DashjsSettingsControl {
         enterAnimation: undefined,
         componentProps: {
           options: matchingSettings,
+          isAPI: false
         },
       });
       await this.searchPopover.present();
@@ -282,7 +283,7 @@ export class DashjsSettingsControl {
                   ></ion-input>
                   <ion-button shape="round" color="dark" onClick={() => this.openSettings()}>
                     Browse Settings
-                    <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+                    <ion-icon slot="end" name="search"></ion-icon>
                   </ion-button>
                   <ion-button shape="round" fill="outline" color="dark" onClick={() => this.resetSettings()}>
                     Reset
