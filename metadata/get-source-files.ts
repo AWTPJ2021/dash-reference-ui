@@ -52,25 +52,28 @@ export async function downloadSourceFiles(config: DownloadSourceFilesConfig) {
     owner: config.owner,
     repo: config.repo,
   })) {
-    response.data.forEach(release => {
-      console.info(release.tag_name);
-      if (!fs.existsSync(config.outputFolder)) {
-        fs.mkdirSync(config.outputFolder, { recursive: true });
-      }
-      const folder = `${config.outputFolder}/${release.tag_name}`;
-      if (!fs.existsSync(folder)) {
-        fs.mkdirSync(folder);
-      }
-      fetchFile(config, octokit, release.tag_name, 'src/core/Settings.js', `${folder}/settings.js`);
-      fetchFile(config, octokit, release.tag_name, 'src/streaming/MediaPlayer.js', `${folder}/MediaPlayer.js`);
-      fetchFile(config, octokit, release.tag_name, 'index.d.ts', `${folder}/index.d.ts`);
-    });
+    await Promise.all(
+      response.data.map(async release => {
+        console.info(release.tag_name);
+        if (!fs.existsSync(config.outputFolder)) {
+          fs.mkdirSync(config.outputFolder, { recursive: true });
+        }
+        const folder = `${config.outputFolder}/${release.tag_name}`;
+        if (!fs.existsSync(folder)) {
+          fs.mkdirSync(folder);
+        }
+        await fetchFile(config, octokit, release.tag_name, 'src/core/Settings.js', `${folder}/settings.js`);
+        await fetchFile(config, octokit, release.tag_name, 'src/streaming/MediaPlayer.js', `${folder}/MediaPlayer.js`);
+        await fetchFile(config, octokit, release.tag_name, 'index.d.ts', `${folder}/index.d.ts`);
+      }),
+    );
   }
-  octokit.rateLimit.get().then(rateLimit => console.info(rateLimit.data.rate));
+  console.log('FINISHED DOWNLOAD');
+  return await octokit.rateLimit.get().then(rateLimit => console.info(rateLimit.data.rate));
 }
 
 async function fetchFile(config: DownloadSourceFilesConfig, octokit: Octokit, ref: string, filepath: string, out: string) {
-  octokit.repos
+  return await octokit.repos
     .getContent({
       owner: config.owner,
       repo: config.repo,
