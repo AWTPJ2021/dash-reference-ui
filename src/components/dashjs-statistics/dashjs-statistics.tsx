@@ -16,7 +16,6 @@ export class DashjsStatistics {
   video_context: CanvasRenderingContext2D;
   audio_context: CanvasRenderingContext2D;
 
-  @Prop()
   videoInstance: any;
   audioInstance: any;
 
@@ -118,26 +117,6 @@ export class DashjsStatistics {
     toChange.update();
   }
 
-  @Watch('audio_data')
-  audio_watcher(newData: any) {
-    if (!this.audioDisable) {
-      for (const index in newData) {
-        this.audioInstance.data.datasets[index].data.shift();
-        this.audioInstance.data.datasets[index].data.push(newData[index]);
-      }
-      this.audioInstance.update();
-    }
-  }
-
-  @Element() el: HTMLDashjsStatisticsElement;
-  video_canvas: HTMLCanvasElement;
-  audio_canvas: HTMLCanvasElement;
-  video_context: CanvasRenderingContext2D;
-  audio_context: CanvasRenderingContext2D;
-
-  videoInstance: any;
-  audioInstance: any;
-
   @Listen('streamMetricsEvent', { target: 'document' })
   streamMetricsEventHandler(event) {
     this.streamMetrics(event.detail);
@@ -187,7 +166,7 @@ export class DashjsStatistics {
       let audioHttpMetrics = calculateHTTPMetrics('audio', dashMetrics?.getHttpRequests('audio'));
 
       this.audioMetricsDataMap['Buffer Length'].push(dashMetrics?.getCurrentBufferLevel('audio'));
-      this.audioMetricsDataMap['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('audio').droppedFrames);
+      this.audioMetricsDataMap['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('audio')?.droppedFrames);
       this.audioMetricsDataMap['Bitrate Downloading'].push(audioRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN);
       this.audioMetricsDataMap['Max Index'].push(dashAdapter?.getMaxIndexForBufferType('audio', periodIdx));
       if (audioHttpMetrics) {
