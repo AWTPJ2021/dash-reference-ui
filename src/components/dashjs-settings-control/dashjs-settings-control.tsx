@@ -208,7 +208,7 @@ export class DashjsSettingsControl {
                   <dashjs-tree
                     root={true}
                     tree={this.settingsTree}
-                    elements={Array.from(this.selectedSettings.keys()) /*.filter(k => this.selectedSettings.get(k) != undefined)*/}
+                    elements={Array.from(this.selectedSettings.keys()).filter(k => this.selectedSettings.get(k) != undefined)}
                     renderFunc={key => {
                       // Due to this being a function used in another component css cant be applied from the stylesheet
                       const ioncolcss = {

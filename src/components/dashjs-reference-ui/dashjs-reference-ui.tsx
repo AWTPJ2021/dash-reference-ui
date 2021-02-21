@@ -30,7 +30,7 @@ export class DashjsReferenceUi {
         if (urlParams.has(STATIC_TYPE_QUERY_PARAM)) {
           this.selectedType = urlParams.get(STATIC_TYPE_QUERY_PARAM);
         }
-        if (this.selectedVersion != undefined) {
+        if (this.selectedVersion == undefined) {
           this.selectedVersion = response[0];
         }
       });
