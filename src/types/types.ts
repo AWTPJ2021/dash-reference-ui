@@ -11,6 +11,7 @@ export interface Setting {
   description: string;
   type: Type;
   enum?: any;
+  enumLabels?: any;
   /**
    * If this element is selected to be displayed in the settings control panel
    */
@@ -37,12 +38,12 @@ export interface DashParaExplaination {
 }
 
 export enum MediaType {
-  VIDEO = "video",
-  AUDIO = "audio",
-  TEXT = "text",
-  FRAGMENTEDTEXT = "fragmentedText",
-  EMBEDDEDTEXT = "embeddedText",
-  IMAGE = "image"
+  VIDEO = 'video',
+  AUDIO = 'audio',
+  TEXT = 'text',
+  FRAGMENTEDTEXT = 'fragmentedText',
+  EMBEDDEDTEXT = 'embeddedText',
+  IMAGE = 'image',
 }
 
 export enum Type {
@@ -55,7 +56,7 @@ export enum Type {
   function = '(e: any) => void',
   value = 'value',
   void = 'void',
-  MediaType = 'MediaType'
+  MediaType = 'MediaType',
 }
 
 export interface Tree {

@@ -69,6 +69,7 @@ export namespace Components {
         "defaultValue": any;
         "name": string;
         "options": string[];
+        "optionsLabels": string[];
         "type": Type;
     }
     interface DashjsSettingsControlModal {
@@ -270,6 +271,7 @@ declare namespace LocalJSX {
         "name"?: string;
         "onValueChanged"?: (event: CustomEvent<any>) => void;
         "options"?: string[];
+        "optionsLabels"?: string[];
         "type"?: Type;
     }
     interface DashjsSettingsControlModal {

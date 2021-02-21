@@ -9,6 +9,7 @@ import { Type } from '../../types/types';
 export class DashjsSettingsControlElement {
   @Prop() name: string;
   @Prop() options: string[];
+  @Prop() optionsLabels: string[] = undefined;
   @Prop() type: Type;
   @Prop() defaultValue: any;
   @Event()
@@ -16,7 +17,6 @@ export class DashjsSettingsControlElement {
   render() {
     let control = <div>No known type!</div>;
     if (this.options != undefined) {
-      debugger;
       control = [
         <ion-select
           class="input-border"
@@ -25,8 +25,8 @@ export class DashjsSettingsControlElement {
           value={String(this.defaultValue)}
           onIonChange={change => this.valueChanged.emit(change.detail.value)}
         >
-          {this.options.map(val => (
-            <ion-select-option value={val.toString()}>{val}</ion-select-option>
+          {this.options.map((val, index) => (
+            <ion-select-option value={val.toString()}>{this.optionsLabels != undefined ? this.optionsLabels[index] : val}</ion-select-option>
           ))}
         </ion-select>,
         // <ion-label position="floating">{this.name}</ion-label>,

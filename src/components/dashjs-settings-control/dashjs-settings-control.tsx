@@ -253,6 +253,7 @@ export class DashjsSettingsControl {
                               type={setting.type}
                               name={setting.name}
                               options={setting.enum || undefined}
+                              optionsLabels={setting.enumLabels || undefined}
                               defaultValue={this.selectedSettings.get(key)}
                               onValueChanged={change => {
                                 this.updateSetting(key, change.detail);
