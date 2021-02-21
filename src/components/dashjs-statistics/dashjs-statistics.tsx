@@ -1,6 +1,7 @@
 import { Component, Host, h, Prop, Watch, Element, State, Listen } from '@stencil/core';
 import * as chartjs from 'chart.js';
 const { Chart } = chartjs.default.Chart;
+import { calculateHTTPMetrics, chartDataset, chartYAxisOptions } from '../../utils/utils';
 
 @Component({
   tag: 'dashjs-statistics',
@@ -41,7 +42,10 @@ export class DashjsStatistics {
     'Frame Rate': '#bc5090',
     'Index': '#ef5675',
     'Max Index': '#ff764a',
-    'Latency': '#570408',
+    'Live Latency': '#570408',
+    'Latency': '#28B463',
+    'Download': '#E74C3C',
+    'Ratio': '#117864',
   };
 
   @State()
@@ -52,7 +56,10 @@ export class DashjsStatistics {
     'Frame Rate': [0],
     'Index': [0],
     'Max Index': [0],
-    'Latency': [0],
+    'Live Latency': [0],
+    'Latency': ['0|0|0'],
+    'Download': ['0|0|0'],
+    'Ratio': ['0|0|0'],
   };
 
   @State()
@@ -61,6 +68,9 @@ export class DashjsStatistics {
     'Bitrate Downloading': [0],
     'Dropped Frames': [0],
     'Max Index': [0],
+    'Latency': ['0|0|0'],
+    'Download': ['0|0|0'],
+    'Ratio': ['0|0|0'],
   };
 
   @State()
@@ -115,50 +125,6 @@ export class DashjsStatistics {
     this.streamMetrics(event.detail);
   }
 
-  chartYAxisOptions(metricsData: any) {
-    const yAxesArray = [];
-    Object.keys(metricsData).map((metric, index) => {
-      let newEntry = {
-        gridLines: {
-          color: 'rgba(0, 0, 0, 0)',
-        },
-        stacked: false,
-        position: 'right',
-        type: 'linear',
-        display: true,
-        scaleLabel: {
-          display: true,
-          labelString: metric,
-          fontColor: this.chartColors[metric],
-        },
-        id: 'y' + index,
-        ticks: {
-          display: true,
-          beginAtZero: false,
-        },
-      };
-      yAxesArray.push(newEntry);
-    });
-    return yAxesArray;
-  }
-
-  chartDataset(metricsData: any) {
-    const dataset = [];
-    Object.keys(metricsData).map((metric, index) => {
-      let newEntry = {
-        data: [0, 0, 0, 0, 0, 0, 0, 0],
-        label: metric,
-        lineTension: 0,
-        hidden: false,
-        borderColor: this.chartColors[metric],
-        yAxisID: 'y' + index,
-        fill: false,
-      };
-      dataset.push(newEntry);
-    });
-    return dataset;
-  }
-
   streamMetrics(player: any) {
     const streamInfo = player?.getActiveStream()?.getStreamInfo();
     const dashMetrics = player?.getDashMetrics();
@@ -169,7 +135,7 @@ export class DashjsStatistics {
       let currentTimeInSec = player?.time().toFixed(0);
       this.currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
       this.currentTimeArr.push(this.currentTime);
-      this.videoMetricsDataMap.Latency.push(
+      this.videoMetricsDataMap['Live Latency'].push(
         Number(
           setTimeout(() => {
             player?.getCurrentLiveLatency();
@@ -180,6 +146,7 @@ export class DashjsStatistics {
       // Video Metrics
       let videoRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('video');
       let videoAdaptation = dashAdapter?.getAdaptationForType(periodIdx, 'video', streamInfo);
+      let videoHttpMetrics = calculateHTTPMetrics('video', dashMetrics?.getHttpRequests('video'));
 
       this.videoMetricsDataMap['Buffer Length'].push(dashMetrics?.getCurrentBufferLevel('video'));
       this.videoMetricsDataMap['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('video')?.droppedFrames);
@@ -191,14 +158,25 @@ export class DashjsStatistics {
           return rep.id === videoRepSwitch.to;
         })?.frameRate,
       );
+      if (videoHttpMetrics) {
+        this.videoMetricsDataMap['Download'].push(videoHttpMetrics.download['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.download['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.download['video'].high.toFixed(2));
+        this.videoMetricsDataMap['Latency'].push(videoHttpMetrics.latency['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.latency['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.latency['video'].high.toFixed(2));
+        this.videoMetricsDataMap['Ratio'].push(videoHttpMetrics.ratio['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].high.toFixed(2));
+      }
 
       // Audio Metrics
       let audioRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('audio');
+      let audioHttpMetrics = calculateHTTPMetrics('audio', dashMetrics?.getHttpRequests('audio'));
 
       this.audioMetricsDataMap['Buffer Length'].push(dashMetrics?.getCurrentBufferLevel('audio'));
       this.audioMetricsDataMap['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('audio').droppedFrames);
       this.audioMetricsDataMap['Bitrate Downloading'].push(audioRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN);
       this.audioMetricsDataMap['Max Index'].push(dashAdapter?.getMaxIndexForBufferType('audio', periodIdx));
+      if (audioHttpMetrics) {
+        this.audioMetricsDataMap['Download'].push(audioHttpMetrics.download['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.download['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.download['audio'].high.toFixed(2));
+        this.audioMetricsDataMap['Latency'].push(audioHttpMetrics.latency['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.latency['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.latency['audio'].high.toFixed(2));
+        this.audioMetricsDataMap['Ratio'].push(audioHttpMetrics.ratio['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].high.toFixed(2));
+      }
     }
   }
 
@@ -213,11 +191,11 @@ export class DashjsStatistics {
     var dataExample = [
       {
         labels: ['00:00', '00:01', '00:02', '00:03', '00:04', '00:05', '00:06', '00:07'],
-        datasets: this.chartDataset(this.videoMetricsDataMap),
+        datasets: chartDataset(this.videoMetricsDataMap, this.chartColors),
       },
       {
         labels: ['00:00', '00:01', '00:02', '00:03', '00:04', '00:05', '00:06', '00:07'],
-        datasets: this.chartDataset(this.audioMetricsDataMap),
+        datasets: chartDataset(this.audioMetricsDataMap, this.chartColors),
       },
     ];
 
@@ -231,7 +209,7 @@ export class DashjsStatistics {
         animation: false,
         maintainAspectRatio: false,
         scales: {
-          yAxes: this.chartYAxisOptions(this.videoMetricsDataMap),
+          yAxes: chartYAxisOptions(this.videoMetricsDataMap, this.chartColors),
         },
       },
     };
@@ -246,7 +224,7 @@ export class DashjsStatistics {
         animation: false,
         maintainAspectRatio: false,
         scales: {
-          yAxes: this.chartYAxisOptions(this.audioMetricsDataMap),
+          yAxes: chartYAxisOptions(this.audioMetricsDataMap, this.chartColors),
         },
       },
     };
@@ -259,7 +237,11 @@ export class DashjsStatistics {
     let toChange = isVideo ? this.videoInstance : this.audioInstance;
     Object.keys(newData).map((metric, index) => {
       toChange.data.datasets[index].data.shift();
-      toChange.data.datasets[index].data.push(newData[metric].slice(-1)[0]);
+      if (metric === "Download" || metric === "Latency" || metric === "Ratio" ) {
+        toChange.data.datasets[index].data.push(newData[metric].slice(-1)[0].split('|')[1]);
+      } else {
+        toChange.data.datasets[index].data.push(newData[metric].slice(-1)[0]);
+      }
       toChange.data.labels = newLabels.slice(1).slice(-8);
       toChange.update();
     });

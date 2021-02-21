@@ -1,12 +1,11 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass } from 'dashjs';
-import ControlBar from '../contrib/ControlBar.js';
-// import '../contrib/controlbar.scss';
+import ControlBar from './ControlBar.js';
 declare var dashjs: any;
 
 @Component({
   tag: 'dashjs-player',
-  styleUrl: 'dashjs-player.css',
+  styleUrl: 'dashjs-player.scss',
   shadow: false,
 })
 export class DashjsPlayer {
@@ -180,7 +179,6 @@ export class DashjsPlayer {
                 </div>
               </div>
             </div>
-            {/* <video controls={true} id="myMainVideoPlayer"></video> */}
           </div>
         </slot>
       </Host>

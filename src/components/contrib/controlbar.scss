@@ -146,7 +146,7 @@
 
 @font-face {
   font-family: 'icomoon';
-  src: url('./icomoon.ttf') format('truetype');
+  src: url('/static/icomoon.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -200,6 +200,10 @@
   overflow: auto;
   overflow-y: hidden;
   overflow-x: hidden;
+}
+
+.seekbar {
+  width: 100%;
 }
 
 input[type='range'] {

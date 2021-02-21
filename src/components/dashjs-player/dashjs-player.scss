@@ -1,0 +1,23 @@
+@import '../contrib/controlbar.scss';
+
+:host {
+  display: inline;
+}
+
+.player-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0 10px;
+}
+
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+#myMainVideoPlayer {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 100%;
+}
