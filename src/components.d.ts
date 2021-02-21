@@ -54,7 +54,6 @@ export namespace Components {
         "selectedType": string;
         "selectedVersion": string;
         "type": string[];
-        "url": string;
         "versions": string[];
     }
     interface DashjsSettingsControl {
@@ -74,7 +73,6 @@ export namespace Components {
         "settingsTree": Tree;
     }
     interface DashjsStatistics {
-        "audio_data": any;
         "video_data": any;
     }
     interface DashjsTree {
@@ -232,6 +230,7 @@ declare namespace LocalJSX {
         "titleText"?: string;
     }
     interface DashjsPlayer {
+        "onPlayerEvent"?: (event: CustomEvent<any>) => void;
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<any>) => void;
         /**
@@ -251,7 +250,6 @@ declare namespace LocalJSX {
         "selectedType"?: string;
         "selectedVersion"?: string;
         "type"?: string[];
-        "url"?: string;
         "versions"?: string[];
     }
     interface DashjsSettingsControl {
@@ -272,7 +270,6 @@ declare namespace LocalJSX {
         "settingsTree"?: Tree;
     }
     interface DashjsStatistics {
-        "audio_data"?: any;
         "video_data"?: any;
     }
     interface DashjsTree {

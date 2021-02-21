@@ -1,5 +1,6 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass } from 'dashjs';
+import ControlBar from './ControlBar.js';
 import { getMediaURL, getStringLocally } from '../../utils/utils';
 declare let dashjs: any;
 /**
@@ -8,7 +9,7 @@ declare let dashjs: any;
  */
 @Component({
   tag: 'dashjs-player',
-  styleUrl: 'dashjs-player.css',
+  styleUrl: 'dashjs-player.scss',
   shadow: false,
 })
 export class DashjsPlayer {
@@ -36,6 +37,15 @@ export class DashjsPlayer {
 
   @State() streamInterval: any;
 
+  @State()
+  controlbar: any;
+  // TODO: Really Bad practice! Use a better flow to get updates to statistics
+  @Event({
+    composed: true,
+    bubbles: true,
+  })
+  playerEvent: EventEmitter<any>;
+
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
     switch (event.detail.type) {
@@ -43,7 +53,13 @@ export class DashjsPlayer {
         if (this.player) {
           this.player.reset();
         }
-        this.initPlayer(event.detail.autoPlay == 'true');
+        this.player = dashjs.MediaPlayer().create();
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), event.detail.autoPlay == 'true');
+        this.controlbar = new ControlBar(this.player);
+        this.controlbar.initialize();
+        this.streamInterval = setInterval(() => {
+          this.streamMetricsEventHandler(this.player);
+        }, 1000);
         break;
       case 'stop':
         this.player.reset();
@@ -85,19 +101,12 @@ export class DashjsPlayer {
   streamMetricsEvent: EventEmitter<any>;
 
   streamMetricsEventHandler(player: any) {
-    this.streamMetricsEvent.emit(player);
+    player && this.streamMetricsEvent.emit(player);
   }
 
   componentDidLoad() {
+    this.loadOrUpdateDashJsScript();
     this.loadOrUpdateDashJsScript(getStringLocally('api_autostart') == 'true');
-  }
-
-  private initPlayer(autoPlay: boolean = false): void {
-    this.player = dashjs.MediaPlayer().create();
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), getMediaURL(), autoPlay);
-    this.streamInterval = setInterval(() => {
-      this.streamMetricsEventHandler(this.player);
-    }, 1000);
   }
 
   private loadOrUpdateDashJsScript(autoPlay: boolean = false) {
@@ -115,7 +124,7 @@ export class DashjsPlayer {
     const script = document.createElement('script');
     script.id = id;
     script.onload = () => {
-      this.initPlayer(autoPlay);
+      this.playerEvent.emit({ type: 'load', url: getMediaURL(), autoPlay: autoPlay });
     };
     script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
@@ -126,9 +135,41 @@ export class DashjsPlayer {
     return (
       <Host>
         <slot>
-          <ion-card>
-            <video controls={true} id="myMainVideoPlayer"></video>
-          </ion-card>
+          <div class="player-wrapper">
+            <div class="myMainVideoPlayer" id="myMainVideoPlayer">
+              <video id="myMainVideoPlayer" preload="auto"></video>
+              <div id="videoController" class="video-controller unselectable">
+                <div id="playPauseBtn" class="btn-play-pause" title="Play/Pause">
+                  <span id="iconPlayPause" class="icon-play"></span>
+                </div>
+                <span id="videoTime" class="time-display">
+                  00:00:00
+                </span>
+                <div id="fullscreenBtn" class="btn-fullscreen control-icon-layout" title="Fullscreen">
+                  <span class="icon-fullscreen-enter"></span>
+                </div>
+                <div id="bitrateListBtn" class="control-icon-layout" title="Bitrate List">
+                  <span class="icon-bitrate"></span>
+                </div>
+                <input type="range" id="volumebar" class="volumebar" value="1" min="0" max="1" step=".01" />
+                <div id="muteBtn" class="btn-mute control-icon-layout" title="Mute">
+                  <span id="iconMute" class="icon-mute-off"></span>
+                </div>
+                <div id="trackSwitchBtn" class="control-icon-layout" title="A/V Tracks">
+                  <span class="icon-tracks"></span>
+                </div>
+                <div id="captionBtn" class="btn-caption control-icon-layout" title="Closed Caption">
+                  <span class="icon-caption"></span>
+                </div>
+                <span id="videoDuration" class="duration-display">
+                  00:00:00
+                </span>
+                <div class="seekContainer">
+                  <input type="range" id="seekbar" value="0" class="seekbar" min="0" step="0.01" />
+                </div>
+              </div>
+            </div>
+          </div>
         </slot>
       </Host>
     );
