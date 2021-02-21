@@ -50,6 +50,8 @@ export class DashjsPlayer {
         clearInterval(this.streamInterval);
         break;
       case 'function':
+        console.log(event.detail.name);
+        console.log(event.detail.param);
         if (!this.player) {
           this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
