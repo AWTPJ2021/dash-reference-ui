@@ -118,6 +118,26 @@ export class DashjsStatistics {
     toChange.update();
   }
 
+  @Watch('audio_data')
+  audio_watcher(newData: any) {
+    if (!this.audioDisable) {
+      for (const index in newData) {
+        this.audioInstance.data.datasets[index].data.shift();
+        this.audioInstance.data.datasets[index].data.push(newData[index]);
+      }
+      this.audioInstance.update();
+    }
+  }
+
+  @Element() el: HTMLDashjsStatisticsElement;
+  video_canvas: HTMLCanvasElement;
+  audio_canvas: HTMLCanvasElement;
+  video_context: CanvasRenderingContext2D;
+  audio_context: CanvasRenderingContext2D;
+
+  videoInstance: any;
+  audioInstance: any;
+
   @Listen('streamMetricsEvent', { target: 'document' })
   streamMetricsEventHandler(event) {
     this.streamMetrics(event.detail);
