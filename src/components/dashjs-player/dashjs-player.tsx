@@ -47,7 +47,7 @@ export class DashjsPlayer {
         if(!this.player) {
           this.playerResponseHandler({"event" : event.detail.name, "return": null})
         } else {
-          var returnValue = this.player[event.detail.name](event.detail.param);
+          var returnValue = this.player[event.detail.name].apply(this, event.detail.param);
           var toSend = {
             "event": event.detail.name,
             "return": returnValue
