@@ -15,19 +15,10 @@ export class DashjsAPIControlElement {
   @Prop() paramDesc: any;
   @State() control = [];
 
-  @State() functionValue : any = "";
+  @State() functionValue : any = [""];
 
   setValue(counter : number, val : any) {
-    if(counter > 0) {
-      if(!Array.isArray(this.functionValue)) {
-        const oldValue = this.functionValue;
-        this.functionValue = [];
-        this.functionValue[0] = oldValue;
-      }
       this.functionValue[counter] = val;
-    } else {
-      Array.isArray(this.functionValue) ? this.functionValue[0] = val  : this.functionValue = val;
-    }
   }
 
   updateControl() {
@@ -72,20 +63,6 @@ export class DashjsAPIControlElement {
         <ion-row>
           <ion-col class="middle">{this.name}</ion-col>
           <ion-col size="auto"><ion-item lines="none">{this.control}</ion-item></ion-col>
-        </ion-row>
-      </ion-grid>
-    );
-  }
-
-
-  render() {
-    this.updateControl();
-
-    return (
-      <ion-grid>
-        <ion-row>
-          <ion-col class="middle">{this.name}</ion-col>
-          <ion-col size="auto"><ion-item lines="none">{this.control}<ion-button shape="round" size="small" onClick={ () => this.valueChanged.emit("")}>Call</ion-button></ion-item></ion-col>
         </ion-row>
       </ion-grid>
     );
