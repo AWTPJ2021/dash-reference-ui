@@ -110,7 +110,7 @@ export class DashjsStatistics {
   video_context: CanvasRenderingContext2D;
   audio_context: CanvasRenderingContext2D;
 
-  @Prop() videoInstance: any;
+  videoInstance: any;
   audioInstance: any;
 
   @Listen('streamMetricsEvent', { target: 'document' })
