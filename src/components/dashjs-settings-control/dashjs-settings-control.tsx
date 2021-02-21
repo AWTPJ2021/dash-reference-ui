@@ -194,7 +194,11 @@ export class DashjsSettingsControl {
             <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showSettingsJSON()} style={{ marginRight: '15px' }}>
               Copy Settings
             </ion-button>
-            {this.autoUpdate ? undefined : <ion-button onClick={() => this.settingsUpdate(true)}>Update</ion-button>}
+            {this.autoUpdate ? undefined : (
+              <ion-button onClick={() => this.settingsUpdate(true)} style={{ marginRight: '15px' }}>
+                Update
+              </ion-button>
+            )}
             Auto Update <ion-toggle id="autol" checked={this.autoUpdate} onIonChange={change => (this.autoUpdate = change.detail.checked)}></ion-toggle>
           </div>
           <ion-grid>
