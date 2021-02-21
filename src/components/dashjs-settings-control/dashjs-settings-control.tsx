@@ -191,7 +191,7 @@ export class DashjsSettingsControl {
       <Host>
         <ion-accordion titleText="Settings">
           <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
-            <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showSettingsJSON()}>
+            <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showSettingsJSON()} style={{ marginRight: '15px' }}>
               Copy Settings
             </ion-button>
             {this.autoUpdate ? undefined : <ion-button onClick={() => this.settingsUpdate(true)}>Update</ion-button>}
