@@ -47,14 +47,7 @@ export class DashjsPlayer {
         if (this.player) {
           this.player.reset();
         }
-        this.player = dashjs.MediaPlayer().create();
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), event.detail.url, event.detail.autoPlay == 'true');
-        this.controlbar = new ControlBar(this.player);
-        this.controlbar.initialize();
-        this.streamInterval = setInterval(() => {
-          this.streamMetricsEventHandler(this.player);
-        }, 1000);
-        // this.initPlayer(event.detail.autoPlay == 'true');
+        this.initPlayer(event.detail.autoPlay == 'true');
         break;
       case 'stop':
         this.player.reset();
@@ -106,7 +99,7 @@ export class DashjsPlayer {
 
   private initPlayer(autoPlay: boolean = false): void {
     this.player = dashjs.MediaPlayer().create();
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer, video'), getMediaURL(), autoPlay);
+    this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), autoPlay);
     this.controlbar = new ControlBar(this.player);
     this.controlbar.initialize();
     this.streamInterval = setInterval(() => {
