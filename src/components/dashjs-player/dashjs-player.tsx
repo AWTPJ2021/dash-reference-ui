@@ -10,6 +10,7 @@ declare const dashjs: any;
 @Component({
   tag: 'dashjs-player',
   styleUrl: 'dashjs-player.scss',
+  assetsDirs: ['assets'],
   shadow: false,
 })
 export class DashjsPlayer {
