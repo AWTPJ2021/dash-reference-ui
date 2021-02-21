@@ -193,7 +193,7 @@ export function deleteLocalKey(key: string, id: string): void {
 }
 
 export function updateLocalKey(key: string, id: string, value: any): void {
-  const toUpdate = JSON.parse(localStorage.getItem(key));
+  const toUpdate = JSON.parse(localStorage.getItem(key)) || {};
   toUpdate[id] = value;
   localStorage.setItem(key, JSON.stringify(toUpdate));
 }
