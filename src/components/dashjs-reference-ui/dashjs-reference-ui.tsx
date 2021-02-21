@@ -1,4 +1,5 @@
 import { StencilComponentPrefetch } from '@beck24/stencil-component-prefetch/dist/types/components/stencil-component-prefetch/stencil-component-prefetch';
+import { SelectChangeEventDetail } from '@ionic/core';
 import { Component, Host, h, Prop, Element, Build, getAssetPath } from '@stencil/core';
 import { setParam } from '../../utils/queryParams';
 import { contributors } from './contributors';
@@ -52,14 +53,16 @@ export class DashjsReferenceUi {
       );
     }
   }
-  private typeChange(change) {
+  private typeChange = (change: CustomEvent<SelectChangeEventDetail<any>>) => {
+    change.stopPropagation();
     this.selectedType = change.detail.value;
     setParam(STATIC_TYPE_QUERY_PARAM, this.selectedType);
-  }
-  private versionChange(change) {
+  };
+  private versionChange = (change: CustomEvent<SelectChangeEventDetail<any>>) => {
+    change.stopPropagation();
     this.selectedVersion = change.detail.value;
     setParam(STATIC_VERSION_QUERY_PARAM, this.selectedVersion);
-  }
+  };
   render() {
     const centercss = {
       display: 'flex',

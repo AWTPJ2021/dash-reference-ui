@@ -1,32 +1,15 @@
 [
   {
-    "enum": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
+    "enum": [0, 1, 2, 3, 4, 5],
     "type": "number",
     "description": "Sets up the log level. The levels are cumulative. For example, if you set the log level\nto dashjs.Debug.LOG_LEVEL_WARNING all warnings, errors and fatals will be logged. Possible values.\n\n<ul>\n<li>dashjs.Debug.LOG_LEVEL_NONE<br/>\nNo message is written in the browser console.\n\n<li>dashjs.Debug.LOG_LEVEL_FATAL<br/>\nLog fatal errors. An error is considered fatal when it causes playback to fail completely.\n\n<li>dashjs.Debug.LOG_LEVEL_ERROR<br/>\nLog error messages.\n\n<li>dashjs.Debug.LOG_LEVEL_WARNING<br/>\nLog warning messages.\n\n<li>dashjs.Debug.LOG_LEVEL_INFO<br/>\nLog info messages.\n\n<li>dashjs.Debug.LOG_LEVEL_DEBUG<br/>\nLog debug messages.\n</ul>",
     "required": false,
     "example": 0,
     "id": "settings.debug.logLevel",
-    "path": [
-      "settings",
-      "debug"
-    ],
+    "path": ["settings", "debug"],
     "name": "logLevel",
     "parent": "debug",
-    "enum-description": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5
-    ]
+    "enum-description": ["None", "Fatal", "Error", "Warning", "Info", "Debug"]
   },
   {
     "type": "boolean",
@@ -34,10 +17,7 @@
     "required": false,
     "example": false,
     "id": "settings.debug.dispatchEvent",
-    "path": [
-      "settings",
-      "debug"
-    ],
+    "path": ["settings", "debug"],
     "name": "dispatchEvent",
     "parent": "debug"
   },
@@ -47,10 +27,7 @@
     "required": false,
     "example": 1000,
     "id": "settings.streaming.metricsMaxListDepth",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "metricsMaxListDepth",
     "parent": "streaming"
   },
@@ -60,10 +37,7 @@
     "required": false,
     "example": 10000,
     "id": "settings.streaming.abandonLoadTimeout",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "abandonLoadTimeout",
     "parent": "streaming"
   },
@@ -73,10 +47,7 @@
     "required": false,
     "example": null,
     "id": "settings.streaming.liveDelayFragmentCount",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "liveDelayFragmentCount",
     "parent": "streaming"
   },
@@ -85,10 +56,7 @@
     "description": "<p>Equivalent in seconds of setLiveDelayFragmentCount</p>\n<p>Lowering this value will lower latency but may decrease the player's ability to build a stable buffer.</p>\n<p>This value should be less than the manifest duration by a couple of segment durations to avoid playback issues</p>\n<p>If set, this parameter will take precedence over setLiveDelayFragmentCount and manifest info</p>",
     "required": false,
     "id": "settings.streaming.liveDelay",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "liveDelay",
     "parent": "streaming"
   },
@@ -98,10 +66,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.scheduleWhilePaused",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "scheduleWhilePaused",
     "parent": "streaming"
   },
@@ -111,10 +76,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.fastSwitchEnabled",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "fastSwitchEnabled",
     "parent": "streaming"
   },
@@ -124,10 +86,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.flushBufferAtTrackSwitch",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "flushBufferAtTrackSwitch",
     "parent": "streaming"
   },
@@ -137,10 +96,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.reuseExistingSourceBuffers",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "reuseExistingSourceBuffers",
     "parent": "streaming"
   },
@@ -150,10 +106,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.calcSegmentAvailabilityRangeFromTimeline",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "calcSegmentAvailabilityRangeFromTimeline",
     "parent": "streaming"
   },
@@ -163,10 +116,7 @@
     "required": false,
     "example": 10,
     "id": "settings.streaming.bufferPruningInterval",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "bufferPruningInterval",
     "parent": "streaming"
   },
@@ -176,20 +126,14 @@
     "required": false,
     "example": 20,
     "id": "settings.streaming.bufferToKeep",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "bufferToKeep",
     "parent": "streaming"
   },
   {
     "type": "number",
     "id": "settings.streaming.bufferAheadToKeep",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "bufferAheadToKeep",
     "parent": "streaming"
   },
@@ -199,10 +143,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.jumpGaps",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "jumpGaps",
     "parent": "streaming"
   },
@@ -212,10 +153,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.jumpLargeGaps",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "jumpLargeGaps",
     "parent": "streaming"
   },
@@ -225,10 +163,7 @@
     "required": false,
     "example": 1.8,
     "id": "settings.streaming.smallGapLimit",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "smallGapLimit",
     "parent": "streaming"
   },
@@ -238,10 +173,7 @@
     "required": false,
     "example": 12,
     "id": "settings.streaming.stableBufferTime",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "stableBufferTime",
     "parent": "streaming"
   },
@@ -251,10 +183,7 @@
     "required": false,
     "example": 30,
     "id": "settings.streaming.bufferTimeAtTopQuality",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "bufferTimeAtTopQuality",
     "parent": "streaming"
   },
@@ -264,10 +193,7 @@
     "required": false,
     "example": 60,
     "id": "settings.streaming.bufferTimeAtTopQualityLongForm",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "bufferTimeAtTopQualityLongForm",
     "parent": "streaming"
   },
@@ -277,10 +203,7 @@
     "required": false,
     "example": 600,
     "id": "settings.streaming.longFormContentDurationThreshold",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "longFormContentDurationThreshold",
     "parent": "streaming"
   },
@@ -290,10 +213,7 @@
     "required": false,
     "example": 50,
     "id": "settings.streaming.wallclockTimeUpdateInterval",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "wallclockTimeUpdateInterval",
     "parent": "streaming"
   },
@@ -303,10 +223,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.lowLatencyEnabled",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "lowLatencyEnabled",
     "parent": "streaming"
   },
@@ -316,10 +233,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.keepProtectionMediaKeys",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "keepProtectionMediaKeys",
     "parent": "streaming"
   },
@@ -329,10 +243,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.useManifestDateHeaderTimeSource",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "useManifestDateHeaderTimeSource",
     "parent": "streaming"
   },
@@ -342,10 +253,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.useSuggestedPresentationDelay",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "useSuggestedPresentationDelay",
     "parent": "streaming"
   },
@@ -355,10 +263,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.useAppendWindow",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "useAppendWindow",
     "parent": "streaming"
   },
@@ -368,10 +273,7 @@
     "required": false,
     "example": 100,
     "id": "settings.streaming.manifestUpdateRetryInterval",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "manifestUpdateRetryInterval",
     "parent": "streaming"
   },
@@ -381,10 +283,7 @@
     "required": false,
     "example": 0.5,
     "id": "settings.streaming.stallThreshold",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "stallThreshold",
     "parent": "streaming"
   },
@@ -394,11 +293,7 @@
     "required": false,
     "example": 0.02,
     "id": "settings.streaming.liveCatchup.minDrift",
-    "path": [
-      "settings",
-      "streaming",
-      "liveCatchup"
-    ],
+    "path": ["settings", "streaming", "liveCatchup"],
     "name": "minDrift",
     "parent": "liveCatchup"
   },
@@ -408,11 +303,7 @@
     "required": false,
     "example": 0,
     "id": "settings.streaming.liveCatchup.maxDrift",
-    "path": [
-      "settings",
-      "streaming",
-      "liveCatchup"
-    ],
+    "path": ["settings", "streaming", "liveCatchup"],
     "name": "maxDrift",
     "parent": "liveCatchup"
   },
@@ -422,11 +313,7 @@
     "required": false,
     "example": 0.5,
     "id": "settings.streaming.liveCatchup.playbackRate",
-    "path": [
-      "settings",
-      "streaming",
-      "liveCatchup"
-    ],
+    "path": ["settings", "streaming", "liveCatchup"],
     "name": "playbackRate",
     "parent": "liveCatchup"
   },
@@ -436,11 +323,7 @@
     "required": false,
     "example": null,
     "id": "settings.streaming.liveCatchup.latencyThreshold",
-    "path": [
-      "settings",
-      "streaming",
-      "liveCatchup"
-    ],
+    "path": ["settings", "streaming", "liveCatchup"],
     "name": "latencyThreshold",
     "parent": "liveCatchup"
   },
@@ -450,11 +333,7 @@
     "required": false,
     "example": null,
     "id": "settings.streaming.liveCatchup.playbackBufferMin",
-    "path": [
-      "settings",
-      "streaming",
-      "liveCatchup"
-    ],
+    "path": ["settings", "streaming", "liveCatchup"],
     "name": "playbackBufferMin",
     "parent": "liveCatchup"
   },
@@ -464,11 +343,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.liveCatchup.enabled",
-    "path": [
-      "settings",
-      "streaming",
-      "liveCatchup"
-    ],
+    "path": ["settings", "streaming", "liveCatchup"],
     "name": "enabled",
     "parent": "liveCatchup"
   },
@@ -478,11 +353,7 @@
     "required": false,
     "example": "Constants.LIVE_CATCHUP_MODE_DEFAULT",
     "id": "settings.streaming.liveCatchup.mode",
-    "path": [
-      "settings",
-      "streaming",
-      "liveCatchup"
-    ],
+    "path": ["settings", "streaming", "liveCatchup"],
     "name": "mode",
     "parent": "liveCatchup"
   },
@@ -492,11 +363,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.lastBitrateCachingInfo.enabled",
-    "path": [
-      "settings",
-      "streaming",
-      "lastBitrateCachingInfo"
-    ],
+    "path": ["settings", "streaming", "lastBitrateCachingInfo"],
     "name": "enabled",
     "parent": "lastBitrateCachingInfo"
   },
@@ -505,11 +372,7 @@
     "description": "Time to live. A value defined in milliseconds representing how log to cache the settings for.",
     "required": false,
     "id": "settings.streaming.lastBitrateCachingInfo.ttl",
-    "path": [
-      "settings",
-      "streaming",
-      "lastBitrateCachingInfo"
-    ],
+    "path": ["settings", "streaming", "lastBitrateCachingInfo"],
     "name": "ttl",
     "parent": "lastBitrateCachingInfo"
   },
@@ -519,11 +382,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.lastMediaSettingsCachingInfo.enabled",
-    "path": [
-      "settings",
-      "streaming",
-      "lastMediaSettingsCachingInfo"
-    ],
+    "path": ["settings", "streaming", "lastMediaSettingsCachingInfo"],
     "name": "enabled",
     "parent": "lastMediaSettingsCachingInfo"
   },
@@ -532,11 +391,7 @@
     "description": "Time to live. A value defined in milliseconds representing how log to cache the settings for.",
     "required": false,
     "id": "settings.streaming.lastMediaSettingsCachingInfo.ttl",
-    "path": [
-      "settings",
-      "streaming",
-      "lastMediaSettingsCachingInfo"
-    ],
+    "path": ["settings", "streaming", "lastMediaSettingsCachingInfo"],
     "name": "ttl",
     "parent": "lastMediaSettingsCachingInfo"
   },
@@ -545,11 +400,7 @@
     "description": "Configuration for video media type of tracks.",
     "required": false,
     "id": "settings.streaming.cacheLoadThresholds.video",
-    "path": [
-      "settings",
-      "streaming",
-      "cacheLoadThresholds"
-    ],
+    "path": ["settings", "streaming", "cacheLoadThresholds"],
     "name": "video",
     "parent": "cacheLoadThresholds"
   },
@@ -558,59 +409,35 @@
     "description": "Configuration for audio media type of tracks.",
     "required": false,
     "id": "settings.streaming.cacheLoadThresholds.audio",
-    "path": [
-      "settings",
-      "streaming",
-      "cacheLoadThresholds"
-    ],
+    "path": ["settings", "streaming", "cacheLoadThresholds"],
     "name": "audio",
     "parent": "cacheLoadThresholds"
   },
   {
-    "enum": [
-      "alwaysReplace",
-      "neverReplace"
-    ],
+    "enum": ["alwaysReplace", "neverReplace"],
     "type": "string",
     "description": "Configuration for video media type of tracks.",
     "required": false,
     "id": "settings.streaming.trackSwitchMode.video",
-    "path": [
-      "settings",
-      "streaming",
-      "trackSwitchMode"
-    ],
+    "path": ["settings", "streaming", "trackSwitchMode"],
     "name": "video",
     "parent": "trackSwitchMode"
   },
   {
-    "enum": [
-      "alwaysReplace",
-      "neverReplace"
-    ],
+    "enum": ["alwaysReplace", "neverReplace"],
     "type": "string",
     "description": "Configuration for audio media type of tracks.",
     "required": false,
     "id": "settings.streaming.trackSwitchMode.audio",
-    "path": [
-      "settings",
-      "streaming",
-      "trackSwitchMode"
-    ],
+    "path": ["settings", "streaming", "trackSwitchMode"],
     "name": "audio",
     "parent": "trackSwitchMode"
   },
   {
-    "enum": [
-      "highestBitrate",
-      "widestRange"
-    ],
+    "enum": ["highestBitrate", "widestRange"],
     "type": "string",
     "id": "settings.streaming.selectionModeForInitialTrack",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "selectionModeForInitialTrack",
     "parent": "streaming"
   },
@@ -619,10 +446,7 @@
     "description": "Time in milliseconds before timing out on loading a media fragment. Fragments that timeout are retried as if they failed.",
     "required": false,
     "id": "settings.streaming.fragmentRequestTimeout",
-    "path": [
-      "settings",
-      "streaming"
-    ],
+    "path": ["settings", "streaming"],
     "name": "fragmentRequestTimeout",
     "parent": "streaming"
   },
@@ -631,11 +455,7 @@
     "description": "Manifest type of requests",
     "required": false,
     "id": "settings.streaming.retryIntervals.MPD",
-    "path": [
-      "settings",
-      "streaming",
-      "retryIntervals"
-    ],
+    "path": ["settings", "streaming", "retryIntervals"],
     "name": "MPD",
     "parent": "retryIntervals"
   },
@@ -644,11 +464,7 @@
     "description": "XLink expansion type of requests",
     "required": false,
     "id": "settings.streaming.retryIntervals.XLinkExpansion",
-    "path": [
-      "settings",
-      "streaming",
-      "retryIntervals"
-    ],
+    "path": ["settings", "streaming", "retryIntervals"],
     "name": "XLinkExpansion",
     "parent": "retryIntervals"
   },
@@ -657,11 +473,7 @@
     "description": "Request to retrieve a media segment (video/audio/image/text chunk)",
     "required": false,
     "id": "settings.streaming.retryIntervals.MediaSegment",
-    "path": [
-      "settings",
-      "streaming",
-      "retryIntervals"
-    ],
+    "path": ["settings", "streaming", "retryIntervals"],
     "name": "MediaSegment",
     "parent": "retryIntervals"
   },
@@ -670,11 +482,7 @@
     "description": "Request to retrieve an initialization segment",
     "required": false,
     "id": "settings.streaming.retryIntervals.InitializationSegment",
-    "path": [
-      "settings",
-      "streaming",
-      "retryIntervals"
-    ],
+    "path": ["settings", "streaming", "retryIntervals"],
     "name": "InitializationSegment",
     "parent": "retryIntervals"
   },
@@ -683,11 +491,7 @@
     "description": "Bitrate stream switching type of request",
     "required": false,
     "id": "settings.streaming.retryIntervals.BitstreamSwitchingSegment",
-    "path": [
-      "settings",
-      "streaming",
-      "retryIntervals"
-    ],
+    "path": ["settings", "streaming", "retryIntervals"],
     "name": "BitstreamSwitchingSegment",
     "parent": "retryIntervals"
   },
@@ -696,11 +500,7 @@
     "description": "Request to retrieve an index segment (SegmentBase)",
     "required": false,
     "id": "settings.streaming.retryIntervals.IndexSegment",
-    "path": [
-      "settings",
-      "streaming",
-      "retryIntervals"
-    ],
+    "path": ["settings", "streaming", "retryIntervals"],
     "name": "IndexSegment",
     "parent": "retryIntervals"
   },
@@ -709,11 +509,7 @@
     "description": "Other type of request",
     "required": false,
     "id": "settings.streaming.retryIntervals.other",
-    "path": [
-      "settings",
-      "streaming",
-      "retryIntervals"
-    ],
+    "path": ["settings", "streaming", "retryIntervals"],
     "name": "other",
     "parent": "retryIntervals"
   },
@@ -722,11 +518,7 @@
     "description": "Manifest type of requests",
     "required": false,
     "id": "settings.streaming.retryAttempts.MPD",
-    "path": [
-      "settings",
-      "streaming",
-      "retryAttempts"
-    ],
+    "path": ["settings", "streaming", "retryAttempts"],
     "name": "MPD",
     "parent": "retryAttempts"
   },
@@ -735,11 +527,7 @@
     "description": "XLink expansion type of requests",
     "required": false,
     "id": "settings.streaming.retryAttempts.XLinkExpansion",
-    "path": [
-      "settings",
-      "streaming",
-      "retryAttempts"
-    ],
+    "path": ["settings", "streaming", "retryAttempts"],
     "name": "XLinkExpansion",
     "parent": "retryAttempts"
   },
@@ -748,11 +536,7 @@
     "description": "Request to retrieve a media segment (video/audio/image/text chunk)",
     "required": false,
     "id": "settings.streaming.retryAttempts.MediaSegment",
-    "path": [
-      "settings",
-      "streaming",
-      "retryAttempts"
-    ],
+    "path": ["settings", "streaming", "retryAttempts"],
     "name": "MediaSegment",
     "parent": "retryAttempts"
   },
@@ -761,11 +545,7 @@
     "description": "Request to retrieve an initialization segment",
     "required": false,
     "id": "settings.streaming.retryAttempts.InitializationSegment",
-    "path": [
-      "settings",
-      "streaming",
-      "retryAttempts"
-    ],
+    "path": ["settings", "streaming", "retryAttempts"],
     "name": "InitializationSegment",
     "parent": "retryAttempts"
   },
@@ -774,11 +554,7 @@
     "description": "Bitrate stream switching type of request",
     "required": false,
     "id": "settings.streaming.retryAttempts.BitstreamSwitchingSegment",
-    "path": [
-      "settings",
-      "streaming",
-      "retryAttempts"
-    ],
+    "path": ["settings", "streaming", "retryAttempts"],
     "name": "BitstreamSwitchingSegment",
     "parent": "retryAttempts"
   },
@@ -787,11 +563,7 @@
     "description": "Request to retrieve an index segment (SegmentBase)",
     "required": false,
     "id": "settings.streaming.retryAttempts.IndexSegment",
-    "path": [
-      "settings",
-      "streaming",
-      "retryAttempts"
-    ],
+    "path": ["settings", "streaming", "retryAttempts"],
     "name": "IndexSegment",
     "parent": "retryAttempts"
   },
@@ -800,47 +572,29 @@
     "description": "Other type of request",
     "required": false,
     "id": "settings.streaming.retryAttempts.other",
-    "path": [
-      "settings",
-      "streaming",
-      "retryAttempts"
-    ],
+    "path": ["settings", "streaming", "retryAttempts"],
     "name": "other",
     "parent": "retryAttempts"
   },
   {
-    "enum": [
-      "ewma",
-      "slidingWindow"
-    ],
+    "enum": ["ewma", "slidingWindow"],
     "type": "string",
     "description": "Sets the moving average method used for smoothing throughput estimates. Valid methods are\n\"slidingWindow\" and \"ewma\". The call has no effect if an invalid method is passed.\n\nThe sliding window moving average method computes the average throughput using the last four segments downloaded.\nIf the stream is live (as opposed to VOD), then only the last three segments are used.\nIf wide variations in throughput are detected, the number of segments can be dynamically increased to avoid oscillations.\n\nThe exponentially weighted moving average (EWMA) method computes the average using exponential smoothing.\nTwo separate estimates are maintained, a fast one with a three-second half life and a slow one with an eight-second half life.\nThe throughput estimate at any time is the minimum of the fast and slow estimates.\nThis allows a fast reaction to a bandwidth drop and prevents oscillations on bandwidth spikes.",
     "required": false,
     "example": "\"slidingWindow\"",
     "id": "settings.streaming.abr.movingAverageMethod",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
+    "path": ["settings", "streaming", "abr"],
     "name": "movingAverageMethod",
     "parent": "abr"
   },
   {
-    "enum": [
-      "abrBola",
-      "abrDynamic"
-    ],
+    "enum": ["abrBola", "abrDynamic"],
     "type": "string",
     "description": "Returns the current ABR strategy being used: \"abrDynamic\", \"abrBola\" or \"abrThroughput\".",
     "required": false,
     "example": "\"abrDynamic\"",
     "id": "settings.streaming.abr.ABRStrategy",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
+    "path": ["settings", "streaming", "abr"],
     "name": "ABRStrategy",
     "parent": "abr"
   },
@@ -850,11 +604,7 @@
     "required": false,
     "example": 0.9,
     "id": "settings.streaming.abr.bandwidthSafetyFactor",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
+    "path": ["settings", "streaming", "abr"],
     "name": "bandwidthSafetyFactor",
     "parent": "abr"
   },
@@ -864,11 +614,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.abr.useDefaultABRRules",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
+    "path": ["settings", "streaming", "abr"],
     "name": "useDefaultABRRules",
     "parent": "abr"
   },
@@ -878,11 +624,7 @@
     "required": false,
     "example": true,
     "id": "settings.streaming.abr.useDeadTimeLatency",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
+    "path": ["settings", "streaming", "abr"],
     "name": "useDeadTimeLatency",
     "parent": "abr"
   },
@@ -892,11 +634,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.abr.limitBitrateByPortal",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
+    "path": ["settings", "streaming", "abr"],
     "name": "limitBitrateByPortal",
     "parent": "abr"
   },
@@ -906,11 +644,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.abr.usePixelRatioInLimitBitrateByPortal",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
+    "path": ["settings", "streaming", "abr"],
     "name": "usePixelRatioInLimitBitrateByPortal",
     "parent": "abr"
   },
@@ -919,12 +653,7 @@
     "description": "Configuration for audio media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.maxBitrate.audio",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "maxBitrate"
-    ],
+    "path": ["settings", "streaming", "abr", "maxBitrate"],
     "name": "audio",
     "parent": "maxBitrate"
   },
@@ -933,12 +662,7 @@
     "description": "Configuration for video media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.maxBitrate.video",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "maxBitrate"
-    ],
+    "path": ["settings", "streaming", "abr", "maxBitrate"],
     "name": "video",
     "parent": "maxBitrate"
   },
@@ -947,12 +671,7 @@
     "description": "Configuration for audio media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.minBitrate.audio",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "minBitrate"
-    ],
+    "path": ["settings", "streaming", "abr", "minBitrate"],
     "name": "audio",
     "parent": "minBitrate"
   },
@@ -961,12 +680,7 @@
     "description": "Configuration for video media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.minBitrate.video",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "minBitrate"
-    ],
+    "path": ["settings", "streaming", "abr", "minBitrate"],
     "name": "video",
     "parent": "minBitrate"
   },
@@ -975,12 +689,7 @@
     "description": "Configuration for audio media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.maxRepresentationRatio.audio",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "maxRepresentationRatio"
-    ],
+    "path": ["settings", "streaming", "abr", "maxRepresentationRatio"],
     "name": "audio",
     "parent": "maxRepresentationRatio"
   },
@@ -989,12 +698,7 @@
     "description": "Configuration for video media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.maxRepresentationRatio.video",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "maxRepresentationRatio"
-    ],
+    "path": ["settings", "streaming", "abr", "maxRepresentationRatio"],
     "name": "video",
     "parent": "maxRepresentationRatio"
   },
@@ -1003,12 +707,7 @@
     "description": "Configuration for audio media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.initialBitrate.audio",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "initialBitrate"
-    ],
+    "path": ["settings", "streaming", "abr", "initialBitrate"],
     "name": "audio",
     "parent": "initialBitrate"
   },
@@ -1017,12 +716,7 @@
     "description": "Configuration for video media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.initialBitrate.video",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "initialBitrate"
-    ],
+    "path": ["settings", "streaming", "abr", "initialBitrate"],
     "name": "video",
     "parent": "initialBitrate"
   },
@@ -1031,12 +725,7 @@
     "description": "Configuration for audio media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.initialRepresentationRatio.audio",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "initialRepresentationRatio"
-    ],
+    "path": ["settings", "streaming", "abr", "initialRepresentationRatio"],
     "name": "audio",
     "parent": "initialRepresentationRatio"
   },
@@ -1045,12 +734,7 @@
     "description": "Configuration for video media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.initialRepresentationRatio.video",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "initialRepresentationRatio"
-    ],
+    "path": ["settings", "streaming", "abr", "initialRepresentationRatio"],
     "name": "video",
     "parent": "initialRepresentationRatio"
   },
@@ -1059,12 +743,7 @@
     "description": "Configuration for audio media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.autoSwitchBitrate.audio",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "autoSwitchBitrate"
-    ],
+    "path": ["settings", "streaming", "abr", "autoSwitchBitrate"],
     "name": "audio",
     "parent": "autoSwitchBitrate"
   },
@@ -1073,12 +752,7 @@
     "description": "Configuration for video media type of tracks.",
     "required": false,
     "id": "settings.streaming.abr.autoSwitchBitrate.video",
-    "path": [
-      "settings",
-      "streaming",
-      "abr",
-      "autoSwitchBitrate"
-    ],
+    "path": ["settings", "streaming", "abr", "autoSwitchBitrate"],
     "name": "video",
     "parent": "autoSwitchBitrate"
   },
@@ -1088,11 +762,7 @@
     "required": false,
     "example": "Constants.ABR_FETCH_THROUGHPUT_CALCULATION_DOWNLOADED_DATA",
     "id": "settings.streaming.abr.fetchThroughputCalculationMode",
-    "path": [
-      "settings",
-      "streaming",
-      "abr"
-    ],
+    "path": ["settings", "streaming", "abr"],
     "name": "fetchThroughputCalculationMode",
     "parent": "abr"
   },
@@ -1102,11 +772,7 @@
     "required": false,
     "example": false,
     "id": "settings.streaming.cmcd.enabled",
-    "path": [
-      "settings",
-      "streaming",
-      "cmcd"
-    ],
+    "path": ["settings", "streaming", "cmcd"],
     "name": "enabled",
     "parent": "cmcd"
   },
@@ -1115,11 +781,7 @@
     "description": "GUID identifying the current playback session. Should be in UUID format. If not specified a UUID will be automatically generated.",
     "required": false,
     "id": "settings.streaming.cmcd.sid",
-    "path": [
-      "settings",
-      "streaming",
-      "cmcd"
-    ],
+    "path": ["settings", "streaming", "cmcd"],
     "name": "sid",
     "parent": "cmcd"
   },
@@ -1128,11 +790,7 @@
     "description": "A unique string to identify the current content. If not specified it will be a hash of the MPD url.",
     "required": false,
     "id": "settings.streaming.cmcd.cid",
-    "path": [
-      "settings",
-      "streaming",
-      "cmcd"
-    ],
+    "path": ["settings", "streaming", "cmcd"],
     "name": "cid",
     "parent": "cmcd"
   }

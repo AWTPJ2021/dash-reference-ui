@@ -1,7 +1,6 @@
 [
   {
-    "enum-description": [0, 1, 2, 3, 4, 5],
-    "example": 0,
+    "enum-description": ["None", "Fatal", "Error", "Warning", "Info", "Debug"],
     "id": "settings.debug.logLevel"
   }
 ]
