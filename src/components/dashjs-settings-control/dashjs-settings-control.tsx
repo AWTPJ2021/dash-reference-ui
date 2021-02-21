@@ -109,9 +109,9 @@ export class DashjsSettingsControl {
     setParam(id, value);
     this.selectedSettings = new Map(this.selectedSettings);
   }
-  async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
+  private async updateSearch(event: CustomEvent<InputChangeEventDetail>): Promise<void> {
     if (event.detail.value == '') {
-      if (this.debounceTimer) {
+      if (this.debounceTimer != undefined) {
         clearTimeout(this.debounceTimer);
       }
       if (this.searchPopover) {
@@ -156,7 +156,7 @@ export class DashjsSettingsControl {
     this.debounceTimer = setTimeout(next, 500);
   }
 
-  tryAddSetting(key: string) {
+  private tryAddSetting(key: string): void {
     const regex = new RegExp(key, 'i');
     const matchingSettings = Array.from(this.selectedSettings.keys()).filter(e => e.match(regex));
     if (matchingSettings.length === 1) {
@@ -171,7 +171,7 @@ export class DashjsSettingsControl {
     }
   }
 
-  async showSettingsJSON() {
+  private async showSettingsJSON() {
     const modal = await modalController.create({
       component: 'dashjs-generic-modal',
       componentProps: {

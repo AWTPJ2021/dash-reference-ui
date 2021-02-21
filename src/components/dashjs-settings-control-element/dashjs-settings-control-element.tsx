@@ -19,7 +19,7 @@ export class DashjsSettingsControlElement {
       control = [
         <ion-select class="input-border" placeholder="Select One" interface="popover" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}>
           {this.options.map(val => (
-            <ion-select-option value={val}>{val}</ion-select-option>
+            <ion-select-option value={val.toString()}>{val}</ion-select-option>
           ))}
         </ion-select>,
         // <ion-label position="floating">{this.name}</ion-label>,
