@@ -53,11 +53,11 @@ export class DashjsPlayer {
         if (!this.player) {
           this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
-          var returnValue = this.player[event.detail.name].apply(this, event.detail.param);
-          var toSend = {
+          const returnValue = this.player[event.detail.name].apply(this, event.detail.param);
+          const toSend = {
             event: event.detail.name,
-            return: returnValue
-          }
+            return: returnValue,
+          };
           this.playerResponseHandler(toSend);
         }
     }
