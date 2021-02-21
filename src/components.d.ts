@@ -54,7 +54,6 @@ export namespace Components {
         "selectedType": string;
         "selectedVersion": string;
         "type": string[];
-        "url": string;
         "versions": string[];
     }
     interface DashjsSettingsControl {
@@ -251,7 +250,6 @@ declare namespace LocalJSX {
         "selectedType"?: string;
         "selectedVersion"?: string;
         "type"?: string[];
-        "url"?: string;
         "versions"?: string[];
     }
     interface DashjsSettingsControl {

@@ -2,6 +2,7 @@ import { InputChangeEventDetail, modalController, popoverController } from '@ion
 import { Component, Host, h, Watch, Method, Event, EventEmitter, State, Prop, Element } from '@stencil/core';
 import { RouterHistory } from '@stencil/router';
 import { Setting, Tree } from '../../types/types';
+import { removeQueryParams, setParam } from '../../utils/queryParams';
 import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap, settingsListToTree } from '../../utils/utils';
 
 @Component({
@@ -41,7 +42,7 @@ export class DashjsSettingsControl {
   @Method()
   async resetSettings() {
     this.selectedSettings = generateSettingsMapFromList(this.settingsList);
-    this.removeQueryParams();
+    removeQueryParams();
   }
 
   @Event()
@@ -90,29 +91,6 @@ export class DashjsSettingsControl {
       });
   }
 
-  setParam(key, value) {
-    const url = new URL(window.location.href);
-
-    if (value == null) {
-      url.searchParams.delete(key);
-    } else {
-      if (url.searchParams.has(key)) {
-        url.searchParams.set(key, value);
-      } else {
-        url.searchParams.append(key, value);
-      }
-    }
-    window.history.pushState(null, null, url as any);
-  }
-
-  removeQueryParams() {
-    const url = new URL(window.location.href);
-    Array.from((url.searchParams as any).keys()).forEach((key: string) => {
-      url.searchParams.delete(key);
-    });
-    window.history.pushState(null, null, url as any);
-  }
-
   @Watch('selectedSettings')
   settingsUpdate(force: boolean = false) {
     if (this.autoUpdate || force === true) {
@@ -122,13 +100,13 @@ export class DashjsSettingsControl {
 
   removeSetting(id: string) {
     this.selectedSettings.set(id, undefined);
-    this.setParam(id, undefined);
+    setParam(id, undefined);
     this.selectedSettings = new Map(this.selectedSettings);
   }
 
   updateSetting(id: string, value: any) {
     this.selectedSettings.set(id, value);
-    this.setParam(id, value);
+    setParam(id, value);
     this.selectedSettings = new Map(this.selectedSettings);
   }
   async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
