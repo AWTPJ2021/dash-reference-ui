@@ -1,7 +1,7 @@
 import { newSpecPage } from '@stencil/core/testing';
 import { DashjsSettingsControlElement } from '../dashjs-settings-control-element';
 
-describe('dashjs-settings-control-element', () => {
+xdescribe('dashjs-settings-control-element', () => {
   it('renders', async () => {
     const page = await newSpecPage({
       components: [DashjsSettingsControlElement],

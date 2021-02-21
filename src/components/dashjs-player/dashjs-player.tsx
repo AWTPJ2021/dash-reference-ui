@@ -1,6 +1,7 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
+import { getMediaURL, getStringLocally } from '../../utils/utils';
 declare var dashjs: any;
 
 @Component({
@@ -16,12 +17,6 @@ export class DashjsPlayer {
   @State()
   controlbar: any;
 
-  @Prop() url: string = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
-  @Watch('url')
-  protected watchHandlerUrl(newUrl: string): void {
-    console.log('Changed value: ' + newUrl);
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), newUrl, this.autoPlay);
-  }
   @Prop() version: string = undefined;
   @Watch('version')
   protected watchHandlerVersion() {
@@ -33,14 +28,12 @@ export class DashjsPlayer {
     this.loadOrUpdateDashJsScript();
   }
 
-  @State() autoPlay: boolean;
   @State() streamInterval: any;
 
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
     switch (event.detail.type) {
       case 'load':
-        console.log('Re-initializing the player:\n' + JSON.stringify(event.detail));
         if (this.player) {
           this.player.reset();
         }
@@ -53,21 +46,20 @@ export class DashjsPlayer {
         }, 1000);
         break;
       case 'stop':
-        console.log('Resetting the player');
         this.player.reset();
         clearInterval(this.streamInterval);
         break;
-      case 'autoload':
-        console.log('autoload state changed to: ' + event.detail.autoPlay);
-        this.autoPlay = event.detail.autoPlay;
-        break;
       case 'function':
-        var returnValue = this.player[event.detail.name](event.detail.param);
-        var toSend = {
-          event: event.detail.name,
-          return: returnValue,
-        };
-        this.playerResponseHandler(toSend);
+        if (!this.player) {
+          this.playerResponseHandler({ event: event.detail.name, return: null });
+        } else {
+          var returnValue = this.player[event.detail.name](event.detail.param);
+          var toSend = {
+            event: event.detail.name,
+            return: returnValue,
+          };
+          this.playerResponseHandler(toSend);
+        }
     }
   }
 
@@ -83,17 +75,11 @@ export class DashjsPlayer {
 
   @Listen('settingsUpdated', { target: 'document' })
   settingsUpdate(event) {
-    console.log('Received the updated settings: ', event.detail);
-
     this.player?.updateSettings({
       debug: event?.detail?.debug,
       streaming: event?.detail?.streaming,
     });
   }
-
-  @Prop() streamUrl: string;
-  @State() currentUrl = 'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd';
-  // @State() isPaused: boolean;
 
   @Event() streamMetricsEvent: EventEmitter<Object>;
 
@@ -104,6 +90,12 @@ export class DashjsPlayer {
   componentDidLoad() {
     // this.isPaused = this.player.isPaused();
     this.loadOrUpdateDashJsScript();
+    this.player = dashjs.MediaPlayer().create();
+    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), getMediaURL(), getStringLocally('api_autostart') == 'true');
+    this.controlbar.initialize();
+    // this.streamInterval = setInterval(() => {
+    //   this.streamMetricsEventHandler(this.player);
+    // }, 1000);
   }
 
   private loadOrUpdateDashJsScript() {
@@ -124,21 +116,6 @@ export class DashjsPlayer {
     script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
     document.head.appendChild(script);
-  }
-
-  componentWillLoad() {
-    this.onUrlChange(this.streamUrl);
-    // this.stream_watcher();
-  }
-
-  // @Watch('isPaused')
-  // stream_watcher() {
-  //   if (this.isPaused) clearInterval(this.streamInterval);
-  // }
-
-  @Watch('streamUrl')
-  onUrlChange(newUrl: string) {
-    if (newUrl) this.currentUrl = JSON.parse(newUrl);
   }
 
   render() {

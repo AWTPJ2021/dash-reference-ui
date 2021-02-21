@@ -1,3 +1,30 @@
 :host {
   display: block;
+  --ion-grid-padding: 0px; 
+   --ion-grid-column-padding: 0px; 
+}
+
+
+
+ion-col { 
+  display: flex; 
+  align-items: center; 
+} 
+
+.gap {
+  width: 15px;
+}
+
+ion-item {
+  --min-height: 0;
+}
+
+.input-border {
+  border: 1px solid;
+  border-radius: 64px;
+  border-color: rgb(0,0,0,0.2);
+  --padding-top: 5px !important;
+  --padding-bottom: 5px !important;
+  --padding-start: 10px !important;
+  --padding-end: 10px !important;
 }

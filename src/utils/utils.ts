@@ -185,3 +185,59 @@ export function chartDataset(metricsData: any, colors: Object) {
   });
   return dataset;
 }
+
+export function deleteLocalKey(key : string, id : string) {
+  var toUpdate = JSON.parse(localStorage.getItem(key));
+  delete toUpdate[id];
+  localStorage.setItem(key, JSON.stringify(toUpdate));
+}
+
+export function updateLocalKey(key : string, id : string, value : any) {
+    var toUpdate = JSON.parse(localStorage.getItem(key));
+    toUpdate[id] = value;
+    localStorage.setItem(key, JSON.stringify(toUpdate));
+}
+
+export function saveMapToLocalKey(localKey: string, map : Map<string, any>) {
+  var toSave = {};
+  map.forEach((value, key) => {
+    if(value != undefined) {
+      toSave[key] = value;
+    }
+  });
+  localStorage.setItem(localKey, JSON.stringify(toSave));
+}
+
+export function getLocalInformation(key : string) {
+  var info = localStorage.getItem(key);
+  return info != null ? JSON.parse(info) : null;
+}
+
+export function deleteLocalInformation(key : string) {
+  localStorage.removeItem(key);
+}
+
+
+export function getMediaURL() {
+  return localStorage.getItem("mediaUrl") === null ? 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd' : localStorage.getItem('mediaUrl');
+}
+
+export function setMediaURL(url : string) {
+  localStorage.setItem('mediaUrl', url);
+}
+
+export function resetMediaURL() {
+  localStorage.removeItem('mediaUrl');
+}
+
+export function saveStringLocally(key: string, value: string) {
+  localStorage.setItem(key, value);
+}
+
+export function deleteStringLocally(key: string) {
+  localStorage.removeItem(key);
+}
+
+export function getStringLocally(key : string) {
+  return localStorage.getItem(key);
+}

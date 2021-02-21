@@ -13,8 +13,10 @@ export namespace Components {
     }
     interface DashjsApiControlElement {
         "name": string;
+        "options": string[];
         "param": any;
         "paramDesc": any;
+        "type": Type;
     }
     interface DashjsApiControlModal {
         "functionList": DashFunction[];
@@ -23,14 +25,21 @@ export namespace Components {
     interface DashjsApiLinkSelector {
         "sourceList": any[];
     }
+    interface DashjsGenericModal {
+        "content": any;
+        "textTitle": string;
+    }
+    interface DashjsHelpButton {
+        "helperText": string;
+        "titleText": string;
+    }
     interface DashjsPlayer {
-        "streamUrl": string;
         "type": string;
-        "url": string;
         "version": string;
     }
     interface DashjsPopoverSelect {
-        "options": [];
+        "isAPI": boolean;
+        "options": string[];
     }
     interface DashjsReferenceUi {
         "selectedType": string;
@@ -97,6 +106,18 @@ declare global {
         prototype: HTMLDashjsApiLinkSelectorElement;
         new (): HTMLDashjsApiLinkSelectorElement;
     };
+    interface HTMLDashjsGenericModalElement extends Components.DashjsGenericModal, HTMLStencilElement {
+    }
+    var HTMLDashjsGenericModalElement: {
+        prototype: HTMLDashjsGenericModalElement;
+        new (): HTMLDashjsGenericModalElement;
+    };
+    interface HTMLDashjsHelpButtonElement extends Components.DashjsHelpButton, HTMLStencilElement {
+    }
+    var HTMLDashjsHelpButtonElement: {
+        prototype: HTMLDashjsHelpButtonElement;
+        new (): HTMLDashjsHelpButtonElement;
+    };
     interface HTMLDashjsPlayerElement extends Components.DashjsPlayer, HTMLStencilElement {
     }
     var HTMLDashjsPlayerElement: {
@@ -156,6 +177,8 @@ declare global {
         "dashjs-api-control-element": HTMLDashjsApiControlElementElement;
         "dashjs-api-control-modal": HTMLDashjsApiControlModalElement;
         "dashjs-api-link-selector": HTMLDashjsApiLinkSelectorElement;
+        "dashjs-generic-modal": HTMLDashjsGenericModalElement;
+        "dashjs-help-button": HTMLDashjsHelpButtonElement;
         "dashjs-player": HTMLDashjsPlayerElement;
         "dashjs-popover-select": HTMLDashjsPopoverSelectElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
@@ -175,8 +198,10 @@ declare namespace LocalJSX {
     interface DashjsApiControlElement {
         "name"?: string;
         "onValueChanged"?: (event: CustomEvent<any>) => void;
+        "options"?: string[];
         "param"?: any;
         "paramDesc"?: any;
+        "type"?: Type;
     }
     interface DashjsApiControlModal {
         "functionList"?: DashFunction[];
@@ -186,16 +211,23 @@ declare namespace LocalJSX {
         "onSetStream"?: (event: CustomEvent<String>) => void;
         "sourceList"?: any[];
     }
+    interface DashjsGenericModal {
+        "content"?: any;
+        "textTitle"?: string;
+    }
+    interface DashjsHelpButton {
+        "helperText"?: string;
+        "titleText"?: string;
+    }
     interface DashjsPlayer {
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<Object>) => void;
-        "streamUrl"?: string;
         "type"?: string;
-        "url"?: string;
         "version"?: string;
     }
     interface DashjsPopoverSelect {
-        "options"?: [];
+        "isAPI"?: boolean;
+        "options"?: string[];
     }
     interface DashjsReferenceUi {
         "selectedType"?: string;
@@ -242,6 +274,8 @@ declare namespace LocalJSX {
         "dashjs-api-control-element": DashjsApiControlElement;
         "dashjs-api-control-modal": DashjsApiControlModal;
         "dashjs-api-link-selector": DashjsApiLinkSelector;
+        "dashjs-generic-modal": DashjsGenericModal;
+        "dashjs-help-button": DashjsHelpButton;
         "dashjs-player": DashjsPlayer;
         "dashjs-popover-select": DashjsPopoverSelect;
         "dashjs-reference-ui": DashjsReferenceUi;
@@ -261,6 +295,8 @@ declare module "@stencil/core" {
             "dashjs-api-control-element": LocalJSX.DashjsApiControlElement & JSXBase.HTMLAttributes<HTMLDashjsApiControlElementElement>;
             "dashjs-api-control-modal": LocalJSX.DashjsApiControlModal & JSXBase.HTMLAttributes<HTMLDashjsApiControlModalElement>;
             "dashjs-api-link-selector": LocalJSX.DashjsApiLinkSelector & JSXBase.HTMLAttributes<HTMLDashjsApiLinkSelectorElement>;
+            "dashjs-generic-modal": LocalJSX.DashjsGenericModal & JSXBase.HTMLAttributes<HTMLDashjsGenericModalElement>;
+            "dashjs-help-button": LocalJSX.DashjsHelpButton & JSXBase.HTMLAttributes<HTMLDashjsHelpButtonElement>;
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
             "dashjs-popover-select": LocalJSX.DashjsPopoverSelect & JSXBase.HTMLAttributes<HTMLDashjsPopoverSelectElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;

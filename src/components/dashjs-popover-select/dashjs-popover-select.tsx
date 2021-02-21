@@ -7,14 +7,15 @@ import { Component, h, Prop } from '@stencil/core';
   shadow: true,
 })
 export class DashjsPopoverSelect {
-  @Prop() options: [] = [];
+  @Prop() isAPI : boolean;
+  @Prop() options: string[] = [];
 
   render() {
     return [
       <ion-list>
         {this.options.map(el => (
           <ion-item button onClick={() => popoverController.dismiss(el)}>
-            <ion-label>{el}</ion-label>
+            <ion-label>{this.isAPI? el : el.slice(9)}</ion-label>
           </ion-item>
         ))}
         {this.options.length == 0 ? <div>No Results</div> : undefined}

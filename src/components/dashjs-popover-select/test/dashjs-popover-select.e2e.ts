@@ -1,6 +1,6 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('dashjs-popover-select', () => {
+xdescribe('dashjs-popover-select', () => {
   it('renders', async () => {
     const page = await newE2EPage();
     await page.setContent('<dashjs-popover-select></dashjs-popover-select>');

@@ -17,3 +17,17 @@
   min-height: 90vh;
   min-width: 90vw;
 }
+
+// Fix the Settings Search popover beeing to small
+.settings-search-popover {
+  .popover-content {
+    --width: 450px;
+  }
+}
+
+.input-border {
+  border: 1px solid;
+  border-radius: 64px;
+  padding: 5px 10px 5px 10px;
+  border-color: rgb(0,0,0,0.2);
+}
