@@ -1,6 +1,9 @@
 import { StencilComponentPrefetch } from '@beck24/stencil-component-prefetch/dist/types/components/stencil-component-prefetch/stencil-component-prefetch';
 import { Component, Host, h, Prop, Element, Build, getAssetPath } from '@stencil/core';
+import { setParam } from '../../utils/queryParams';
 import { contributors } from './contributors';
+const STATIC_VERSION_QUERY_PARAM = 'version';
+const STATIC_TYPE_QUERY_PARAM = 'type';
 
 @Component({
   tag: 'dashjs-reference-ui',
@@ -9,7 +12,6 @@ import { contributors } from './contributors';
   shadow: false,
 })
 export class DashjsReferenceUi {
-  @Prop() url: string;
   @Prop() versions: string[] = [];
   @Prop() selectedVersion: string = undefined;
   @Prop() type: string[] = ['min', 'debug'];
@@ -21,7 +23,16 @@ export class DashjsReferenceUi {
       .then((response: Response) => response.json())
       .then(response => {
         this.versions = response;
-        this.selectedVersion = response[0];
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has(STATIC_VERSION_QUERY_PARAM)) {
+          this.selectedVersion = urlParams.get(STATIC_VERSION_QUERY_PARAM);
+        }
+        if (urlParams.has(STATIC_TYPE_QUERY_PARAM)) {
+          this.selectedType = urlParams.get(STATIC_TYPE_QUERY_PARAM);
+        }
+        if (this.selectedVersion != undefined) {
+          this.selectedVersion = response[0];
+        }
       });
   }
   componentDidLoad() {
@@ -40,6 +51,14 @@ export class DashjsReferenceUi {
         }),
       );
     }
+  }
+  private typeChange(change) {
+    this.selectedType = change.detail.value;
+    setParam(STATIC_TYPE_QUERY_PARAM, this.selectedType);
+  }
+  private versionChange(change) {
+    this.selectedVersion = change.detail.value;
+    setParam(STATIC_VERSION_QUERY_PARAM, this.selectedVersion);
   }
   render() {
     const centercss = {
@@ -68,7 +87,7 @@ export class DashjsReferenceUi {
           </ion-title>
           <ion-buttons slot="end">
             Type:
-            <ion-select interface="popover" value={this.selectedType} onIonChange={change => (this.selectedType = change.detail.value)}>
+            <ion-select interface="popover" value={this.selectedType} onIonChange={this.typeChange}>
               {this.type.map(type => (
                 <ion-select-option value={type}>{type}</ion-select-option>
               ))}
@@ -76,7 +95,7 @@ export class DashjsReferenceUi {
           </ion-buttons>
           <ion-buttons slot="end">
             Version:
-            <ion-select interface="popover" value={this.selectedVersion} onIonChange={change => (this.selectedVersion = change.detail.value)}>
+            <ion-select interface="popover" value={this.selectedVersion} onIonChange={this.versionChange}>
               {this.versions.map(version => (
                 <ion-select-option value={version}>{version}</ion-select-option>
               ))}
