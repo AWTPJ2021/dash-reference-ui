@@ -38,9 +38,9 @@ export class DashjsApiControl {
   @State() functionList: DashFunction[] = [];
   @State() selectedFunctions: Map<string, any> = new Map();
   @State() displayedFunction: string = '';
-  @State() searchElement: HTMLInputElement;
-  debounceTimer: NodeJS.Timeout | undefined;
-  searchPopover: any;
+  private searchElement: HTMLInputElement;
+  private debounceTimer: NodeJS.Timeout | undefined;
+  private searchPopover: any;
 
   componentWillLoad() {
     fetch('/static/sources.json')
@@ -136,10 +136,6 @@ export class DashjsApiControl {
   async resetFunctions() {
     this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
     deleteLocalInformation('api_functions');
-  }
-
-  protected componentDidLoad(): void {
-    this.searchElement = this.element.querySelector('#searchApiInput');
   }
 
   @Event({
@@ -350,7 +346,7 @@ export class DashjsApiControl {
             </ion-row>
             <ion-row>
               <ion-input
-                id="searchApiInput"
+                ref={el => (this.searchElement = (el as unknown) as HTMLInputElement)}
                 placeholder="Add more API calls..."
                 onIonChange={event => this.updateSearch(event)}
                 onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}

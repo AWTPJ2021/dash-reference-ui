@@ -33,9 +33,9 @@ export class DashjsSettingsControl {
    * Whether Changes of Settings should be automatically emitted or if it should be done manually
    */
   @State() autoUpdate: boolean = true;
-  @State() searchElement: HTMLInputElement;
-  debounceTimer: NodeJS.Timeout | undefined;
-  searchPopover: any;
+  private searchElement: HTMLInputElement;
+  private debounceTimer: NodeJS.Timeout | undefined;
+  private searchPopover: any;
   @Element() el: HTMLDashjsSettingsControlElement;
 
   @Method()
@@ -88,9 +88,6 @@ export class DashjsSettingsControl {
       .catch(() => {
         this.settingsList = undefined;
       });
-  }
-  componentDidLoad() {
-    this.searchElement = this.el.querySelector('#searchInput');
   }
 
   setParam(key, value) {
@@ -277,7 +274,7 @@ export class DashjsSettingsControl {
                 )}
                 <ion-row>
                   <ion-input
-                    id="searchInput"
+                    ref={el => (this.searchElement = (el as unknown) as HTMLInputElement)}
                     placeholder="Add more settings..."
                     onIonChange={event => this.updateSearch(event)}
                     onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}

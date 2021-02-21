@@ -95,7 +95,7 @@ export class DashjsReferenceUi {
         ) : undefined}
         <dashjs-api-control version={this.selectedVersion}></dashjs-api-control>
         {/* <dashjs-settings-control version={this.selectedVersion} onSettingsUpdated={event => console.log(event.detail)}></dashjs-settings-control> */}
-        <dashjs-settings-control></dashjs-settings-control>
+        <dashjs-settings-control version={this.selectedVersion}></dashjs-settings-control>
         <dashjs-player version={this.selectedVersion} type={this.selectedType}></dashjs-player>
         <dashjs-statistics></dashjs-statistics>
         <div class="contributors-title">
