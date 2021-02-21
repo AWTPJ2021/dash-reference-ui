@@ -11,7 +11,7 @@
     "type": "number",
     "description": "Sets up the log level. The levels are cumulative. For example, if you set the log level\nto dashjs.Debug.LOG_LEVEL_WARNING all warnings, errors and fatals will be logged. Possible values.\n\n<ul>\n<li>dashjs.Debug.LOG_LEVEL_NONE<br/>\nNo message is written in the browser console.\n\n<li>dashjs.Debug.LOG_LEVEL_FATAL<br/>\nLog fatal errors. An error is considered fatal when it causes playback to fail completely.\n\n<li>dashjs.Debug.LOG_LEVEL_ERROR<br/>\nLog error messages.\n\n<li>dashjs.Debug.LOG_LEVEL_WARNING<br/>\nLog warning messages.\n\n<li>dashjs.Debug.LOG_LEVEL_INFO<br/>\nLog info messages.\n\n<li>dashjs.Debug.LOG_LEVEL_DEBUG<br/>\nLog debug messages.\n</ul>",
     "required": false,
-    "example": "dashjs.Debug.LOG_LEVEL_WARNING",
+    "example": 0,
     "id": "settings.debug.logLevel",
     "path": [
       "settings",
