@@ -117,6 +117,8 @@ export class DashjsApiControl {
   updateFunction(id: string, value: any) {
     this.selectedFunctions.set(id, value);
     this.selectedFunctions = new Map(this.selectedFunctions);
+    console.log(id);
+    console.log(value);
     this.playerEventHandler({ type: 'function', name: id, param: value });
     updateLocalKey('api_functions', id, value);
   }
@@ -266,7 +268,7 @@ export class DashjsApiControl {
             <ion-row>
               <ion-col size="2">
                 <ion-button shape="round" onClick={ev => this.presentPopover(ev)} class="fill_width">
-                  Select Stream&nbsp;<ion-icon name="caret-down-circle"></ion-icon>
+                  Select Stream <ion-icon slot="end" name="caret-down-circle"></ion-icon>
                 </ion-button>
               </ion-col>
               <ion-col size="6">
