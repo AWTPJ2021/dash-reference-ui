@@ -57,6 +57,7 @@
     "puppeteer": "^5.4.1",
     "quicktype-core": "^6.0.69",
     "rollup-plugin-node-polyfills": "^0.2.1",
+    "ts-node": "^9.1.1",
     "typescript-json-schema": "^0.45.1",
     "typescript-parser": "^2.6.1"
   }
