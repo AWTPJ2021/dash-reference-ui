@@ -1,5 +1,5 @@
 import { modalController } from '@ionic/core';
-import { Component, h, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Prop, State } from '@stencil/core';
 import { Setting, Tree } from '../../types/types';
 
 @Component({
@@ -14,9 +14,6 @@ export class DashjsSettingsControlModal {
   @Prop() settingsList: Setting[] = [];
   @Prop() settingsTree: Tree = undefined;
   @Prop() selectedSettings: Map<string, any> = new Map();
-  @Watch('selectedSettings') test(newSettings: Setting) {
-    console.log(newSettings);
-  }
   @State() viewedSettings: Setting[] = [];
   @State() triggerRerender = 0;
 
@@ -55,7 +52,7 @@ export class DashjsSettingsControlModal {
                 }}
                 renderFuncSuffix={() => undefined}
                 renderFunc={key => {
-                  let setting = this.viewedSettings.filter(s => s.id === key)[0];
+                  const setting = this.viewedSettings.filter(s => s.id === key)[0];
                   return [
                     <ion-row
                       onClick={() => {

@@ -1,0 +1,16 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    // TODO: add later in order to be consistent
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@stencil/recommended"
+  ],
+  "rules": {
+    "@stencil/decorators-style": ["error", { "event": "multiline" }],
+    "@stencil/render-returns-host": "warn",
+    "no-console": "error",
+    "@typescript-eslint/no-inferrable-types": "off"
+  }
+}
