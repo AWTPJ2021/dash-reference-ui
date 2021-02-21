@@ -21,7 +21,7 @@ jobs:
       - name: Generate Metadata
         run: npm run gen-meta
         env:
-          ONLY_FIRST: "false"
+          ONLY_FIRST: 0
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build package
