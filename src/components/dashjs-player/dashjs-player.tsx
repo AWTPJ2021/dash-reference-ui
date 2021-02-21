@@ -2,7 +2,10 @@ import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEm
 import { MediaPlayerClass } from 'dashjs';
 import { getMediaURL, getStringLocally } from '../../utils/utils';
 declare let dashjs: any;
-
+/**
+ * Loads dashjs player.
+ * It makes use of dashjs cdn to load the script
+ */
 @Component({
   tag: 'dashjs-player',
   styleUrl: 'dashjs-player.css',
@@ -12,14 +15,22 @@ export class DashjsPlayer {
   @Element() private element: HTMLDashjsPlayerElement;
   private player: MediaPlayerClass;
 
+  /**
+   * The Version of dashjs that should be loaded.
+   * e.g. v3.2.0
+   */
   @Prop() version: string = undefined;
   @Watch('version')
-  protected watchHandlerVersion() {
+  protected watchHandlerVersion(): void {
     this.loadOrUpdateDashJsScript();
   }
+  /**
+   * The Type of dashjs that should be loaded.
+   * e.g. debug or min
+   */
   @Prop() type: string = undefined;
   @Watch('type')
-  protected watchHandlerType() {
+  protected watchHandlerType(): void {
     this.loadOrUpdateDashJsScript();
   }
 
@@ -32,11 +43,7 @@ export class DashjsPlayer {
         if (this.player) {
           this.player.reset();
         }
-        this.player = dashjs.MediaPlayer().create();
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), event.detail.url, event.detail.autoPlay == 'true');
-        this.streamInterval = setInterval(() => {
-          this.streamMetricsEventHandler(this.player);
-        }, 1000);
+        this.initPlayer(event.detail.autoPlay == 'true');
         break;
       case 'stop':
         this.player.reset();
@@ -82,15 +89,18 @@ export class DashjsPlayer {
   }
 
   componentDidLoad() {
-    this.loadOrUpdateDashJsScript();
+    this.loadOrUpdateDashJsScript(getStringLocally('api_autostart') == 'true');
+  }
+
+  private initPlayer(autoPlay: boolean = false): void {
     this.player = dashjs.MediaPlayer().create();
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), getMediaURL(), getStringLocally('api_autostart') == 'true');
+    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), getMediaURL(), autoPlay);
     this.streamInterval = setInterval(() => {
       this.streamMetricsEventHandler(this.player);
     }, 1000);
   }
 
-  private loadOrUpdateDashJsScript() {
+  private loadOrUpdateDashJsScript(autoPlay: boolean = false) {
     if (this.version == undefined) {
       return;
     }
@@ -104,7 +114,9 @@ export class DashjsPlayer {
     }
     const script = document.createElement('script');
     script.id = id;
-    // script.onload = () => {};
+    script.onload = () => {
+      this.initPlayer(autoPlay);
+    };
     script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
     document.head.appendChild(script);
