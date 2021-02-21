@@ -1,0 +1,11 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": ["plugin:@stencil/recommended"],
+  "rules": {
+    "@stencil/decorators-style": ["error", { "event": "multiline" }],
+    "@stencil/render-returns-host": "warn",
+    "no-console": "error"
+  }
+}

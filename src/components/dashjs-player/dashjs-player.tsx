@@ -1,6 +1,6 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass } from 'dashjs';
-import { getMediaURL,  getStringLocally } from '../../utils/utils';
+import { getMediaURL, getStringLocally } from '../../utils/utils';
 declare var dashjs: any;
 
 @Component({
@@ -9,8 +9,7 @@ declare var dashjs: any;
   shadow: false,
 })
 export class DashjsPlayer {
-  @Element()
-  private element: HTMLElement;
+  @Element() private element: HTMLDashjsPlayerElement;
   private player: MediaPlayerClass;
 
   @Prop() version: string = undefined;
@@ -44,14 +43,14 @@ export class DashjsPlayer {
         clearInterval(this.streamInterval);
         break;
       case 'function':
-        if(!this.player) {
-          this.playerResponseHandler({"event" : event.detail.name, "return": null})
+        if (!this.player) {
+          this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
           var returnValue = this.player[event.detail.name](event.detail.param);
           var toSend = {
-            "event": event.detail.name,
-            "return": returnValue
-          }
+            event: event.detail.name,
+            return: returnValue,
+          };
           this.playerResponseHandler(toSend);
         }
     }
@@ -75,7 +74,8 @@ export class DashjsPlayer {
     });
   }
 
-  @Event() streamMetricsEvent: EventEmitter<Object>;
+  @Event()
+  streamMetricsEvent: EventEmitter<Object>;
 
   streamMetricsEventHandler(player: any) {
     this.streamMetricsEvent.emit(player);

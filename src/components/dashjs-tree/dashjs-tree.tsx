@@ -11,10 +11,8 @@ import { Tree } from '../../types/types';
  * Supply with a render Function and render anything you like inside
  */
 export class DashjsTree {
-  @Prop()
-  tree: Tree;
-  @Prop()
-  elements: string[];
+  @Prop() tree: Tree;
+  @Prop() elements: string[];
   @Prop() renderFunc: (key) => void;
   @Prop() renderFuncTitle: (path) => void;
   @Prop() renderFuncSuffix: () => void;

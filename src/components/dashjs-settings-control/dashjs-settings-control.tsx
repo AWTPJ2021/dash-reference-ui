@@ -36,7 +36,7 @@ export class DashjsSettingsControl {
   @State() searchElement: HTMLInputElement;
   debounceTimer: NodeJS.Timeout | undefined;
   searchPopover: any;
-  @Element() el: HTMLElement;
+  @Element() el: HTMLDashjsSettingsControlElement;
 
   @Method()
   async resetSettings() {
@@ -44,7 +44,8 @@ export class DashjsSettingsControl {
     this.removeQueryParams();
   }
 
-  @Event() settingsUpdated: EventEmitter<Object>;
+  @Event()
+  settingsUpdated: EventEmitter<Object>;
 
   async openSettings() {
     const modal = await modalController.create({
@@ -163,7 +164,7 @@ export class DashjsSettingsControl {
         enterAnimation: undefined,
         componentProps: {
           options: matchingSettings,
-          isAPI: false
+          isAPI: false,
         },
       });
       await this.searchPopover.present();

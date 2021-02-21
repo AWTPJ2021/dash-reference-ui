@@ -8,19 +8,14 @@ const { Chart } = chartjs.default.Chart;
   shadow: false,
 })
 export class DashjsStatistics {
-  @Prop()
-  video_data: any;
-  @Prop()
-  audio_data: any;
+  @Prop() video_data: any;
+  @Prop() audio_data: any;
 
-  @State()
-  videoDisable: boolean = false;
+  @State() videoDisable: boolean = false;
 
-  @State()
-  audioDisable: boolean = false;
+  @State() audioDisable: boolean = false;
 
-  @State()
-  chartInterval: any;
+  @State() chartInterval: any;
 
   // DashMetrics properties
 
@@ -39,8 +34,7 @@ export class DashjsStatistics {
   //   latency: 10,
   // };
 
-  @State()
-  metricsDataMap = {
+  @State() metricsDataMap = {
     'v_Buffer Length': [],
     'v_Bitrate Downloading': [],
     'v_Dropped Frames': [],
@@ -54,8 +48,7 @@ export class DashjsStatistics {
     'latency': [],
   };
 
-  @State()
-  videoBufferLength: number;
+  @State() videoBufferLength: number;
   videoBitrate: number;
   videoDroppedFrames: number;
   videoFrameRate: number;
@@ -80,15 +73,15 @@ export class DashjsStatistics {
     if ((isVideo && !this.videoDisable) || (!isVideo && !this.audioDisable)) {
       toChange.data.datasets[0].data.shift();
       toChange.data.datasets[0].data.push(122);
-    toChange.update();
-  }
+      toChange.update();
+    }
   }
 
   disableChart(isVideo) {
-    if (isVideo) this.videoDisable = this.videoDisable? false : true;
-    else this.audioDisable = this.audioDisable  ? false : true;
-    console.log('video: + ' + this.videoDisable);
-    console.log('audio: ' + this.audioDisable);
+    if (isVideo) this.videoDisable = this.videoDisable ? false : true;
+    else this.audioDisable = this.audioDisable ? false : true;
+    // console.log('video: + ' + this.videoDisable);
+    // console.log('audio: ' + this.audioDisable);
   }
 
   clearChart(isVideo) {
@@ -102,7 +95,7 @@ export class DashjsStatistics {
 
   @Watch('audio_data')
   audio_watcher(newData: any) {
-    if(!this.audioDisable) {
+    if (!this.audioDisable) {
       for (let index in newData) {
         this.audioInstance.data.datasets[index].data.shift();
         this.audioInstance.data.datasets[index].data.push(newData[index]);
@@ -111,15 +104,13 @@ export class DashjsStatistics {
     }
   }
 
-  @Element()
-  el: HTMLElement;
+  @Element() el: HTMLDashjsStatisticsElement;
   video_canvas: HTMLCanvasElement;
   audio_canvas: HTMLCanvasElement;
   video_context: CanvasRenderingContext2D;
   audio_context: CanvasRenderingContext2D;
 
-  @Prop()
-  videoInstance: any;
+  @Prop() videoInstance: any;
   audioInstance: any;
 
   @Listen('streamMetricsEvent', { target: 'document' })
@@ -187,7 +178,7 @@ export class DashjsStatistics {
 
   @Watch('video_data')
   video_watcher(isVideo: boolean, newData: any, newLabels: any) {
-    if(!this.videoDisable) {
+    if (!this.videoDisable) {
       let toChange = isVideo ? this.videoInstance : this.audioInstance;
       // for (let index in newData) {
       toChange.data.datasets[0].data = newData.slice(1).slice(-6);
@@ -433,7 +424,7 @@ export class DashjsStatistics {
 
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(true)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable ? "Disabled" : "Enabled"}</ion-button>
+              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable ? 'Disabled' : 'Enabled'}</ion-button>
               <ion-row>
                 <div class="display">
                   <canvas id="video_canvas">a chart</canvas>
@@ -445,7 +436,7 @@ export class DashjsStatistics {
 
             <ion-card-content>
               <ion-button onClick={() => this.clearChart(false)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable ? "Disabled" : "Enabled"}</ion-button>
+              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable ? 'Disabled' : 'Enabled'}</ion-button>
               <ion-row>
                 <div class="display">
                   <canvas id="audio_canvas">another chart</canvas>
