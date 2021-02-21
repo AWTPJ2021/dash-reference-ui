@@ -1,5 +1,5 @@
 import { modalController } from '@ionic/core';
-import { Component, h, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Prop, State } from '@stencil/core';
 import { Setting, Tree } from '../../types/types';
 
 @Component({
