@@ -46,8 +46,7 @@ export class DashjsSettingsControl {
   /**
    * Emitted everytime the Settings are updated
    */
-  @Event()
-  settingsUpdated: EventEmitter<MediaPlayerSettingClass>;
+  @Event() settingsUpdated: EventEmitter<MediaPlayerSettingClass>;
   /**
    * Tree Representation of the Settings
    */

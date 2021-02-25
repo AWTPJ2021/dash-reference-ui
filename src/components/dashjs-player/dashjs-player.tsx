@@ -49,14 +49,9 @@ export class DashjsPlayer {
 
   @State() streamInterval: any;
 
-  @State()
-  controlbar: any;
+  @State() controlbar: any;
   // TODO: Really Bad practice! Use a better flow to get updates to statistics
-  @Event({
-    composed: true,
-    bubbles: true,
-  })
-  playerEvent: EventEmitter<any>;
+  @Event({ composed: true, bubbles: true, }) playerEvent: EventEmitter<any>;
 
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
@@ -92,11 +87,7 @@ export class DashjsPlayer {
     }
   }
 
-  @Event({
-    composed: true,
-    bubbles: true,
-  })
-  playerResponse: EventEmitter<any>;
+  @Event({ composed: true, bubbles: true, }) playerResponse: EventEmitter<any>;
 
   playerResponseHandler(todo: any) {
     this.playerResponse.emit(todo);
@@ -110,8 +101,7 @@ export class DashjsPlayer {
     });
   }
 
-  @Event()
-  streamMetricsEvent: EventEmitter<any>;
+  @Event() streamMetricsEvent: EventEmitter<any>;
 
   streamMetricsEventHandler(player: any) {
     player && this.streamMetricsEvent.emit(player);

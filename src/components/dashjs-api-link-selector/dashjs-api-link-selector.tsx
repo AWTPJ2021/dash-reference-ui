@@ -8,11 +8,7 @@ import { Component, h, EventEmitter, Event, Prop } from '@stencil/core';
 export class PagePopover {
   @Prop() sourceList: any[];
 
-  @Event({
-    composed: true,
-    bubbles: true,
-  })
-  setStream: EventEmitter<string>;
+  @Event({ composed: true, bubbles: true, }) setStream: EventEmitter<string>;
 
   setStreamHandler(todo: any) {
     this.setStream.emit(todo);

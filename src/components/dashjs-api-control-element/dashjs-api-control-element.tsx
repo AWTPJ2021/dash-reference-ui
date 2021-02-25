@@ -18,7 +18,6 @@ export class DashjsAPIControlElement {
   @Prop() name: string;
   @Prop() options: string[];
   @Prop() type: Type;
-  /* eslint-disable-next-line no-alert */
   @Event() valueChanged: EventEmitter<any>;
   @Prop() param: any;
   @Prop() paramDesc: any;

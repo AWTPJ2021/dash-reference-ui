@@ -9,6 +9,7 @@
     "plugin:@stencil/recommended"
   ],
   "rules": {
+	 "@stencil/decorators-style": [],
     "@stencil/render-returns-host": "warn",
     "no-console": "error",
     "@typescript-eslint/no-inferrable-types": "off"
