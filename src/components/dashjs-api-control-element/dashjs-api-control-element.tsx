@@ -1,4 +1,4 @@
-import { Component, EventEmitter, h, Prop, Event, State } from '@stencil/core';
+import { Component, EventEmitter, h, Prop, Event } from '@stencil/core';
 import { Type, MediaType } from '../../types/types';
 import { toastController } from '@ionic/core';
 import { LocalStorage } from '../../utils/localStorage';
@@ -56,9 +56,8 @@ export class DashjsAPIControlElement {
     let functionValue = [];
     let control = [];
 
-    for (let i = 0; i < this.param.length; i++) {
-      const index = i;
-      switch (this.param[i].type) {
+    this.param.forEach( (curr, index) {
+      switch (curr.type) {
         case 'string':
           functionValue[index] = '';
           break;
@@ -69,7 +68,7 @@ export class DashjsAPIControlElement {
           functionValue[index] = false;
           break;
       }
-    }
+    });
 
     let elem_values = LocalStorage.getKeyValueObject(STRING_API_ELEM);
 
@@ -80,43 +79,44 @@ export class DashjsAPIControlElement {
     }
 
     if (this.param.length > 0) {
-      for (let i = 0; i < this.param.length; i++) {
-        const index = i;
-        switch (this.param[i].type) {
-          case 'string':
-            control.push(
-              <ion-input class="input-border" debounce={300} value={functionValue[index]} onIonChange={change => { functionValue[index] = change.detail.value; this.setValue(functionValue)}}></ion-input>,
-            );
-            control.push(<div class="gap"></div>);
-            break;
-          case 'number':
-            control.push(
-              <ion-input
-                class='input-border'
-                debounce={300}
-                type='number'
-                value={functionValue[index]}
-                onIonChange={change => {functionValue[index] =  Number(change.detail.value); this.setValue(functionValue)}}
-              ></ion-input>,
-            );
-            control.push(<div class="gap"></div>);
-            break;
-          case 'boolean':
-            control.push(<ion-toggle checked={functionValue[index]} onIonChange={change => {functionValue[index] = change.detail.checked; this.setValue(functionValue)}}></ion-toggle>);
-            control.push(<div class="gap"></div>);
-            break;
-          case 'MediaType':
-            control.push(
-              <ion-select class="input-border" value={functionValue[index]} placeholder="Select MediaType" interface="popover" onIonChange={change => {functionValue[index] = change.detail.value; this.setValue(functionValue)}}>
-                {Object.keys(MediaType).map(val => (
-                  <ion-select-option value={MediaType[val]}>{MediaType[val]}</ion-select-option>
-                ))}
-              </ion-select>,
-            );
-            control.push(<div class="gap"></div>);
-            break;
+      this.param.forEach( (curr, index) {
+        {
+          switch (curr.type) {
+            case 'string':
+              control.push(
+                <ion-input class="input-border" debounce={300} value={functionValue[index]} onIonChange={change => { functionValue[index] = change.detail.value; this.setValue(functionValue)}}></ion-input>,
+              );
+              control.push(<div class="gap"></div>);
+              break;
+            case 'number':
+              control.push(
+                <ion-input
+                  class='input-border'
+                  debounce={300}
+                  type='number'
+                  value={functionValue[index]}
+                  onIonChange={change => {functionValue[index] =  Number(change.detail.value); this.setValue(functionValue)}}
+                ></ion-input>,
+              );
+              control.push(<div class="gap"></div>);
+              break;
+            case 'boolean':
+              control.push(<ion-toggle checked={functionValue[index]} onIonChange={change => {functionValue[index] = change.detail.checked; this.setValue(functionValue)}}></ion-toggle>);
+              control.push(<div class="gap"></div>);
+              break;
+            case 'MediaType':
+              control.push(
+                <ion-select class="input-border" value={functionValue[index]} placeholder="Select MediaType" interface="popover" onIonChange={change => {functionValue[index] = change.detail.value; this.setValue(functionValue)}}>
+                  {Object.keys(MediaType).map(val => (
+                    <ion-select-option value={MediaType[val]}>{MediaType[val]}</ion-select-option>
+                  ))}
+                </ion-select>,
+              );
+              control.push(<div class="gap"></div>);
+              break;
+          }
         }
-      }
+      });
     }
     control.push(
       <ion-button shape="round" size="small" onClick={() => this.checkAndEmit(functionValue)}>

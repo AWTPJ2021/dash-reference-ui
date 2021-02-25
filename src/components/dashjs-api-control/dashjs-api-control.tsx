@@ -126,7 +126,6 @@ export class DashjsApiControl {
     this.selectedFunctions = new Map(this.selectedFunctions);
     this.playerEventHandler({ type: 'function', name: id, param: value });
     LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, id, value);
-    console.log("updated value: " + id + " - " + value);
   }
 
   private async resetFunctions() {
