@@ -56,7 +56,7 @@ export class DashjsAPIControlElement {
     let functionValue = [];
     let control = [];
 
-    this.param.forEach( (curr, index) {
+    this.param.forEach( (curr, index) => {
       switch (curr.type) {
         case 'string':
           functionValue[index] = '';
@@ -79,7 +79,7 @@ export class DashjsAPIControlElement {
     }
 
     if (this.param.length > 0) {
-      this.param.forEach( (curr, index) {
+      this.param.forEach( (curr, index) => {
         {
           switch (curr.type) {
             case 'string':
