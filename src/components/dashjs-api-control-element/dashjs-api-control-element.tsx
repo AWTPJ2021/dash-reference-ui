@@ -18,7 +18,8 @@ export class DashjsAPIControlElement {
   @Prop() name: string;
   @Prop() options: string[];
   @Prop() type: Type;
-  @Event() valueChanged: EventEmitter<any>;
+  @Event() 
+  valueChanged: EventEmitter<any>;
   @Prop() param: any;
   @Prop() paramDesc: any;
 
@@ -56,7 +57,7 @@ export class DashjsAPIControlElement {
   }
 
   render() {
-    let control = [];
+    const control = [];
 
     this.param.forEach( (curr, index) => {
       switch (curr.type) {
@@ -72,7 +73,7 @@ export class DashjsAPIControlElement {
       }
     });
 
-    let elem_values = LocalStorage.getKeyValueObject(STRING_API_ELEM);
+    const elem_values = LocalStorage.getKeyValueObject(STRING_API_ELEM);
 
     if(elem_values) {
       if(elem_values[this.name] != null) {

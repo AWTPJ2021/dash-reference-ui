@@ -137,7 +137,8 @@ export class DashjsApiControl {
   @Event({
     composed: true,
     bubbles: true,
-  }) playerEvent: EventEmitter<string>;
+  }) 
+  playerEvent: EventEmitter<string>;
 
   playerEventHandler(todo: any) {
     this.playerEvent.emit(todo);
