@@ -14,10 +14,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-          
+
       - name: Install Packages
         run: npm install
-        
+
+      - name: Generate Metadata
+        run: npm run gen-meta
+        env:
+          ONLY_FIRST: 0
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build package
         run: npm run build
 
@@ -26,7 +32,7 @@ jobs:
         with:
           name: app
           path: ./www
-          
+
       - name: Publish to blob storage
         uses: bacongobbler/azure-blob-storage-upload@v1.0.0
         with:

@@ -13,7 +13,7 @@ const compilerOptions: TJS.CompilerOptions = {
 };
 
 export async function generateSettingsMetaData(baseDir: string = './metadata/build', version: string) {
-  console.info(`Generating API MetaData for ${version}`);
+  console.info(`Generating Settings MetaData for ${version}`);
   const workFolder = `${baseDir}/${version}/`;
 
   try {

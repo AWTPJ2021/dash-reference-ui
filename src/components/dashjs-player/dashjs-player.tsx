@@ -1,14 +1,16 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
-import { MediaPlayerClass } from 'dashjs';
-import { getMediaURL, getStringLocally } from '../../utils/utils';
-declare let dashjs: any;
+import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
+import ControlBar from './ControlBar.js';
+import { LocalVariableStore } from '../../utils/localStorage';
+declare const dashjs: any;
 /**
  * Loads dashjs player.
  * It makes use of dashjs cdn to load the script
  */
 @Component({
   tag: 'dashjs-player',
-  styleUrl: 'dashjs-player.css',
+  styleUrl: 'dashjs-player.scss',
+  assetsDirs: ['assets'],
   shadow: false,
 })
 export class DashjsPlayer {
@@ -33,8 +35,28 @@ export class DashjsPlayer {
   protected watchHandlerType(): void {
     this.loadOrUpdateDashJsScript();
   }
+  /**
+   * The Settings of dashjs that should be used.
+   * e.g. v3.2.0
+   */
+  @Prop() settings: MediaPlayerSettingClass = undefined;
+  @Watch('settings')
+  protected watchHandlerSettings(): void {
+    if (this.player != undefined) {
+      this.player.updateSettings(this.settings);
+    }
+  }
 
   @State() streamInterval: any;
+
+  @State()
+  controlbar: any;
+  // TODO: Really Bad practice! Use a better flow to get updates to statistics
+  @Event({
+    composed: true,
+    bubbles: true,
+  })
+  playerEvent: EventEmitter<any>;
 
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
@@ -43,7 +65,14 @@ export class DashjsPlayer {
         if (this.player) {
           this.player.reset();
         }
-        this.initPlayer(event.detail.autoPlay == 'true');
+        this.player = dashjs.MediaPlayer().create();
+        this.player.updateSettings(this.settings);
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
+        this.controlbar = new ControlBar(this.player);
+        this.controlbar.initialize();
+        this.streamInterval = setInterval(() => {
+          this.streamMetricsEventHandler(this.player);
+        }, 1000);
         break;
       case 'stop':
         this.player.reset();
@@ -85,19 +114,11 @@ export class DashjsPlayer {
   streamMetricsEvent: EventEmitter<any>;
 
   streamMetricsEventHandler(player: any) {
-    this.streamMetricsEvent.emit(player);
+    player && this.streamMetricsEvent.emit(player);
   }
 
   componentDidLoad() {
-    this.loadOrUpdateDashJsScript(getStringLocally('api_autostart') == 'true');
-  }
-
-  private initPlayer(autoPlay: boolean = false): void {
-    this.player = dashjs.MediaPlayer().create();
-    this.player.initialize(this.element.querySelector('#myMainVideoPlayer'), getMediaURL(), autoPlay);
-    this.streamInterval = setInterval(() => {
-      this.streamMetricsEventHandler(this.player);
-    }, 1000);
+    this.loadOrUpdateDashJsScript(LocalVariableStore.api_autostart);
   }
 
   private loadOrUpdateDashJsScript(autoPlay: boolean = false) {
@@ -107,28 +128,78 @@ export class DashjsPlayer {
     if (this.player) {
       this.player.reset();
     }
-    const id = 'dashjssource';
-    const previousScript = document.getElementById(id);
-    if (previousScript) {
-      previousScript.remove();
+    const id_string = 'dashjssource';
+    const versionAttribute_string = 'data-version';
+    const typeAttribute_string = 'data-type';
+    const previousScript = document.getElementById(id_string);
+    let newScriptShouldBeLoaded = true;
+    if (previousScript != null) {
+      const previousVersion = previousScript.getAttribute(versionAttribute_string);
+      const previousType = previousScript.getAttribute(typeAttribute_string);
+      newScriptShouldBeLoaded = previousVersion != this.version || previousType != this.type;
     }
-    const script = document.createElement('script');
-    script.id = id;
-    script.onload = () => {
-      this.initPlayer(autoPlay);
-    };
-    script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
-    document.head.appendChild(script);
+    if (newScriptShouldBeLoaded) {
+      if (previousScript != null) {
+        previousScript.remove();
+      }
+
+      const script = document.createElement('script');
+      script.id = id_string;
+      script.setAttribute(versionAttribute_string, this.version);
+      script.setAttribute(typeAttribute_string, this.type);
+      script.onload = () => {
+        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+      };
+      script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
+
+      document.head.appendChild(script);
+    } else {
+      if (typeof dashjs != 'undefined') {
+        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+      }
+    }
   }
 
   render() {
     return (
       <Host>
         <slot>
-          <ion-card>
-            <video controls={true} id="myMainVideoPlayer"></video>
-          </ion-card>
+          <div class="player-wrapper">
+            <div class="myMainVideoPlayer" id="myMainVideoPlayer">
+              <video id="myMainVideoPlayer" preload="auto"></video>
+              <div id="videoController" class="video-controller unselectable">
+                <div id="playPauseBtn" class="btn-play-pause" title="Play/Pause">
+                  <span id="iconPlayPause" class="icon-play"></span>
+                </div>
+                <span id="videoTime" class="time-display">
+                  00:00:00
+                </span>
+                <div id="fullscreenBtn" class="btn-fullscreen control-icon-layout" title="Fullscreen">
+                  <span class="icon-fullscreen-enter"></span>
+                </div>
+                <div id="bitrateListBtn" class="control-icon-layout" title="Bitrate List">
+                  <span class="icon-bitrate"></span>
+                </div>
+                <input type="range" id="volumebar" class="volumebar" min="0" max="1" step=".01" value="1" />
+                <div id="muteBtn" class="btn-mute control-icon-layout" title="Mute">
+                  <span id="iconMute" class="icon-mute-off"></span>
+                </div>
+                <div id="trackSwitchBtn" class="control-icon-layout" title="A/V Tracks">
+                  <span class="icon-tracks"></span>
+                </div>
+                <div id="captionBtn" class="btn-caption control-icon-layout" title="Closed Caption">
+                  <span class="icon-caption"></span>
+                </div>
+                <span id="videoDuration" class="duration-display">
+                  00:00:00
+                </span>
+                <div class="seekContainer">
+                  <input type="range" id="seekbar" class="seekbar" min="0" step="0.01" value="0" />
+                </div>
+              </div>
+            </div>
+          </div>
         </slot>
       </Host>
     );
