@@ -1,5 +1,6 @@
 import { StencilComponentPrefetch } from '@beck24/stencil-component-prefetch/dist/types/components/stencil-component-prefetch/stencil-component-prefetch';
-import { Component, Host, h, Prop, Element, Build, getAssetPath } from '@stencil/core';
+import { SelectChangeEventDetail } from '@ionic/core';
+import { Component, Host, h, Element, Build, getAssetPath, State } from '@stencil/core';
 import { setParam } from '../../utils/queryParams';
 import { contributors } from './contributors';
 const STATIC_VERSION_QUERY_PARAM = 'version';
@@ -12,10 +13,11 @@ const STATIC_TYPE_QUERY_PARAM = 'type';
   shadow: false,
 })
 export class DashjsReferenceUi {
-  @Prop() versions: string[] = [];
-  @Prop() selectedVersion: string = undefined;
-  @Prop() type: string[] = ['min', 'debug'];
-  @Prop() selectedType: string = 'min';
+  @State() versions: string[] = [];
+  @State() selectedVersion: string = undefined;
+  @State() type: string[] = ['min', 'debug'];
+  @State() selectedType: string = 'min';
+  @State() settings: any = {};
   @Element() prefetcher: HTMLDashjsReferenceUiElement;
 
   componentWillLoad() {
@@ -30,7 +32,7 @@ export class DashjsReferenceUi {
         if (urlParams.has(STATIC_TYPE_QUERY_PARAM)) {
           this.selectedType = urlParams.get(STATIC_TYPE_QUERY_PARAM);
         }
-        if (this.selectedVersion != undefined) {
+        if (this.selectedVersion == undefined) {
           this.selectedVersion = response[0];
         }
       });
@@ -52,14 +54,16 @@ export class DashjsReferenceUi {
       );
     }
   }
-  private typeChange(change) {
+  private typeChange = (change: CustomEvent<SelectChangeEventDetail<any>>) => {
+    change.stopPropagation();
     this.selectedType = change.detail.value;
     setParam(STATIC_TYPE_QUERY_PARAM, this.selectedType);
-  }
-  private versionChange(change) {
+  };
+  private versionChange = (change: CustomEvent<SelectChangeEventDetail<any>>) => {
+    change.stopPropagation();
     this.selectedVersion = change.detail.value;
     setParam(STATIC_VERSION_QUERY_PARAM, this.selectedVersion);
-  }
+  };
   render() {
     const centercss = {
       display: 'flex',
@@ -113,9 +117,8 @@ export class DashjsReferenceUi {
           ) : undefined
         ) : undefined}
         <dashjs-api-control version={this.selectedVersion}></dashjs-api-control>
-        {/* <dashjs-settings-control version={this.selectedVersion} onSettingsUpdated={event => console.log(event.detail)}></dashjs-settings-control> */}
-        <dashjs-settings-control version={this.selectedVersion}></dashjs-settings-control>
-        <dashjs-player version={this.selectedVersion} type={this.selectedType}></dashjs-player>
+        <dashjs-settings-control version={this.selectedVersion} onSettingsUpdated={event => (this.settings = event.detail)}></dashjs-settings-control>
+        <dashjs-player version={this.selectedVersion} type={this.selectedType} settings={this.settings}></dashjs-player>
         <dashjs-statistics></dashjs-statistics>
         <div class="contributors-title">
           <text>Contributors</text>

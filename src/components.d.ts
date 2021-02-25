@@ -6,7 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { DashFunction, Setting, Tree, Type } from "./types/types";
-import { RouterHistory } from "@stencil/router";
+import { MediaPlayerSettingClass } from "dashjs";
 export namespace Components {
     interface DashjsApiControl {
         "version": string;
@@ -38,6 +38,10 @@ export namespace Components {
     }
     interface DashjsPlayer {
         /**
+          * The Settings of dashjs that should be used. e.g. v3.2.0
+         */
+        "settings": MediaPlayerSettingClass;
+        /**
           * The Type of dashjs that should be loaded. e.g. debug or min
          */
         "type": string;
@@ -47,24 +51,25 @@ export namespace Components {
         "version": string;
     }
     interface DashjsPopoverSelect {
-        "isAPI": boolean;
         "options": string[];
     }
     interface DashjsReferenceUi {
-        "selectedType": string;
-        "selectedVersion": string;
-        "type": string[];
-        "versions": string[];
     }
     interface DashjsSettingsControl {
-        "history": RouterHistory;
+        /**
+          * Resets the internal Settings
+         */
         "resetSettings": () => Promise<void>;
-        "version": string;
+        /**
+          * The version of which the settings should be loaded.
+         */
+        "version": string | undefined;
     }
     interface DashjsSettingsControlElement {
         "defaultValue": any;
         "name": string;
         "options": string[];
+        "optionsLabels": string[];
         "type": Type;
     }
     interface DashjsSettingsControlModal {
@@ -234,6 +239,10 @@ declare namespace LocalJSX {
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         "onStreamMetricsEvent"?: (event: CustomEvent<any>) => void;
         /**
+          * The Settings of dashjs that should be used. e.g. v3.2.0
+         */
+        "settings"?: MediaPlayerSettingClass;
+        /**
           * The Type of dashjs that should be loaded. e.g. debug or min
          */
         "type"?: string;
@@ -243,25 +252,26 @@ declare namespace LocalJSX {
         "version"?: string;
     }
     interface DashjsPopoverSelect {
-        "isAPI"?: boolean;
         "options"?: string[];
     }
     interface DashjsReferenceUi {
-        "selectedType"?: string;
-        "selectedVersion"?: string;
-        "type"?: string[];
-        "versions"?: string[];
     }
     interface DashjsSettingsControl {
-        "history"?: RouterHistory;
-        "onSettingsUpdated"?: (event: CustomEvent<any>) => void;
-        "version"?: string;
+        /**
+          * Emitted everytime the Settings are updated
+         */
+        "onSettingsUpdated"?: (event: CustomEvent<MediaPlayerSettingClass>) => void;
+        /**
+          * The version of which the settings should be loaded.
+         */
+        "version"?: string | undefined;
     }
     interface DashjsSettingsControlElement {
         "defaultValue"?: any;
         "name"?: string;
         "onValueChanged"?: (event: CustomEvent<any>) => void;
         "options"?: string[];
+        "optionsLabels"?: string[];
         "type"?: Type;
     }
     interface DashjsSettingsControlModal {

@@ -1,7 +1,7 @@
 import { Component, Host, h, Prop, Watch, Element, State, Listen } from '@stencil/core';
 import * as chartjs from 'chart.js';
 const { Chart } = chartjs.default.Chart;
-import { calculateHTTPMetrics, chartDataset, chartYAxisOptions } from '../../utils/utils';
+import { calculateHTTPMetrics, chartDataset, chartYAxisOptions } from '../../utils/metrics';
 
 @Component({
   tag: 'dashjs-statistics',
@@ -10,7 +10,7 @@ import { calculateHTTPMetrics, chartDataset, chartYAxisOptions } from '../../uti
 })
 export class DashjsStatistics {
   @Element()
-  el: HTMLElement;
+  el: HTMLDashjsStatisticsElement;
   video_canvas: HTMLCanvasElement;
   audio_canvas: HTMLCanvasElement;
   video_context: CanvasRenderingContext2D;
@@ -105,12 +105,12 @@ export class DashjsStatistics {
           }, 1000))
         : clearInterval(this.audioChartInterval);
     }
-    console.log('video: ' + this.videoDisable);
-    console.log('audio: ' + this.audioDisable);
+    // console.log('video: ' + this.videoDisable);
+    // console.log('audio: ' + this.audioDisable);
   }
 
   clearChart(isVideo) {
-    let toChange = isVideo ? this.videoInstance : this.audioInstance;
+    const toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds) {
       ds.data = [0, 0, 0, 0, 0, 0, 0, 0];
     });
@@ -129,7 +129,7 @@ export class DashjsStatistics {
 
     if (dashMetrics && streamInfo) {
       const periodIdx = streamInfo?.index;
-      let currentTimeInSec = player?.time().toFixed(0);
+      const currentTimeInSec = player?.time().toFixed(0);
       this.currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
       this.currentTimeArr.push(this.currentTime);
       this.videoMetricsDataMap['Live Latency'].push(
@@ -141,9 +141,9 @@ export class DashjsStatistics {
       );
 
       // Video Metrics
-      let videoRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('video');
-      let videoAdaptation = dashAdapter?.getAdaptationForType(periodIdx, 'video', streamInfo);
-      let videoHttpMetrics = calculateHTTPMetrics('video', dashMetrics?.getHttpRequests('video'));
+      const videoRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('video');
+      const videoAdaptation = dashAdapter?.getAdaptationForType(periodIdx, 'video', streamInfo);
+      const videoHttpMetrics = calculateHTTPMetrics('video', dashMetrics?.getHttpRequests('video'));
 
       this.videoMetricsDataMap['Buffer Length'].push(dashMetrics?.getCurrentBufferLevel('video'));
       this.videoMetricsDataMap['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('video')?.droppedFrames);
@@ -156,23 +156,51 @@ export class DashjsStatistics {
         })?.frameRate,
       );
       if (videoHttpMetrics) {
-        this.videoMetricsDataMap['Download'].push(videoHttpMetrics.download['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.download['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.download['video'].high.toFixed(2));
-        this.videoMetricsDataMap['Latency'].push(videoHttpMetrics.latency['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.latency['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.latency['video'].high.toFixed(2));
-        this.videoMetricsDataMap['Ratio'].push(videoHttpMetrics.ratio['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].high.toFixed(2));
+        this.videoMetricsDataMap['Download'].push(
+          videoHttpMetrics.download['video'].low.toFixed(2) +
+            ' | ' +
+            videoHttpMetrics.download['video'].average.toFixed(2) +
+            ' | ' +
+            videoHttpMetrics.download['video'].high.toFixed(2),
+        );
+        this.videoMetricsDataMap['Latency'].push(
+          videoHttpMetrics.latency['video'].low.toFixed(2) +
+            ' | ' +
+            videoHttpMetrics.latency['video'].average.toFixed(2) +
+            ' | ' +
+            videoHttpMetrics.latency['video'].high.toFixed(2),
+        );
+        this.videoMetricsDataMap['Ratio'].push(
+          videoHttpMetrics.ratio['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].high.toFixed(2),
+        );
       }
 
       // Audio Metrics
-      let audioRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('audio');
-      let audioHttpMetrics = calculateHTTPMetrics('audio', dashMetrics?.getHttpRequests('audio'));
+      const audioRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('audio');
+      const audioHttpMetrics = calculateHTTPMetrics('audio', dashMetrics?.getHttpRequests('audio'));
 
       this.audioMetricsDataMap['Buffer Length'].push(dashMetrics?.getCurrentBufferLevel('audio'));
       this.audioMetricsDataMap['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('audio')?.droppedFrames);
       this.audioMetricsDataMap['Bitrate Downloading'].push(audioRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(audioRepSwitch.to, periodIdx) / 1000) : NaN);
       this.audioMetricsDataMap['Max Index'].push(dashAdapter?.getMaxIndexForBufferType('audio', periodIdx));
       if (audioHttpMetrics) {
-        this.audioMetricsDataMap['Download'].push(audioHttpMetrics.download['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.download['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.download['audio'].high.toFixed(2));
-        this.audioMetricsDataMap['Latency'].push(audioHttpMetrics.latency['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.latency['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.latency['audio'].high.toFixed(2));
-        this.audioMetricsDataMap['Ratio'].push(audioHttpMetrics.ratio['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].high.toFixed(2));
+        this.audioMetricsDataMap['Download'].push(
+          audioHttpMetrics.download['audio'].low.toFixed(2) +
+            ' | ' +
+            audioHttpMetrics.download['audio'].average.toFixed(2) +
+            ' | ' +
+            audioHttpMetrics.download['audio'].high.toFixed(2),
+        );
+        this.audioMetricsDataMap['Latency'].push(
+          audioHttpMetrics.latency['audio'].low.toFixed(2) +
+            ' | ' +
+            audioHttpMetrics.latency['audio'].average.toFixed(2) +
+            ' | ' +
+            audioHttpMetrics.latency['audio'].high.toFixed(2),
+        );
+        this.audioMetricsDataMap['Ratio'].push(
+          audioHttpMetrics.ratio['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].high.toFixed(2),
+        );
       }
     }
   }
@@ -230,10 +258,10 @@ export class DashjsStatistics {
 
   @Watch('video_data')
   video_watcher(isVideo: boolean, newData: any, newLabels: any) {
-    let toChange = isVideo ? this.videoInstance : this.audioInstance;
+    const toChange = isVideo ? this.videoInstance : this.audioInstance;
     Object.keys(newData).map((metric, index) => {
       toChange.data.datasets[index].data.shift();
-      if (metric === "Download" || metric === "Latency" || metric === "Ratio" ) {
+      if (metric === 'Download' || metric === 'Latency' || metric === 'Ratio') {
         toChange.data.datasets[index].data.push(newData[metric].slice(-1)[0].split('|')[1]);
       } else {
         toChange.data.datasets[index].data.push(newData[metric].slice(-1)[0]);

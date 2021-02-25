@@ -26,17 +26,17 @@ export class DashjsAPIControlElement {
   componentWillLoad() {
     for (let i = 0; i < this.param.length; i++) {
       const index = i;
-        switch (this.param[i].type) {
-          case 'string':
-            this.functionValue[index] = "";
-            break;
-          case 'number':
-            this.functionValue[index] = 0;
-            break;
-          case 'boolean':
-            this.functionValue[index] = false;
-            break;
-        }
+      switch (this.param[i].type) {
+        case 'string':
+          this.functionValue[index] = '';
+          break;
+        case 'number':
+          this.functionValue[index] = 0;
+          break;
+        case 'boolean':
+          this.functionValue[index] = false;
+          break;
+      }
     }
   }
 
@@ -44,22 +44,22 @@ export class DashjsAPIControlElement {
     let error = false;
     for (let i = 0; i < this.param.length; i++) {
       const index = i;
-        switch (this.param[i].type) {
-          case 'string':
-            if(!(this.functionValue[index] instanceof String)) error = true;
-            break;
-          case 'number':
-            if(isNaN(this.functionValue[index])) error = true;
-            break;
-          case 'MediaType':
-            if(!Object.values(MediaType).includes(this.functionValue[index])) error = true;
-            break;
-        }
-        if(error) break;
+      switch (this.param[i].type) {
+        case 'string':
+          if (!(this.functionValue[index] instanceof String)) error = true;
+          break;
+        case 'number':
+          if (isNaN(this.functionValue[index])) error = true;
+          break;
+        case 'MediaType':
+          if (!Object.values(MediaType).includes(this.functionValue[index])) error = true;
+          break;
+      }
+      if (error) break;
     }
-    if(error) {
+    if (error) {
       const toast = await toastController.create({
-        message: "Please set all parameters for the function.",
+        message: 'Please set all parameters for the function.',
         duration: 2000,
       });
       toast.present();
@@ -75,12 +75,20 @@ export class DashjsAPIControlElement {
         const index = i;
         switch (this.param[i].type) {
           case 'string':
-            control.push(<ion-input class="input-border" debounce={300} value={this.functionValue[index]} onIonChange={change => this.setValue(index, change.detail.value)}></ion-input>);
+            control.push(
+              <ion-input class="input-border" debounce={300} value={this.functionValue[index]} onIonChange={change => this.setValue(index, change.detail.value)}></ion-input>,
+            );
             control.push(<div class="gap"></div>);
             break;
           case 'number':
             control.push(
-              <ion-input class={"input-border " + this.functionValue[index]} debounce={300} type="number" value={this.functionValue[index]} onIonChange={change => this.setValue(index, Number(change.detail.value))}></ion-input>,
+              <ion-input
+                class={'input-border ' + this.functionValue[index]}
+                debounce={300}
+                type="number"
+                value={this.functionValue[index]}
+                onIonChange={change => this.setValue(index, Number(change.detail.value))}
+              ></ion-input>,
             );
             control.push(<div class="gap"></div>);
             break;

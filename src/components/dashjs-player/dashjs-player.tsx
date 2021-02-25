@@ -1,8 +1,8 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
-import { MediaPlayerClass } from 'dashjs';
+import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
-import { getMediaURL, getStringLocally } from '../../utils/utils';
-declare let dashjs: any;
+import { LocalVariableStore } from '../../utils/localStorage';
+declare const dashjs: any;
 /**
  * Loads dashjs player.
  * It makes use of dashjs cdn to load the script
@@ -10,6 +10,7 @@ declare let dashjs: any;
 @Component({
   tag: 'dashjs-player',
   styleUrl: 'dashjs-player.scss',
+  assetsDirs: ['assets'],
   shadow: false,
 })
 export class DashjsPlayer {
@@ -34,6 +35,17 @@ export class DashjsPlayer {
   protected watchHandlerType(): void {
     this.loadOrUpdateDashJsScript();
   }
+  /**
+   * The Settings of dashjs that should be used.
+   * e.g. v3.2.0
+   */
+  @Prop() settings: MediaPlayerSettingClass = undefined;
+  @Watch('settings')
+  protected watchHandlerSettings(): void {
+    if (this.player != undefined) {
+      this.player.updateSettings(this.settings);
+    }
+  }
 
   @State() streamInterval: any;
 
@@ -54,7 +66,8 @@ export class DashjsPlayer {
           this.player.reset();
         }
         this.player = dashjs.MediaPlayer().create();
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), event.detail.autoPlay == 'true');
+        this.player.updateSettings(this.settings);
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
         this.streamInterval = setInterval(() => {
@@ -105,8 +118,7 @@ export class DashjsPlayer {
   }
 
   componentDidLoad() {
-    this.loadOrUpdateDashJsScript();
-    this.loadOrUpdateDashJsScript(getStringLocally('api_autostart') == 'true');
+    this.loadOrUpdateDashJsScript(LocalVariableStore.api_autostart);
   }
 
   private loadOrUpdateDashJsScript(autoPlay: boolean = false) {
@@ -116,19 +128,37 @@ export class DashjsPlayer {
     if (this.player) {
       this.player.reset();
     }
-    const id = 'dashjssource';
-    const previousScript = document.getElementById(id);
-    if (previousScript) {
-      previousScript.remove();
+    const id_string = 'dashjssource';
+    const versionAttribute_string = 'data-version';
+    const typeAttribute_string = 'data-type';
+    const previousScript = document.getElementById(id_string);
+    let newScriptShouldBeLoaded = true;
+    if (previousScript != null) {
+      const previousVersion = previousScript.getAttribute(versionAttribute_string);
+      const previousType = previousScript.getAttribute(typeAttribute_string);
+      newScriptShouldBeLoaded = previousVersion != this.version || previousType != this.type;
     }
-    const script = document.createElement('script');
-    script.id = id;
-    script.onload = () => {
-      this.playerEvent.emit({ type: 'load', url: getMediaURL(), autoPlay: autoPlay });
-    };
-    script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
-    document.head.appendChild(script);
+    if (newScriptShouldBeLoaded) {
+      if (previousScript != null) {
+        previousScript.remove();
+      }
+
+      const script = document.createElement('script');
+      script.id = id_string;
+      script.setAttribute(versionAttribute_string, this.version);
+      script.setAttribute(typeAttribute_string, this.type);
+      script.onload = () => {
+        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+      };
+      script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
+
+      document.head.appendChild(script);
+    } else {
+      if (typeof dashjs != 'undefined') {
+        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+      }
+    }
   }
 
   render() {
@@ -151,7 +181,7 @@ export class DashjsPlayer {
                 <div id="bitrateListBtn" class="control-icon-layout" title="Bitrate List">
                   <span class="icon-bitrate"></span>
                 </div>
-                <input type="range" id="volumebar" class="volumebar" value="1" min="0" max="1" step=".01" />
+                <input type="range" id="volumebar" class="volumebar" min="0" max="1" step=".01" value="1" />
                 <div id="muteBtn" class="btn-mute control-icon-layout" title="Mute">
                   <span id="iconMute" class="icon-mute-off"></span>
                 </div>
@@ -165,7 +195,7 @@ export class DashjsPlayer {
                   00:00:00
                 </span>
                 <div class="seekContainer">
-                  <input type="range" id="seekbar" value="0" class="seekbar" min="0" step="0.01" />
+                  <input type="range" id="seekbar" class="seekbar" min="0" step="0.01" value="0" />
                 </div>
               </div>
             </div>

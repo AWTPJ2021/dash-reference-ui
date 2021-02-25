@@ -1,9 +1,5 @@
 # dash-reference-ui
 
-inputs in settings component!
-reload player if settings changed!
-add version to url
-
 New Version: https://awtpj.z16.web.core.windows.net/
 
 - Original: https://github.com/Dash-Industry-Forum/dash.js/blob/development/samples/dash-if-reference-player/app/main.js

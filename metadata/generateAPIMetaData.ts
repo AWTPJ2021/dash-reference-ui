@@ -44,6 +44,7 @@ export async function generateAPIMetaData(baseDir: string = './metadata/build', 
     console.warn(`WARNING: APIMetaData for ${version} could not be parsed!`);
     // console.warn(error)
   }
+  return;
 }
 
 function annotate(jsonSchemaObject: any, jsDocComments: any): any {
