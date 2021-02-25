@@ -4,6 +4,7 @@ import { modalController, popoverController, toastController, InputChangeEventDe
 import { LocalStorage, LocalVariableStore } from '../../utils/localStorage';
 import { generateFunctionsMapFromList } from '../../utils/utils';
 
+const STRING_API_ELEM = 'api_element';
 const STRING_API_FUNCTIONS = 'api_functions';
 @Component({
   tag: 'dashjs-api-control',
@@ -117,6 +118,7 @@ export class DashjsApiControl {
     this.selectedFunctions.set(id, undefined);
     this.selectedFunctions = new Map(this.selectedFunctions);
     LocalStorage.deleteKeyInKeyValueObject(STRING_API_FUNCTIONS, id);
+    LocalStorage.deleteKeyInKeyValueObject(STRING_API_ELEM, id);
   }
 
   private updateFunction(id: string, value: any) {
@@ -124,18 +126,19 @@ export class DashjsApiControl {
     this.selectedFunctions = new Map(this.selectedFunctions);
     this.playerEventHandler({ type: 'function', name: id, param: value });
     LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, id, value);
+    console.log("updated value: " + id + " - " + value);
   }
 
   private async resetFunctions() {
     this.selectedFunctions = generateFunctionsMapFromList(this.functionList);
     LocalStorage.deleteKey(STRING_API_FUNCTIONS);
+    LocalStorage.deleteKey(STRING_API_ELEM);
   }
 
   @Event({
     composed: true,
     bubbles: true,
-  })
-  playerEvent: EventEmitter<string>;
+  }) playerEvent: EventEmitter<string>;
 
   playerEventHandler(todo: any) {
     this.playerEvent.emit(todo);
