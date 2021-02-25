@@ -33,6 +33,7 @@ export class LocalStorage {
 
 const STRING_MEDIA_URL = 'mediaUrl';
 const STRING_API_AUTOSTART = 'api_autostart';
+const STRING_SETTINGS_AUTOUPDATE = 'settings_autoupdate';
 export class LocalVariableStore {
   static set mediaUrl(value: string) {
     localStorage.setItem(STRING_MEDIA_URL, value);
@@ -52,5 +53,12 @@ export class LocalVariableStore {
   }
   static get api_autostart(): boolean {
     return localStorage.getItem(STRING_API_AUTOSTART) === null ? true : localStorage.getItem(STRING_API_AUTOSTART) === 'true';
+  }
+
+  static set settings_autoupdate(value: boolean) {
+    localStorage.setItem(STRING_SETTINGS_AUTOUPDATE, String(value));
+  }
+  static get settings_autoupdate(): boolean {
+    return localStorage.getItem(STRING_SETTINGS_AUTOUPDATE) === null ? true : localStorage.getItem(STRING_SETTINGS_AUTOUPDATE) === 'true';
   }
 }

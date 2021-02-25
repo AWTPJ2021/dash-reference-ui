@@ -22,19 +22,22 @@ async function main() {
   downloadSourceFiles({
     outputFolder: workingFolder,
     github_token: process.env.GITHUB_TOKEN,
-  }).then(() => {
+  }).then(async () => {
     // TODO: Await finihes before all requests are finished.
 
     let versions = fs.readdirSync(workingFolder).reverse();
-    versions.forEach(version => {
+    versions.forEach(async version => {
       if (first == true) {
-        if (onlyFirst == true) first = false;
+        if (onlyFirst == true) {
+          first = false;
+          console.log("ATTENTION: Only the latest version will be generated. Set 'ONLY_FIRST=0' to generate all versions.");
+        }
         // For each version
         const workFolder = `${workingFolder}/${version}/`;
         const overwriteFolder = `${overwritingFolder}/${version}/`;
 
-        generateAPIMetaData(workingFolder, version);
-        generateSettingsMetaData(workingFolder, version);
+        await generateAPIMetaData(workingFolder, version);
+        await generateSettingsMetaData(workingFolder, version);
         if (!fs.existsSync(outputFolder)) {
           fs.mkdirSync(outputFolder, { recursive: true });
         }

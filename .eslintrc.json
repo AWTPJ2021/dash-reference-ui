@@ -4,6 +4,7 @@
   },
   "extends": [
     // TODO: add later in order to be consistent
+    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@stencil/recommended"
   ],
