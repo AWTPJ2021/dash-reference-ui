@@ -9,13 +9,15 @@ import { calculateHTTPMetrics, chartDataset, chartYAxisOptions } from '../../uti
   shadow: false,
 })
 export class DashjsStatistics {
-  @Element() el: HTMLDashjsStatisticsElement;
-  @Element() video_canvas: HTMLCanvasElement;
-  @Element() audio_canvas: HTMLCanvasElement;
-  @Element() video_context: CanvasRenderingContext2D;
-  @Element() audio_context: CanvasRenderingContext2D;
-  @Element() videoInstance: any;
-  @Element() audioInstance: any;
+  @Element() 
+  el: HTMLDashjsStatisticsElement;
+  video_canvas: HTMLCanvasElement;
+  audio_canvas: HTMLCanvasElement;
+  video_context: CanvasRenderingContext2D;
+  audio_context: CanvasRenderingContext2D;
+  videoInstance: any;
+  audioInstance: any;
+  
   @Prop() video_data: any;
   @State() videoDisable: boolean = false;
   @State() audioDisable: boolean = false;
