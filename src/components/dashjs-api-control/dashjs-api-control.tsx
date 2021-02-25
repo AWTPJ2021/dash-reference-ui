@@ -134,11 +134,12 @@ export class DashjsApiControl {
     LocalStorage.deleteKey(STRING_API_ELEM);
   }
 
-  @Event({
-    composed: true,
-    bubbles: true,
-  }) 
-  playerEvent: EventEmitter<string>;
+  @Event(
+    {
+      composed: true,
+      bubbles: true,
+    }
+  ) playerEvent: EventEmitter<string>;
 
   playerEventHandler(todo: any) {
     this.playerEvent.emit(todo);
