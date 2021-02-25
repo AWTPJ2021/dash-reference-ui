@@ -9,12 +9,15 @@ export function generateSettingsMapFromList(list: Setting[]): Map<string, any> {
   return map;
 }
 
-export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, boolean>): { [key: string]: any } {
+export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, any>): { [key: string]: any } {
   const object = {
-    settings: undefined,
+    settings: {},
   };
   list.forEach(element => {
-    objectPath.set(object, element.id, map.get(element.id));
+    const value = map.get(element.id);
+    if (value != undefined) {
+      objectPath.set(object, element.id, map.get(element.id));
+    }
   });
   return object.settings;
 }
