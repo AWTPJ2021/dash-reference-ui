@@ -133,13 +133,12 @@ export class DashjsApiControl {
     LocalStorage.deleteKey(STRING_API_FUNCTIONS);
     LocalStorage.deleteKey(STRING_API_ELEM);
   }
-
-  @Event(
-    {
-      composed: true,
-      bubbles: true,
-    }
-  ) playerEvent: EventEmitter<string>;
+  
+  /* eslint-disable-next-line no-alert */
+  @Event({
+    composed: true,
+    bubbles: true}) 
+  playerEvent: EventEmitter<string>;
 
   playerEventHandler(todo: any) {
     this.playerEvent.emit(todo);
