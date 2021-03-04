@@ -17,10 +17,10 @@ export class DashjsReferenceUi {
   @State() selectedVersion: string = undefined;
   @State() type: string[] = ['min', 'debug'];
   @State() selectedType: string = 'min';
-  @State() settings: any = {};
+  @State() settings: dashjs.MediaPlayerSettingClass = {};
   @Element() prefetcher: HTMLDashjsReferenceUiElement;
 
-  componentWillLoad() {
+  componentWillLoad(): void {
     fetch('/static/gen/versions.json')
       .then((response: Response) => response.json())
       .then(response => {
@@ -37,13 +37,13 @@ export class DashjsReferenceUi {
         }
       });
   }
-  componentDidLoad() {
+  componentDidLoad(): void {
     // Prefetch Componentes that are needed immendiatley on user interaction later on
     const prefetchedComponents = ['dashjs-popover-select', 'ion-popover', 'ion-backdrop', 'ion-modal', 'dashjs-settings-control-modal', 'ion-searchbar', 'ion-content'];
 
     if (Build.isBrowser) {
       // only pre-fetch if it's a real browser
-      const prefetch: StencilComponentPrefetch = this.prefetcher.querySelector('stencil-component-prefetch') as any;
+      const prefetch: StencilComponentPrefetch = (this.prefetcher.querySelector('stencil-component-prefetch') as unknown) as StencilComponentPrefetch;
 
       prefetch.setComponents(
         prefetchedComponents.map(comp => {
@@ -54,14 +54,19 @@ export class DashjsReferenceUi {
       );
     }
   }
-  private typeChange = (change: CustomEvent<SelectChangeEventDetail<any>>) => {
+  private typeChange = (change: CustomEvent<SelectChangeEventDetail<unknown>>) => {
     change.stopPropagation();
-    this.selectedType = change.detail.value;
+    this.selectedType = change.detail.value as string;
     setParam(STATIC_TYPE_QUERY_PARAM, this.selectedType);
   };
-  private versionChange = (change: CustomEvent<SelectChangeEventDetail<any>>) => {
+  private versionChange = (change: CustomEvent<SelectChangeEventDetail<unknown>>) => {
     change.stopPropagation();
-    this.selectedVersion = change.detail.value;
+    this.selectedVersion = change.detail.value as string;
+    setParam(STATIC_VERSION_QUERY_PARAM, this.selectedVersion);
+  };
+  private settingsChange = (change: CustomEvent<dashjs.MediaPlayerSettingClass>) => {
+    change.stopPropagation();
+    this.settings = change.detail;
     setParam(STATIC_VERSION_QUERY_PARAM, this.selectedVersion);
   };
   render() {
@@ -117,7 +122,7 @@ export class DashjsReferenceUi {
           ) : undefined
         ) : undefined}
         <dashjs-api-control version={this.selectedVersion}></dashjs-api-control>
-        <dashjs-settings-control version={this.selectedVersion} onSettingsUpdated={event => (this.settings = event.detail)}></dashjs-settings-control>
+        <dashjs-settings-control version={this.selectedVersion} onSettingsUpdated={this.settingsChange}></dashjs-settings-control>
         <dashjs-player version={this.selectedVersion} type={this.selectedType} settings={this.settings}></dashjs-player>
         <dashjs-statistics></dashjs-statistics>
         <div class="contributors-title">
@@ -126,7 +131,7 @@ export class DashjsReferenceUi {
         <div class="contributors">
           {contributors.map(contributor => (
             <a href={contributor.link} target="_blank">
-              {contributor.logo ? <img alt={contributor.name} src={getAssetPath(`./assets/${contributor.logo}`)} /> : contributor.name}
+              {contributor.logo != undefined ? <img alt={contributor.name} src={getAssetPath(`./assets/${contributor.logo}`)} /> : contributor.name}
             </a>
           ))}
         </div>
