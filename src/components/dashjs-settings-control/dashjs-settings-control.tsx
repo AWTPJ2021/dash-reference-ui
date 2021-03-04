@@ -28,7 +28,7 @@ export class DashjsSettingsControl {
    * Map of all Settings:
    * Settings which are not displayed are undefined
    */
-  @State() selectedSettings: Map<string, any> = new Map();
+  @State() selectedSettings: Map<string, unknown> = new Map();
   @Watch('selectedSettings')
   settingsUpdate(force: boolean = false): void {
     if (this.autoUpdate || force === true) {
@@ -64,7 +64,7 @@ export class DashjsSettingsControl {
 
   private searchElement: HTMLInputElement;
   private debounceTimer: NodeJS.Timeout | undefined;
-  private searchPopover: any;
+  private searchPopover: HTMLIonPopoverElement;
 
   private async openSettings() {
     const modal = await modalController.create({
@@ -116,7 +116,7 @@ export class DashjsSettingsControl {
     this.selectedSettings = new Map(this.selectedSettings);
   }
 
-  private updateSetting(id: string, value: any): void {
+  private updateSetting(id: string, value: unknown): void {
     this.selectedSettings.set(id, value);
     setParam(id, value);
     this.selectedSettings = new Map(this.selectedSettings);
@@ -126,7 +126,7 @@ export class DashjsSettingsControl {
       if (this.debounceTimer != undefined) {
         clearTimeout(this.debounceTimer);
       }
-      if (this.searchPopover) {
+      if (this.searchPopover != undefined) {
         await this.searchPopover.dismiss();
       }
       return;
@@ -138,7 +138,7 @@ export class DashjsSettingsControl {
         .filter(e => e.match(regex))
         // Filter Settings which are already shown
         .filter(e => this.selectedSettings.get(e) == undefined);
-      if (this.searchPopover) {
+      if (this.searchPopover != undefined) {
         await this.searchPopover.dismiss();
       }
       this.searchPopover = await popoverController.create({
@@ -199,6 +199,23 @@ export class DashjsSettingsControl {
     await modal.present();
   }
 
+  private updateSettingEvent(key) {
+    return (change: CustomEvent<unknown>) => {
+      this.updateSetting(key, change.detail);
+    };
+  }
+
+  private removeSettingEvent(key: string) {
+    return event => {
+      event.stopPropagation();
+      this.removeSetting(key);
+    };
+  }
+
+  private switchAutoUpdate = change => {
+    this.autoUpdate = change.detail.checked;
+  };
+
   render() {
     return (
       <Host>
@@ -212,7 +229,7 @@ export class DashjsSettingsControl {
                 Update
               </ion-button>
             )}
-            Auto Update <ion-toggle id="autol" checked={this.autoUpdate} onIonChange={change => (this.autoUpdate = change.detail.checked)}></ion-toggle>
+            Auto Update <ion-toggle id="autol" checked={this.autoUpdate} onIonChange={this.switchAutoUpdate}></ion-toggle>
           </div>
           <ion-grid>
             <ion-row>
@@ -226,46 +243,7 @@ export class DashjsSettingsControl {
                     root={true}
                     tree={this.settingsTree}
                     elements={Array.from(this.selectedSettings.keys()).filter(k => this.selectedSettings.get(k) != undefined)}
-                    renderFunc={key => {
-                      // Due to this being a function used in another component css cant be applied from the stylesheet
-                      const ioncolcss = {
-                        display: 'flex',
-                        alignItems: 'center',
-                      };
-                      const setting = this.settingsList.filter(s => s.id === key)[0];
-                      return (
-                        <ion-row>
-                          <ion-col size="auto" style={ioncolcss}>
-                            <ion-button
-                              size="small"
-                              fill="clear"
-                              onClick={event => {
-                                event.stopPropagation();
-                                this.removeSetting(key);
-                              }}
-                            >
-                              <ion-icon slot="icon-only" color="dark" name="close-circle-outline"></ion-icon>
-                            </ion-button>
-                            {/* <ion-icon name="close-circle"></ion-icon> */}
-                          </ion-col>
-                          <ion-col>
-                            <dashjs-settings-control-element
-                              type={setting.type}
-                              name={setting.name}
-                              options={setting.enum || undefined}
-                              optionsLabels={setting.enumLabels || undefined}
-                              defaultValue={this.selectedSettings.get(key)}
-                              onValueChanged={change => {
-                                this.updateSetting(key, change.detail);
-                              }}
-                            ></dashjs-settings-control-element>
-                          </ion-col>
-                          <ion-col size="auto" style={ioncolcss}>
-                            <dashjs-help-button helperText={setting.description} titleText={'Help - ' + setting.name}></dashjs-help-button>
-                          </ion-col>
-                        </ion-row>
-                      );
-                    }}
+                    renderFunc={this.singleSetting}
                   ></dashjs-tree>
                 )}
                 <ion-row>
@@ -273,7 +251,7 @@ export class DashjsSettingsControl {
                     ref={el => (this.searchElement = (el as unknown) as HTMLInputElement)}
                     placeholder="Add more settings..."
                     onIonChange={event => this.updateSearch(event)}
-                    onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as any).value) : null)}
+                    onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as HTMLInputElement).value) : null)}
                   ></ion-input>
                   <ion-button shape="round" color="dark" onClick={() => this.openSettings()}>
                     Browse Settings
@@ -290,4 +268,35 @@ export class DashjsSettingsControl {
       </Host>
     );
   }
+
+  private singleSetting = (key: string): HTMLElement => {
+    // Due to this being a function used in another component css cant be applied from the stylesheet
+    const ioncolcss = {
+      display: 'flex',
+      alignItems: 'center',
+    };
+    const setting = this.settingsList.filter(s => s.id === key)[0];
+    return (
+      <ion-row>
+        <ion-col size="auto" style={ioncolcss}>
+          <ion-button size="small" fill="clear" onClick={this.removeSettingEvent(key)}>
+            <ion-icon slot="icon-only" color="dark" name="close-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <dashjs-settings-control-element
+            type={setting.type}
+            name={setting.name}
+            options={setting.enum || undefined}
+            optionsLabels={setting.enumLabels || undefined}
+            defaultValue={this.selectedSettings.get(key)}
+            onValueChanged={this.updateSettingEvent(key)}
+          ></dashjs-settings-control-element>
+        </ion-col>
+        <ion-col size="auto" style={ioncolcss}>
+          <dashjs-help-button helperText={setting.description} titleText={'Help - ' + setting.name}></dashjs-help-button>
+        </ion-col>
+      </ion-row>
+    );
+  };
 }

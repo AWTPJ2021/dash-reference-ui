@@ -95,7 +95,7 @@ export namespace Components {
     interface DashjsTree {
         "elements": string[];
         "path": string[];
-        "renderFunc": (key) => void;
+        "renderFunc": (key: string) => void;
         "renderFuncSuffix": () => void;
         "renderFuncTitle": (path) => void;
         "root": boolean;
@@ -309,7 +309,7 @@ declare namespace LocalJSX {
     interface DashjsTree {
         "elements"?: string[];
         "path"?: string[];
-        "renderFunc"?: (key) => void;
+        "renderFunc"?: (key: string) => void;
         "renderFuncSuffix"?: () => void;
         "renderFuncTitle"?: (path) => void;
         "root"?: boolean;

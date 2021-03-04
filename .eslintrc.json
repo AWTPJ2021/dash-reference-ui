@@ -2,12 +2,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "extends": [
-    // TODO: add later in order to be consistent
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@stencil/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:@stencil/recommended"],
   "rules": {
     "@stencil/decorators-style": ["error", { "event": "multiline" }],
     "@stencil/render-returns-host": "warn",
@@ -18,6 +13,8 @@
       {
         "allowedNames": ["render"]
       }
-    ]
+    ],
+    // Only for now
+    "react/jsx-no-bind": "off"
   }
 }
