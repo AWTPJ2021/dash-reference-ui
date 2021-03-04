@@ -29,11 +29,23 @@ export namespace Components {
         "sourceList": any[];
     }
     interface DashjsGenericModal {
-        "content": any;
+        /**
+          * Content displayed inside the modal, can be text or an HTMLElement
+         */
+        "content": HTMLElement | string;
+        /**
+          * Title displayed on Top of the Modal
+         */
         "textTitle": string;
     }
     interface DashjsHelpButton {
+        /**
+          * Informational text displayed in the Modal for help.
+         */
         "helperText": string;
+        /**
+          * title displayed on top of the Modal.
+         */
         "titleText": string;
     }
     interface DashjsPlayer {
@@ -227,11 +239,23 @@ declare namespace LocalJSX {
         "sourceList"?: any[];
     }
     interface DashjsGenericModal {
-        "content"?: any;
+        /**
+          * Content displayed inside the modal, can be text or an HTMLElement
+         */
+        "content"?: HTMLElement | string;
+        /**
+          * Title displayed on Top of the Modal
+         */
         "textTitle"?: string;
     }
     interface DashjsHelpButton {
+        /**
+          * Informational text displayed in the Modal for help.
+         */
         "helperText"?: string;
+        /**
+          * title displayed on top of the Modal.
+         */
         "titleText"?: string;
     }
     interface DashjsPlayer {
