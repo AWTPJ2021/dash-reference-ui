@@ -101,7 +101,6 @@ export class DashjsStatistics {
 
   @Listen('metricsEvent', { target: 'document' })
   metricsWatch(event) {
-    // this.metrics = event.detail;
     this.metrics = { ...event.detail };
     !this.videoDisable ? this.video_watcher(true, event.detail.video, event.detail.currentTime) : null;
     !this.audioDisable ? this.video_watcher(false, event.detail.audio, event.detail.currentTime) : null;

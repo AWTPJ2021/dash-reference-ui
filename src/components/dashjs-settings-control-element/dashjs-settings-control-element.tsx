@@ -9,6 +9,7 @@ import { Type } from '../../types/types';
 export class DashjsSettingsControlElement {
   @Prop() name: string;
   @Prop() options: string[];
+  @Prop() optionsLabels: string[] = undefined;
   @Prop() type: Type;
   @Prop() defaultValue: any;
   @Event()
@@ -17,9 +18,15 @@ export class DashjsSettingsControlElement {
     let control = <div>No known type!</div>;
     if (this.options != undefined) {
       control = [
-        <ion-select placeholder="Select One" interface="popover" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}>
-          {this.options.map(val => (
-            <ion-select-option value={val}>{val}</ion-select-option>
+        <ion-select
+          class="input-border"
+          placeholder="Select One"
+          interface="popover"
+          value={String(this.defaultValue)}
+          onIonChange={change => this.valueChanged.emit(change.detail.value)}
+        >
+          {this.options.map((val, index) => (
+            <ion-select-option value={val.toString()}>{this.optionsLabels != undefined ? this.optionsLabels[index] : val}</ion-select-option>
           ))}
         </ion-select>,
         // <ion-label position="floating">{this.name}</ion-label>,
@@ -30,10 +37,10 @@ export class DashjsSettingsControlElement {
         // </ion-select>,
       ];
     } else if (this.type == Type.string) {
-      control = [<ion-input debounce={300} value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>];
+      control = [<ion-input class="input-border" debounce={300} value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>];
     } else if (this.type == Type.number) {
       control = [
-        <ion-input debounce={300} type="number" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>,
+        <ion-input class="input-border" debounce={300} type="number" value={this.defaultValue} onIonChange={change => this.valueChanged.emit(change.detail.value)}></ion-input>,
         // <ion-range min={20} max={80} step={2}>
         //   <ion-icon size="small" slot="start" name="sunny"></ion-icon>
         //   <ion-icon slot="end" name="sunny"></ion-icon>

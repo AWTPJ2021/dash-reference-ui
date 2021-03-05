@@ -1,8 +1,9 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
-import { MediaPlayerClass } from 'dashjs';
+import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
 import { getMediaURL, getStringLocally, calculateHTTPMetrics } from '../../utils/utils';
-declare let dashjs: any;
+import { LocalVariableStore } from '../../utils/localStorage';
+declare const dashjs: any;
 /**
  * Loads dashjs player.
  * It makes use of dashjs cdn to load the script
@@ -10,6 +11,7 @@ declare let dashjs: any;
 @Component({
   tag: 'dashjs-player',
   styleUrl: 'dashjs-player.scss',
+  assetsDirs: ['assets'],
   shadow: false,
 })
 export class DashjsPlayer {
@@ -33,6 +35,17 @@ export class DashjsPlayer {
   @Watch('type')
   protected watchHandlerType(): void {
     this.loadOrUpdateDashJsScript();
+  }
+  /**
+   * The Settings of dashjs that should be used.
+   * e.g. v3.2.0
+   */
+  @Prop() settings: MediaPlayerSettingClass = undefined;
+  @Watch('settings')
+  protected watchHandlerSettings(): void {
+    if (this.player != undefined) {
+      this.player.updateSettings(this.settings);
+    }
   }
 
   @State() streamInterval: any;
@@ -220,19 +233,37 @@ export class DashjsPlayer {
     if (this.player) {
       this.player.reset();
     }
-    const id = 'dashjssource';
-    const previousScript = document.getElementById(id);
-    if (previousScript) {
-      previousScript.remove();
+    const id_string = 'dashjssource';
+    const versionAttribute_string = 'data-version';
+    const typeAttribute_string = 'data-type';
+    const previousScript = document.getElementById(id_string);
+    let newScriptShouldBeLoaded = true;
+    if (previousScript != null) {
+      const previousVersion = previousScript.getAttribute(versionAttribute_string);
+      const previousType = previousScript.getAttribute(typeAttribute_string);
+      newScriptShouldBeLoaded = previousVersion != this.version || previousType != this.type;
     }
-    const script = document.createElement('script');
-    script.id = id;
-    script.onload = () => {
-      this.playerEvent.emit({ type: 'load', url: getMediaURL(), autoPlay: autoPlay });
-    };
-    script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
-    document.head.appendChild(script);
+    if (newScriptShouldBeLoaded) {
+      if (previousScript != null) {
+        previousScript.remove();
+      }
+
+      const script = document.createElement('script');
+      script.id = id_string;
+      script.setAttribute(versionAttribute_string, this.version);
+      script.setAttribute(typeAttribute_string, this.type);
+      script.onload = () => {
+        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+      };
+      script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
+
+      document.head.appendChild(script);
+    } else {
+      if (typeof dashjs != 'undefined') {
+        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+      }
+    }
   }
 
   render() {

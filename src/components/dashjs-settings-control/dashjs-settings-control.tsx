@@ -1,7 +1,9 @@
 import { InputChangeEventDetail, modalController, popoverController } from '@ionic/core';
 import { Component, Host, h, Watch, Method, Event, EventEmitter, State, Prop, Element } from '@stencil/core';
-import { RouterHistory } from '@stencil/router';
+import { MediaPlayerSettingClass } from 'dashjs';
 import { Setting, Tree } from '../../types/types';
+import { LocalVariableStore } from '../../utils/localStorage';
+import { removeQueryParams, setParam } from '../../utils/queryParams';
 import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap, settingsListToTree } from '../../utils/utils';
 
 @Component({
@@ -10,10 +12,12 @@ import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap, sett
   shadow: false,
 })
 export class DashjsSettingsControl {
-  @Prop() history: RouterHistory;
-  @Prop() version: string = undefined;
+  /**
+   * The version of which the settings should be loaded.
+   */
+  @Prop() version: string | undefined = undefined;
   @Watch('version')
-  watchHandler() {
+  watchHandlerVersion(): void {
     this.loadSettingsMetaData();
   }
   /**
@@ -25,6 +29,25 @@ export class DashjsSettingsControl {
    * Settings which are not displayed are undefined
    */
   @State() selectedSettings: Map<string, any> = new Map();
+  @Watch('selectedSettings')
+  settingsUpdate(force: boolean = false): void {
+    if (this.autoUpdate || force === true) {
+      this.settingsUpdated.emit(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings));
+    }
+  }
+  /**
+   * Resets the internal Settings
+   */
+  @Method()
+  async resetSettings(): Promise<void> {
+    this.selectedSettings = generateSettingsMapFromList(this.settingsList);
+    removeQueryParams();
+  }
+  /**
+   * Emitted everytime the Settings are updated
+   */
+  @Event()
+  settingsUpdated: EventEmitter<MediaPlayerSettingClass>;
   /**
    * Tree Representation of the Settings
    */
@@ -33,21 +56,17 @@ export class DashjsSettingsControl {
    * Whether Changes of Settings should be automatically emitted or if it should be done manually
    */
   @State() autoUpdate: boolean = true;
+  @Watch('autoUpdate')
+  watchHandlerAutoUpdate(value: boolean): void {
+    LocalVariableStore.settings_autoupdate = value;
+  }
+  @Element() el: HTMLDashjsSettingsControlElement;
+
   private searchElement: HTMLInputElement;
   private debounceTimer: NodeJS.Timeout | undefined;
   private searchPopover: any;
-  @Element() el: HTMLDashjsSettingsControlElement;
 
-  @Method()
-  async resetSettings() {
-    this.selectedSettings = generateSettingsMapFromList(this.settingsList);
-    this.removeQueryParams();
-  }
-
-  @Event()
-  settingsUpdated: EventEmitter<any>;
-
-  async openSettings() {
+  private async openSettings() {
     const modal = await modalController.create({
       component: 'dashjs-settings-control-modal',
       cssClass: 'browse-settings-modal',
@@ -64,8 +83,9 @@ export class DashjsSettingsControl {
       this.selectedSettings = data;
     }
   }
-  componentWillLoad() {
-    if (this.version) {
+  componentWillLoad(): void {
+    this.autoUpdate = LocalVariableStore.settings_autoupdate;
+    if (this.version != undefined) {
       this.loadSettingsMetaData();
     }
   }
@@ -90,50 +110,20 @@ export class DashjsSettingsControl {
       });
   }
 
-  setParam(key, value) {
-    const url = new URL(window.location.href);
-
-    if (value == null) {
-      url.searchParams.delete(key);
-    } else {
-      if (url.searchParams.has(key)) {
-        url.searchParams.set(key, value);
-      } else {
-        url.searchParams.append(key, value);
-      }
-    }
-    window.history.pushState(null, null, url as any);
-  }
-
-  removeQueryParams() {
-    const url = new URL(window.location.href);
-    Array.from((url.searchParams as any).keys()).forEach((key: string) => {
-      url.searchParams.delete(key);
-    });
-    window.history.pushState(null, null, url as any);
-  }
-
-  @Watch('selectedSettings')
-  settingsUpdate(force: boolean = false) {
-    if (this.autoUpdate || force === true) {
-      this.settingsUpdated.emit(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings));
-    }
-  }
-
-  removeSetting(id: string) {
+  private removeSetting(id: string): void {
     this.selectedSettings.set(id, undefined);
-    this.setParam(id, undefined);
+    setParam(id, undefined);
     this.selectedSettings = new Map(this.selectedSettings);
   }
 
-  updateSetting(id: string, value: any) {
+  private updateSetting(id: string, value: any): void {
     this.selectedSettings.set(id, value);
-    this.setParam(id, value);
+    setParam(id, value);
     this.selectedSettings = new Map(this.selectedSettings);
   }
-  async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
+  private async updateSearch(event: CustomEvent<InputChangeEventDetail>): Promise<void> {
     if (event.detail.value == '') {
-      if (this.debounceTimer) {
+      if (this.debounceTimer != undefined) {
         clearTimeout(this.debounceTimer);
       }
       if (this.searchPopover) {
@@ -160,40 +150,41 @@ export class DashjsSettingsControl {
         leaveAnimation: undefined,
         enterAnimation: undefined,
         componentProps: {
-          options: matchingSettings,
-          isAPI: false,
+          options: matchingSettings.map(el => el.slice(9)),
         },
       });
       await this.searchPopover.present();
-      this.searchElement.focus(); //.select();
+      this.searchElement.focus();
       const { data } = await this.searchPopover.onWillDismiss();
       if (data) {
-        this.tryAddSetting(data);
+        this.tryAddSetting(data) ? (this.searchElement.value = '') : undefined;
       }
     };
 
-    if (this.debounceTimer) {
+    if (this.debounceTimer != undefined) {
       clearTimeout(this.debounceTimer);
     }
     this.debounceTimer = setTimeout(next, 500);
   }
 
-  tryAddSetting(key: string) {
+  private tryAddSetting(key: string): boolean {
     const regex = new RegExp(key, 'i');
     const matchingSettings = Array.from(this.selectedSettings.keys()).filter(e => e.match(regex));
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
     } else {
-      return;
+      return false;
     }
     if (this.selectedSettings.has(key)) {
       const setting = this.settingsList.find(el => el.id === key);
       this.updateSetting(key, setting != undefined ? (setting.example == undefined ? '' : setting.example) : undefined);
       this.searchElement.value = '';
+      return true;
     }
+    return false;
   }
 
-  async showSettingsJSON() {
+  private async showSettingsJSON() {
     const modal = await modalController.create({
       component: 'dashjs-generic-modal',
       componentProps: {
@@ -213,10 +204,14 @@ export class DashjsSettingsControl {
       <Host>
         <ion-accordion titleText="Settings">
           <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
-            <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showSettingsJSON()}>
+            <ion-button shape="round" fill="outline" color="dark" onClick={() => this.showSettingsJSON()} style={{ marginRight: '15px' }}>
               Copy Settings
             </ion-button>
-            {this.autoUpdate ? undefined : <ion-button onClick={() => this.settingsUpdate(true)}>Update</ion-button>}
+            {this.autoUpdate ? undefined : (
+              <ion-button onClick={() => this.settingsUpdate(true)} shape="round" color="dark" style={{ marginRight: '15px' }}>
+                Update
+              </ion-button>
+            )}
             Auto Update <ion-toggle id="autol" checked={this.autoUpdate} onIonChange={change => (this.autoUpdate = change.detail.checked)}></ion-toggle>
           </div>
           <ion-grid>
@@ -258,6 +253,7 @@ export class DashjsSettingsControl {
                               type={setting.type}
                               name={setting.name}
                               options={setting.enum || undefined}
+                              optionsLabels={setting.enumLabels || undefined}
                               defaultValue={this.selectedSettings.get(key)}
                               onValueChanged={change => {
                                 this.updateSetting(key, change.detail);

@@ -9,12 +9,15 @@ export function generateSettingsMapFromList(list: Setting[]): Map<string, any> {
   return map;
 }
 
-export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, boolean>): { [key: string]: any } {
+export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, any>): { [key: string]: any } {
   const object = {
-    settings: undefined,
+    settings: {},
   };
   list.forEach(element => {
-    objectPath.set(object, element.id, map.get(element.id));
+    const value = map.get(element.id);
+    if (value != undefined) {
+      objectPath.set(object, element.id, map.get(element.id));
+    }
   });
   return object.settings;
 }
@@ -63,11 +66,11 @@ export function settingsListToTree(list: Setting[]): Tree {
 }
 
 export function calculateHTTPMetrics(type, requests) {
-  var latency = {},
+  const latency = {},
     download = {},
     ratio = {};
 
-  var requestWindow = requests
+  const requestWindow = requests
     .slice(-20)
     .filter(function (req) {
       return req.responsecode >= 200 && req.responsecode < 300 && req.type === 'MediaSegment' && req._stream === type && !!req._mediaduration;
@@ -75,7 +78,7 @@ export function calculateHTTPMetrics(type, requests) {
     .slice(-4);
 
   if (requestWindow.length > 0) {
-    var latencyTimes = requestWindow.map(function (req) {
+    const latencyTimes = requestWindow.map(function (req) {
       return Math.abs(req.tresponse.getTime() - req.trequest.getTime()) / 1000;
     });
 
@@ -93,7 +96,7 @@ export function calculateHTTPMetrics(type, requests) {
       count: latencyTimes.length,
     };
 
-    var downloadTimes = requestWindow.map(function (req) {
+    const downloadTimes = requestWindow.map(function (req) {
       return Math.abs(req._tfinish.getTime() - req.tresponse.getTime()) / 1000;
     });
 
@@ -111,7 +114,7 @@ export function calculateHTTPMetrics(type, requests) {
       count: downloadTimes.length,
     };
 
-    var durationTimes = requestWindow.map(function (req) {
+    const durationTimes = requestWindow.map(function (req) {
       return req._mediaduration;
     });
 
@@ -172,7 +175,7 @@ export function chartYAxisOptions(metricsData: any, colors: Object) {
 export function chartDataset(metricsData: any, colors: Object) {
   const dataset = [];
   Object.keys(metricsData).map((metric, index) => {
-    let newEntry = {
+    const newEntry = {
       data: [0, 0, 0, 0, 0, 0, 0, 0],
       label: metric,
       lineTension: 0,
