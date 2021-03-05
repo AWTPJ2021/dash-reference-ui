@@ -1,4 +1,4 @@
-import { Setting, DashFunction, Tree, SettingsMap } from '../types/types';
+import { Setting, DashFunction, Tree, SettingsMap, KeyValue } from '../types/types';
 import * as objectPath from 'object-path';
 
 export function generateSettingsMapFromList(list: Setting[]): SettingsMap {
@@ -9,7 +9,7 @@ export function generateSettingsMapFromList(list: Setting[]): SettingsMap {
   return map;
 }
 
-export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, unknown>): { [key: string]: unknown } {
+export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, unknown>): KeyValue<unknown> {
   const object = {
     settings: {},
   };
@@ -30,7 +30,7 @@ export function generateFunctionsMapFromList(list: DashFunction[]): Map<string, 
   return map;
 }
 
-export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map: Map<string, boolean>): { [key: string]: unknown } {
+export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map: Map<string, boolean>): KeyValue<unknown> {
   const object = {
     functions: {},
   };

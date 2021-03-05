@@ -1,3 +1,5 @@
+import { KeyValue } from '../types/types';
+
 export class LocalStorage {
   static deleteKeyInKeyValueObject(key: string, id: string): void {
     const toUpdate = JSON.parse(localStorage.getItem(key) || '{}');
@@ -5,13 +7,13 @@ export class LocalStorage {
     localStorage.setItem(key, JSON.stringify(toUpdate));
   }
 
-  static updateKeyInKeyValueObject(key: string, id: string, value: any): void {
+  static updateKeyInKeyValueObject(key: string, id: string, value: unknown): void {
     const toUpdate = JSON.parse(localStorage.getItem(key) || '{}');
     toUpdate[id] = value;
     localStorage.setItem(key, JSON.stringify(toUpdate));
   }
 
-  static saveMapToLocalKey(localKey: string, map: Map<string, any>): void {
+  static saveMapToLocalKey(localKey: string, map: Map<string, unknown>): void {
     const toSave = {};
     map.forEach((value, key) => {
       if (value != undefined) {
@@ -21,7 +23,7 @@ export class LocalStorage {
     localStorage.setItem(localKey, JSON.stringify(toSave));
   }
 
-  static getKeyValueObject(key: string): null | any {
+  static getKeyValueObject(key: string): null | KeyValue<unknown> {
     const info = localStorage.getItem(key);
     return info != null ? JSON.parse(info) : null;
   }

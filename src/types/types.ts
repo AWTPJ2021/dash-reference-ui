@@ -21,6 +21,9 @@ export interface Setting {
 export type SettingsMap = Map<string, SettingsMapValue>;
 
 export type SettingsMapValue = boolean | string | number | undefined;
+export interface KeyValue<T> {
+  [key: string]: T;
+}
 
 export interface DashFunction {
   name: string;
