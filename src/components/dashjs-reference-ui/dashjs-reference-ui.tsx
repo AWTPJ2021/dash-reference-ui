@@ -1,7 +1,7 @@
 import { StencilComponentPrefetch } from '@beck24/stencil-component-prefetch/dist/types/components/stencil-component-prefetch/stencil-component-prefetch';
 import { SelectChangeEventDetail } from '@ionic/core';
 import { Component, Host, h, Element, Build, getAssetPath, State } from '@stencil/core';
-import { DASHJS_PLAYER_TYPE, DASHJS_PLAYER_VERSION } from '../../defaults';
+import { DASHJS_PLAYER_TYPE } from '../../defaults';
 import { setParam } from '../../utils/queryParams';
 import { contributors } from './contributors';
 const STATIC_VERSION_QUERY_PARAM = 'version';
