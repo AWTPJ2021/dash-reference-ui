@@ -11,13 +11,34 @@ import { Tree } from '../../types/types';
  * Supply with a render Function and render anything you like inside
  */
 export class DashjsTree {
+  /**
+   * The Tree Element which is the current root.
+   */
   @Prop() tree: Tree;
+  /**
+   * All Elements (for data access)
+   */
   @Prop() elements: string[];
+  /**
+   * Functions which renders the elements of this node
+   */
   @Prop() renderFunc: (key: string) => void;
+  /**
+   * Functions which renders the the title of this node
+   */
   @Prop() renderFuncTitle: (path) => void;
+  /**
+   * Function which state whether the element has a suffix
+   */
   @Prop() renderFuncSuffix: () => void;
 
+  /**
+   * Fill if this is the root of the Tree
+   */
   @Prop() root: boolean = false;
+  /**
+   * States the current path for orientation
+   */
   @Prop() path: string[] = [];
   @State() pathInitialized: boolean = false;
   @State() elementsOnRoot: string[];

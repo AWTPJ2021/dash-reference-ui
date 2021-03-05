@@ -122,12 +122,33 @@ export namespace Components {
         "video_data": any;
     }
     interface DashjsTree {
+        /**
+          * All Elements (for data access)
+         */
         "elements": string[];
+        /**
+          * States the current path for orientation
+         */
         "path": string[];
+        /**
+          * Functions which renders the elements of this node
+         */
         "renderFunc": (key: string) => void;
+        /**
+          * Function which state whether the element has a suffix
+         */
         "renderFuncSuffix": () => void;
+        /**
+          * Functions which renders the the title of this node
+         */
         "renderFuncTitle": (path) => void;
+        /**
+          * Fill if this is the root of the Tree
+         */
         "root": boolean;
+        /**
+          * The Tree Element which is the current root.
+         */
         "tree": Tree;
     }
     interface IonAccordion {
@@ -382,12 +403,33 @@ declare namespace LocalJSX {
         "video_data"?: any;
     }
     interface DashjsTree {
+        /**
+          * All Elements (for data access)
+         */
         "elements"?: string[];
+        /**
+          * States the current path for orientation
+         */
         "path"?: string[];
+        /**
+          * Functions which renders the elements of this node
+         */
         "renderFunc"?: (key: string) => void;
+        /**
+          * Function which state whether the element has a suffix
+         */
         "renderFuncSuffix"?: () => void;
+        /**
+          * Functions which renders the the title of this node
+         */
         "renderFuncTitle"?: (path) => void;
+        /**
+          * Fill if this is the root of the Tree
+         */
         "root"?: boolean;
+        /**
+          * The Tree Element which is the current root.
+         */
         "tree"?: Tree;
     }
     interface IonAccordion {

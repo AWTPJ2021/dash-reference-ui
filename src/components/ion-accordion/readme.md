@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property    | Attribute    | Description | Type     | Default |
-| ----------- | ------------ | ----------- | -------- | ------- |
-| `titleText` | `title-text` |             | `string` | `''`    |
+| Property    | Attribute    | Description                                    | Type     | Default |
+| ----------- | ------------ | ---------------------------------------------- | -------- | ------- |
+| `titleText` | `title-text` | The Title of the accordion. Can be left blank. | `string` | `''`    |
 
 
 ## Dependencies
