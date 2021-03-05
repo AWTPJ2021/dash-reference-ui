@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property  | Attribute | Description | Type | Default |
-| --------- | --------- | ----------- | ---- | ------- |
-| `options` | --        |             | `[]` | `[]`    |
+| Property  | Attribute | Description | Type       | Default |
+| --------- | --------- | ----------- | ---------- | ------- |
+| `options` | --        |             | `string[]` | `[]`    |
 
 
 ## Dependencies

@@ -6,6 +6,9 @@ import { Component, Host, h, Prop, State } from '@stencil/core';
   shadow: true,
 })
 export class IonAccordion {
+  /**
+   * The Title of the accordion. Can be left blank.
+   */
   @Prop() titleText = '';
   @State() expanded = true;
   render() {

@@ -10,7 +10,7 @@ describe('dashjs-input-search', () => {
     expect(page.root).toEqualHtml(`
       <dashjs-input-search>
         <mock:shadow-root>
-          <slot></slot>
+          <ion-input placeholder="" value=""></ion-input>
         </mock:shadow-root>
       </dashjs-input-search>
     `);
