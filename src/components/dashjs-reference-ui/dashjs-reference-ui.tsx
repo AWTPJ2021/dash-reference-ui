@@ -19,6 +19,7 @@ export class DashjsReferenceUi {
   @State() type: string[] = ['min', 'debug'];
   @State() selectedType: string = DASHJS_PLAYER_TYPE;
   @State() settings: dashjs.MediaPlayerSettingClass = {};
+  @State() darkModeActive = false;
   @Element() prefetcher: HTMLDashjsReferenceUiElement;
 
   componentWillLoad(): void {
@@ -50,6 +51,15 @@ export class DashjsReferenceUi {
         }),
       );
     }
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    this.darkModeActive = prefersDark.matches;
+    this.toggleDarkTheme(this.darkModeActive);
+
+    // Listen for changes to the prefers-color-scheme media query
+    prefersDark.addListener(mediaQuery => {
+      this.darkModeActive = mediaQuery.matches;
+      this.toggleDarkTheme(this.darkModeActive);
+    });
   }
   private typeChange = (change: CustomEvent<SelectChangeEventDetail<unknown>>) => {
     change.stopPropagation();
@@ -66,6 +76,10 @@ export class DashjsReferenceUi {
     this.settings = change.detail;
     setParam(STATIC_VERSION_QUERY_PARAM, this.selectedVersion);
   };
+
+  private toggleDarkTheme(active = false) {
+    document.body.classList.toggle('dark', active);
+  }
   render() {
     const centercss = {
       display: 'flex',
@@ -89,6 +103,10 @@ export class DashjsReferenceUi {
                 width="150"
               ></iframe>
               <iframe id="fork-button" src="//ghbtns.com/github-btn.html?user=Dash-Industry-Forum&repo=dash.js&type=fork&count=true&size=large" height="30" width="150"></iframe>
+              <div style={centercss}>
+                Dark Mode
+                <ion-toggle checked={this.darkModeActive} onIonChange={change => this.toggleDarkTheme(change.detail.checked)}></ion-toggle>
+              </div>
             </div>
           </ion-title>
           <ion-buttons slot="end">
