@@ -145,7 +145,7 @@ export function calculateHTTPMetrics(type, requests) {
 export function chartYAxisOptions(metricsData: any, colors: Object) {
   const yAxesArray = [];
   Object.keys(metricsData).map((metric, index) => {
-    let newEntry = {
+    const newEntry = {
       gridLines: {
         color: 'rgba(0, 0, 0, 0)',
       },

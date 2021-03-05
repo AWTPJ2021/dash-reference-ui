@@ -1,7 +1,7 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
-import { getMediaURL, getStringLocally } from '../../utils/utils';
+import { getMediaURL, getStringLocally, calculateHTTPMetrics } from '../../utils/utils';
 declare let dashjs: any;
 /**
  * Loads dashjs player.
@@ -38,8 +38,34 @@ export class DashjsPlayer {
   @State() streamInterval: any;
 
   @State()
+  metrics = {
+    video: {
+      'Buffer Length': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Bitrate Downloading': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Dropped Frames': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Frame Rate': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Index': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Max Index': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Live Latency': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Latency': ['0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0'],
+      'Download': ['0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0'],
+      'Ratio': ['0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0'],
+    },
+    audio: {
+      'Buffer Length': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Bitrate Downloading': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Dropped Frames': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Max Index': [0, 0, 0, 0, 0, 0, 0, 0],
+      'Latency': ['0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0'],
+      'Download': ['0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0'],
+      'Ratio': ['0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0', '0|0|0'],
+    },
+    currentTime: ['00:00', '00:00', '00:00', '00:00', '00:00', '00:00', '00:00', '00:00'],
+  };
+
+  @State()
   controlbar: any;
-  // TODO: Really Bad practice! Use a better flow to get updates to statistics
+
   @Event({
     composed: true,
     bubbles: true,
@@ -57,8 +83,9 @@ export class DashjsPlayer {
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), event.detail.autoPlay == 'true');
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
+        this.streamInterval && clearInterval(this.streamInterval);
         this.streamInterval = setInterval(() => {
-          this.streamMetricsEventHandler(this.player);
+          this.metricsWatch();
         }, 1000);
         break;
       case 'stop':
@@ -97,11 +124,115 @@ export class DashjsPlayer {
     });
   }
 
+  /* Stream Metrics */
   @Event()
-  streamMetricsEvent: EventEmitter<any>;
+  metricsEvent: EventEmitter<string>;
 
-  streamMetricsEventHandler(player: any) {
-    player && this.streamMetricsEvent.emit(player);
+  private metricsWatch() {
+    this.player && this.metricsEvent.emit(this.streamMetrics(this.player, this.metrics));
+  }
+
+  private streamMetrics(player: any, metrics: any) {
+    const streamInfo = player?.getActiveStream()?.getStreamInfo();
+    const dashMetrics = player?.getDashMetrics();
+    const dashAdapter = player?.getDashAdapter();
+
+    if (dashMetrics && streamInfo) {
+      const periodIdx = streamInfo?.index;
+      const currentTimeInSec = player?.time().toFixed(0);
+
+      const currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
+      metrics.currentTime.shift();
+      metrics.currentTime.push(currentTime);
+      metrics.video['Live Latency'].shift();
+      metrics.video['Live Latency'].push(
+        Number(
+          setTimeout(() => {
+            player?.getCurrentLiveLatency();
+          }, 1000),
+        ),
+      );
+
+      // Video Metrics
+      const videoRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('video');
+      const videoAdaptation = dashAdapter?.getAdaptationForType(periodIdx, 'video', streamInfo);
+      const videoHttpMetrics = calculateHTTPMetrics('video', dashMetrics?.getHttpRequests('video'));
+
+      metrics.video['Buffer Length'].shift();
+      metrics.video['Buffer Length'].push(dashMetrics?.getCurrentBufferLevel('video'));
+      metrics.video['Dropped Frames'].shift();
+      metrics.video['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('video')?.droppedFrames);
+      metrics.video['Bitrate Downloading'].shift();
+      metrics.video['Bitrate Downloading'].push(videoRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(videoRepSwitch?.to, periodIdx) / 1000) : NaN);
+      metrics.video['Index'].shift();
+      metrics.video['Index'].push(dashAdapter?.getIndexForRepresentation(videoRepSwitch?.to, periodIdx));
+      metrics.video['Max Index'].shift();
+      metrics.video['Max Index'].push(dashAdapter?.getMaxIndexForBufferType('video', periodIdx));
+      metrics.video['Frame Rate'].shift();
+      metrics.video['Frame Rate'].push(
+        videoAdaptation?.Representation_asArray?.find(function (rep) {
+          return rep.id === videoRepSwitch?.to;
+        })?.frameRate,
+      );
+      if (videoHttpMetrics) {
+        metrics.video['Download'].shift();
+        metrics.video['Download'].push(
+          videoHttpMetrics.download['video'].low.toFixed(2) +
+            ' | ' +
+            videoHttpMetrics.download['video'].average.toFixed(2) +
+            ' | ' +
+            videoHttpMetrics.download['video'].high.toFixed(2),
+        );
+        metrics.video['Latency'].shift();
+        metrics.video['Latency'].push(
+          videoHttpMetrics.latency['video'].low.toFixed(2) +
+            ' | ' +
+            videoHttpMetrics.latency['video'].average.toFixed(2) +
+            ' | ' +
+            videoHttpMetrics.latency['video'].high.toFixed(2),
+        );
+        metrics.video['Ratio'].shift();
+        metrics.video['Ratio'].push(
+          videoHttpMetrics.ratio['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].high.toFixed(2),
+        );
+      }
+
+      // Audio Metrics
+      const audioRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('audio');
+      const audioHttpMetrics = calculateHTTPMetrics('audio', dashMetrics?.getHttpRequests('audio'));
+
+      metrics.audio['Buffer Length'].shift();
+      metrics.audio['Buffer Length'].push(dashMetrics?.getCurrentBufferLevel('audio'));
+      metrics.audio['Dropped Frames'].shift();
+      metrics.audio['Dropped Frames'].push(dashMetrics?.getCurrentDroppedFrames('audio')?.droppedFrames);
+      metrics.audio['Bitrate Downloading'].shift();
+      metrics.audio['Bitrate Downloading'].push(audioRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(audioRepSwitch?.to, periodIdx) / 1000) : NaN);
+      metrics.audio['Max Index'].shift();
+      metrics.audio['Max Index'].push(dashAdapter?.getMaxIndexForBufferType('audio', periodIdx));
+      if (audioHttpMetrics) {
+        metrics.audio['Download'].shift();
+        metrics.audio['Download'].push(
+          audioHttpMetrics.download['audio'].low.toFixed(2) +
+            ' | ' +
+            audioHttpMetrics.download['audio'].average.toFixed(2) +
+            ' | ' +
+            audioHttpMetrics.download['audio'].high.toFixed(2),
+        );
+        metrics.audio['Latency'].shift();
+        metrics.audio['Latency'].push(
+          audioHttpMetrics.latency['audio'].low.toFixed(2) +
+            ' | ' +
+            audioHttpMetrics.latency['audio'].average.toFixed(2) +
+            ' | ' +
+            audioHttpMetrics.latency['audio'].high.toFixed(2),
+        );
+        metrics.audio['Ratio'].shift();
+        metrics.audio['Ratio'].push(
+          audioHttpMetrics.ratio['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].high.toFixed(2),
+        );
+      }
+    }
+    return metrics;
   }
 
   componentDidLoad() {

@@ -231,9 +231,9 @@ declare namespace LocalJSX {
         "titleText"?: string;
     }
     interface DashjsPlayer {
+        "onMetricsEvent"?: (event: CustomEvent<string>) => void;
         "onPlayerEvent"?: (event: CustomEvent<any>) => void;
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
-        "onStreamMetricsEvent"?: (event: CustomEvent<any>) => void;
         /**
           * The Type of dashjs that should be loaded. e.g. debug or min
          */
