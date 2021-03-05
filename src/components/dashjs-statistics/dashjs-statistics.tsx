@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Watch, Element, State, Listen } from '@stencil/core';
+import { Component, Host, h, Element, State, Listen } from '@stencil/core';
 import * as chartjs from 'chart.js';
 const { Chart } = chartjs.default.Chart;
 import { chartDataset, chartYAxisOptions } from '../../utils/utils';
@@ -18,9 +18,6 @@ export class DashjsStatistics {
 
   private videoInstance: any;
   private audioInstance: any;
-
-  @Prop()
-  video_data: any;
 
   @State() videoDisable: boolean = false;
 
@@ -71,7 +68,7 @@ export class DashjsStatistics {
     currentTime: '00:00',
   };
 
-  chartVisibility(isVideo, title, checked) {
+  private chartVisibility(isVideo, title, checked) {
     const toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds, index) {
       if (ds.label == title) {
@@ -86,7 +83,7 @@ export class DashjsStatistics {
     }
   }
 
-  disableChart(isVideo) {
+  private disableChart(isVideo) {
     if (isVideo) {
       this.videoDisable = this.videoDisable ? false : true;
     } else {
@@ -94,7 +91,7 @@ export class DashjsStatistics {
     }
   }
 
-  clearChart(isVideo) {
+  private clearChart(isVideo) {
     const toChange = isVideo ? this.videoInstance : this.audioInstance;
     toChange.data.datasets.forEach(function (ds) {
       ds.data = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -104,12 +101,13 @@ export class DashjsStatistics {
 
   @Listen('metricsEvent', { target: 'document' })
   metricsWatch(event) {
-    this.metrics = event.detail;
+    // this.metrics = event.detail;
+    this.metrics = { ...event.detail };
     !this.videoDisable ? this.video_watcher(true, event.detail.video, event.detail.currentTime) : null;
     !this.audioDisable ? this.video_watcher(false, event.detail.audio, event.detail.currentTime) : null;
   }
 
-  currentMetric(metrics: any, type: string) {
+  private currentMetric(metrics: any, type: string) {
     return (
       <ion-row>
         <ion-col size="12">
@@ -127,6 +125,7 @@ export class DashjsStatistics {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   componentDidLoad() {
     // Data Example
     this.video_canvas = this.el.querySelector('#video_canvas');
@@ -178,8 +177,7 @@ export class DashjsStatistics {
     this.audioInstance = new Chart(this.audio_context, audioChartOptions);
   }
 
-  @Watch('metrics')
-  video_watcher(isVideo: boolean, newData: any, newLabels: any) {
+  private video_watcher(isVideo: boolean, newData: any, newLabels: any) {
     const toChange = isVideo ? this.videoInstance : this.audioInstance;
     Object.keys(newData).map((metric, index) => {
       toChange.data.datasets[index].data.shift();
