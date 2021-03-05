@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DashFunction, Setting, Tree, Type } from "./types/types";
+import { DashFunction, Setting, SettingsMap, SettingsMapValue, Tree, Type } from "./types/types";
 import { MediaPlayerSettingClass } from "dashjs";
 export namespace Components {
     interface DashjsApiControl {
@@ -46,7 +46,21 @@ export namespace Components {
         /**
           * title displayed on top of the Modal.
          */
-        "titleText": string;
+        "titleText": string | undefined;
+    }
+    interface DashjsInputSearch {
+        /**
+          * Function applied before display of the Search Item
+         */
+        "displayFunction": (str: string) => string;
+        /**
+          * Placholder of the input element
+         */
+        "placeholder": string;
+        /**
+          * List of searched Items, single one will be emitted if selected during search
+         */
+        "searchItemList": string[];
     }
     interface DashjsPlayer {
         /**
@@ -78,16 +92,31 @@ export namespace Components {
         "version": string | undefined;
     }
     interface DashjsSettingsControlElement {
-        "defaultValue": any;
+        /**
+          * The default value of the Setting
+         */
+        "defaultValue": SettingsMapValue;
+        /**
+          * Displayed name of the Setting
+         */
         "name": string;
+        /**
+          * A Select with the specified options will be displayed if supplied.
+         */
         "options": string[];
-        "optionsLabels": string[];
+        /**
+          * Optional: Labels that are displayed intead of the options value. Labels are displayed in the same order as options.
+         */
+        "optionsLabels": string[] | undefined;
+        /**
+          * The Type of the Settings Control which should be displayed, e.g. 'number'
+         */
         "type": Type;
     }
     interface DashjsSettingsControlModal {
-        "selectedSettings": Map<string, any>;
+        "selectedSettings": SettingsMap;
         "settingsList": Setting[];
-        "settingsTree": Tree;
+        "settingsTree": Tree | undefined;
     }
     interface DashjsStatistics {
         "video_data": any;
@@ -141,6 +170,12 @@ declare global {
     var HTMLDashjsHelpButtonElement: {
         prototype: HTMLDashjsHelpButtonElement;
         new (): HTMLDashjsHelpButtonElement;
+    };
+    interface HTMLDashjsInputSearchElement extends Components.DashjsInputSearch, HTMLStencilElement {
+    }
+    var HTMLDashjsInputSearchElement: {
+        prototype: HTMLDashjsInputSearchElement;
+        new (): HTMLDashjsInputSearchElement;
     };
     interface HTMLDashjsPlayerElement extends Components.DashjsPlayer, HTMLStencilElement {
     }
@@ -203,6 +238,7 @@ declare global {
         "dashjs-api-link-selector": HTMLDashjsApiLinkSelectorElement;
         "dashjs-generic-modal": HTMLDashjsGenericModalElement;
         "dashjs-help-button": HTMLDashjsHelpButtonElement;
+        "dashjs-input-search": HTMLDashjsInputSearchElement;
         "dashjs-player": HTMLDashjsPlayerElement;
         "dashjs-popover-select": HTMLDashjsPopoverSelectElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
@@ -256,7 +292,25 @@ declare namespace LocalJSX {
         /**
           * title displayed on top of the Modal.
          */
-        "titleText"?: string;
+        "titleText"?: string | undefined;
+    }
+    interface DashjsInputSearch {
+        /**
+          * Function applied before display of the Search Item
+         */
+        "displayFunction"?: (str: string) => string;
+        /**
+          * Search Item that was selected during the search.
+         */
+        "onSearchItemSelected"?: (event: CustomEvent<string>) => void;
+        /**
+          * Placholder of the input element
+         */
+        "placeholder"?: string;
+        /**
+          * List of searched Items, single one will be emitted if selected during search
+         */
+        "searchItemList"?: string[];
     }
     interface DashjsPlayer {
         "onPlayerEvent"?: (event: CustomEvent<any>) => void;
@@ -291,17 +345,35 @@ declare namespace LocalJSX {
         "version"?: string | undefined;
     }
     interface DashjsSettingsControlElement {
-        "defaultValue"?: any;
+        /**
+          * The default value of the Setting
+         */
+        "defaultValue"?: SettingsMapValue;
+        /**
+          * Displayed name of the Setting
+         */
         "name"?: string;
-        "onValueChanged"?: (event: CustomEvent<any>) => void;
+        /**
+          * The value of the Settings wil be emitted if changed.
+         */
+        "onValueChanged"?: (event: CustomEvent<SettingsMapValue>) => void;
+        /**
+          * A Select with the specified options will be displayed if supplied.
+         */
         "options"?: string[];
-        "optionsLabels"?: string[];
+        /**
+          * Optional: Labels that are displayed intead of the options value. Labels are displayed in the same order as options.
+         */
+        "optionsLabels"?: string[] | undefined;
+        /**
+          * The Type of the Settings Control which should be displayed, e.g. 'number'
+         */
         "type"?: Type;
     }
     interface DashjsSettingsControlModal {
-        "selectedSettings"?: Map<string, any>;
+        "selectedSettings"?: SettingsMap;
         "settingsList"?: Setting[];
-        "settingsTree"?: Tree;
+        "settingsTree"?: Tree | undefined;
     }
     interface DashjsStatistics {
         "video_data"?: any;
@@ -325,6 +397,7 @@ declare namespace LocalJSX {
         "dashjs-api-link-selector": DashjsApiLinkSelector;
         "dashjs-generic-modal": DashjsGenericModal;
         "dashjs-help-button": DashjsHelpButton;
+        "dashjs-input-search": DashjsInputSearch;
         "dashjs-player": DashjsPlayer;
         "dashjs-popover-select": DashjsPopoverSelect;
         "dashjs-reference-ui": DashjsReferenceUi;
@@ -346,6 +419,7 @@ declare module "@stencil/core" {
             "dashjs-api-link-selector": LocalJSX.DashjsApiLinkSelector & JSXBase.HTMLAttributes<HTMLDashjsApiLinkSelectorElement>;
             "dashjs-generic-modal": LocalJSX.DashjsGenericModal & JSXBase.HTMLAttributes<HTMLDashjsGenericModalElement>;
             "dashjs-help-button": LocalJSX.DashjsHelpButton & JSXBase.HTMLAttributes<HTMLDashjsHelpButtonElement>;
+            "dashjs-input-search": LocalJSX.DashjsInputSearch & JSXBase.HTMLAttributes<HTMLDashjsInputSearchElement>;
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
             "dashjs-popover-select": LocalJSX.DashjsPopoverSelect & JSXBase.HTMLAttributes<HTMLDashjsPopoverSelectElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;

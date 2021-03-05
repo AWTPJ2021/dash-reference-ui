@@ -1,6 +1,7 @@
 import { StencilComponentPrefetch } from '@beck24/stencil-component-prefetch/dist/types/components/stencil-component-prefetch/stencil-component-prefetch';
 import { SelectChangeEventDetail } from '@ionic/core';
 import { Component, Host, h, Element, Build, getAssetPath, State } from '@stencil/core';
+import { DASHJS_PLAYER_TYPE, DASHJS_PLAYER_VERSION } from '../../defaults';
 import { setParam } from '../../utils/queryParams';
 import { contributors } from './contributors';
 const STATIC_VERSION_QUERY_PARAM = 'version';
@@ -14,9 +15,9 @@ const STATIC_TYPE_QUERY_PARAM = 'type';
 })
 export class DashjsReferenceUi {
   @State() versions: string[] = [];
-  @State() selectedVersion: string = undefined;
+  @State() selectedVersion: string = DASHJS_PLAYER_VERSION;
   @State() type: string[] = ['min', 'debug'];
-  @State() selectedType: string = 'min';
+  @State() selectedType: string = DASHJS_PLAYER_TYPE;
   @State() settings: dashjs.MediaPlayerSettingClass = {};
   @Element() prefetcher: HTMLDashjsReferenceUiElement;
 
@@ -26,12 +27,8 @@ export class DashjsReferenceUi {
       .then(response => {
         this.versions = response;
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has(STATIC_VERSION_QUERY_PARAM)) {
-          this.selectedVersion = urlParams.get(STATIC_VERSION_QUERY_PARAM);
-        }
-        if (urlParams.has(STATIC_TYPE_QUERY_PARAM)) {
-          this.selectedType = urlParams.get(STATIC_TYPE_QUERY_PARAM);
-        }
+        this.selectedVersion = urlParams.get(STATIC_VERSION_QUERY_PARAM) || this.selectedVersion;
+        this.selectedType = urlParams.get(STATIC_TYPE_QUERY_PARAM) || this.selectedType;
         if (this.selectedVersion == undefined) {
           this.selectedVersion = response[0];
         }

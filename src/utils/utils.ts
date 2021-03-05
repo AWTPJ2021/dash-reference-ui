@@ -1,7 +1,7 @@
-import { Setting, DashFunction, Tree } from '../types/types';
+import { Setting, DashFunction, Tree, SettingsMap } from '../types/types';
 import * as objectPath from 'object-path';
 
-export function generateSettingsMapFromList(list: Setting[]): Map<string, unknown> {
+export function generateSettingsMapFromList(list: Setting[]): SettingsMap {
   const map = new Map();
   list.forEach(element => {
     map.set(element.id, undefined);
@@ -32,7 +32,7 @@ export function generateFunctionsMapFromList(list: DashFunction[]): Map<string, 
 
 export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map: Map<string, boolean>): { [key: string]: unknown } {
   const object = {
-    functions: undefined,
+    functions: {},
   };
   list.forEach(element => {
     objectPath.set(object, element.name, map.get(element.name));

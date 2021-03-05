@@ -1,8 +1,9 @@
 import { Component, Host, h, State, Event, EventEmitter, Listen, Prop, Watch } from '@stencil/core';
 import { DashFunction } from '../../types/types';
-import { modalController, popoverController, toastController, InputChangeEventDetail } from '@ionic/core';
+import { modalController, popoverController, toastController } from '@ionic/core';
 import { LocalStorage, LocalVariableStore } from '../../utils/localStorage';
 import { generateFunctionsMapFromList } from '../../utils/utils';
+import { DASHJS_PLAYER_VERSION } from '../../defaults';
 
 const STRING_API_FUNCTIONS = 'api_functions';
 @Component({
@@ -11,7 +12,7 @@ const STRING_API_FUNCTIONS = 'api_functions';
   shadow: false,
 })
 export class DashjsApiControl {
-  @Prop() version: string = undefined;
+  @Prop() version: string = DASHJS_PLAYER_VERSION;
   @Watch('version')
   protected watchHandlerVersion(): void {
     this.loadSettingsMetaData();
@@ -30,9 +31,6 @@ export class DashjsApiControl {
   @State() functionList: DashFunction[] = [];
   @State() selectedFunctions: Map<string, any> = new Map();
   @State() displayedFunction: string = '';
-  private searchElement: HTMLInputElement;
-  private debounceTimer: NodeJS.Timeout | undefined;
-  private searchPopover: any;
 
   componentWillLoad() {
     fetch('/static/sources.json')
@@ -168,52 +166,6 @@ export class DashjsApiControl {
     this.mediaUrl = event.detail.value;
   }
 
-  private async updateSearch(event: CustomEvent<InputChangeEventDetail>) {
-    if (event.detail.value == '') {
-      if (this.debounceTimer) {
-        clearTimeout(this.debounceTimer);
-      }
-      if (this.searchPopover) {
-        await this.searchPopover.dismiss();
-      }
-      return;
-    }
-    const next = async () => {
-      const regex = new RegExp(event.detail.value, 'i');
-      const matchingSettings = Array.from(this.selectedFunctions.keys())
-        // Filter only matching keys
-        .filter(e => e.match(regex))
-        // Filter Settings which are already shown
-        .filter(e => this.selectedFunctions.get(e) == undefined);
-      if (this.searchPopover) {
-        await this.searchPopover.dismiss();
-      }
-      this.searchPopover = await popoverController.create({
-        component: 'dashjs-popover-select',
-        cssClass: 'settings-search-popover',
-        showBackdrop: false,
-        event: event,
-        keyboardClose: false,
-        leaveAnimation: undefined,
-        enterAnimation: undefined,
-        componentProps: {
-          options: matchingSettings,
-        },
-      });
-      await this.searchPopover.present();
-      this.searchElement.focus(); //.select();
-      const { data } = await this.searchPopover.onWillDismiss();
-      if (data) {
-        this.tryAddApiFunction(data);
-      }
-    };
-
-    if (this.debounceTimer) {
-      clearTimeout(this.debounceTimer);
-    }
-    this.debounceTimer = setTimeout(next, 500);
-  }
-
   private tryAddApiFunction(key: string) {
     const matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
     if (matchingSettings.length === 1) {
@@ -334,12 +286,14 @@ export class DashjsApiControl {
               </ion-list>
             </ion-row>
             <ion-row>
-              <ion-input
-                ref={el => (this.searchElement = (el as unknown) as HTMLInputElement)}
+              <dashjs-input-search
+                style={{ flex: '1' }}
                 placeholder="Add more API calls..."
-                onIonChange={event => this.updateSearch(event)}
-                onKeyPress={event => (event.code === 'Enter' ? this.tryAddApiFunction((event.target as any).value) : null)}
-              ></ion-input>
+                searchItemList={Array.from(this.selectedFunctions.keys())
+                  // Filter Settings which are already shown
+                  .filter(e => this.selectedFunctions.get(e) == undefined)}
+                onSearchItemSelected={event => this.tryAddApiFunction(event.detail)}
+              ></dashjs-input-search>
               <ion-button shape="round" color="dark" onClick={() => this.openFunctions()}>
                 Browse API Calls
                 <ion-icon slot="end" name="search"></ion-icon>

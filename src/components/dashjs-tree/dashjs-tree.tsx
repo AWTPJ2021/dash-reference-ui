@@ -13,7 +13,7 @@ import { Tree } from '../../types/types';
 export class DashjsTree {
   @Prop() tree: Tree;
   @Prop() elements: string[];
-  @Prop() renderFunc: (key) => void;
+  @Prop() renderFunc: (key: string) => void;
   @Prop() renderFuncTitle: (path) => void;
   @Prop() renderFuncSuffix: () => void;
 
@@ -21,7 +21,7 @@ export class DashjsTree {
   @Prop() path: string[] = [];
   @State() pathInitialized: boolean = false;
   @State() elementsOnRoot: string[];
-  componentWillRender() {
+  componentWillRender(): void {
     if (!this.root) {
       const regex = new RegExp(this.tree.name, 'i');
       this.elementsOnRoot = this.elements.filter(e => e.match(regex));
@@ -46,16 +46,18 @@ export class DashjsTree {
         {this.tree.elements.filter(el => this.elementsOnRoot.includes(el)).map(key => this.renderFunc(key))}
         {this.tree.child == undefined
           ? undefined
-          : Object.keys(this.tree.child).map(key => (
-              <dashjs-tree
-                tree={this.tree.child[key]}
-                elements={this.elementsOnRoot}
-                renderFunc={this.renderFunc}
-                renderFuncTitle={this.renderFuncTitle}
-                renderFuncSuffix={this.renderFuncSuffix}
-                path={this.path}
-              ></dashjs-tree>
-            ))}
+          : Object.keys(this.tree.child).map(key =>
+              this.tree.child != undefined ? (
+                <dashjs-tree
+                  tree={this.tree.child[key]}
+                  elements={this.elementsOnRoot}
+                  renderFunc={this.renderFunc}
+                  renderFuncTitle={this.renderFuncTitle}
+                  renderFuncSuffix={this.renderFuncSuffix}
+                  path={this.path}
+                ></dashjs-tree>
+              ) : undefined,
+            )}
         {this.root ? undefined : this.renderFuncSuffix == undefined ? <ion-item-divider></ion-item-divider> : this.renderFuncSuffix()}
       </Host>
     );

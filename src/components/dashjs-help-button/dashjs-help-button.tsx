@@ -14,7 +14,7 @@ export class DashjsHelpButton {
   /**
    * title displayed on top of the Modal.
    */
-  @Prop() titleText: string = undefined;
+  @Prop() titleText: string | undefined = undefined;
   private async showHelpModal() {
     const modal = await modalController.create({
       component: 'dashjs-generic-modal',

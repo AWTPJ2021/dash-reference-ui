@@ -2,12 +2,10 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
+    "strictNullChecks": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "lib": [
-      "dom",
-      "es2019"
-    ],
+    "lib": ["dom", "DOM.Iterable", "es2019"],
     "moduleResolution": "node",
     "module": "esnext",
     "target": "es2017",
@@ -16,10 +14,6 @@
     "jsx": "react",
     "jsxFactory": "h"
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

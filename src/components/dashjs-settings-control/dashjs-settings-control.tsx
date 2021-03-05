@@ -1,9 +1,9 @@
-import { InputChangeEventDetail, modalController, popoverController } from '@ionic/core';
+import { modalController } from '@ionic/core';
 import { Component, Host, h, Watch, Method, Event, EventEmitter, State, Prop, Element } from '@stencil/core';
 import { MediaPlayerSettingClass } from 'dashjs';
-import { Setting, Tree } from '../../types/types';
+import { Setting, SettingsMap, SettingsMapValue, Tree } from '../../types/types';
 import { LocalVariableStore } from '../../utils/localStorage';
-import { removeQueryParams, setParam } from '../../utils/queryParams';
+import { updateMapWithQueryParams, removeQueryParams, setParam } from '../../utils/queryParams';
 import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap, settingsListToTree } from '../../utils/utils';
 
 @Component({
@@ -28,7 +28,7 @@ export class DashjsSettingsControl {
    * Map of all Settings:
    * Settings which are not displayed are undefined
    */
-  @State() selectedSettings: Map<string, unknown> = new Map();
+  @State() selectedSettings: SettingsMap = new Map();
   @Watch('selectedSettings')
   settingsUpdate(force: boolean = false): void {
     if (this.autoUpdate || force === true) {
@@ -60,11 +60,8 @@ export class DashjsSettingsControl {
   watchHandlerAutoUpdate(value: boolean): void {
     LocalVariableStore.settings_autoupdate = value;
   }
+  @State() error = false;
   @Element() el: HTMLDashjsSettingsControlElement;
-
-  private searchElement: HTMLInputElement;
-  private debounceTimer: NodeJS.Timeout | undefined;
-  private searchPopover: HTMLIonPopoverElement;
 
   private async openSettings() {
     const modal = await modalController.create({
@@ -96,17 +93,12 @@ export class DashjsSettingsControl {
       .then(response => {
         this.settingsList = response;
         const settings = generateSettingsMapFromList(this.settingsList);
-        const urlParams = new URLSearchParams(window.location.search);
-        settings.forEach((_value, key) => {
-          if (urlParams.has(key)) {
-            settings.set(key, urlParams.get(key));
-          }
-        });
-        this.selectedSettings = new Map(settings);
+        this.selectedSettings = updateMapWithQueryParams(settings);
         this.settingsTree = settingsListToTree(this.settingsList);
       })
       .catch(() => {
-        this.settingsList = undefined;
+        this.settingsList = [];
+        this.error = true;
       });
   }
 
@@ -116,55 +108,10 @@ export class DashjsSettingsControl {
     this.selectedSettings = new Map(this.selectedSettings);
   }
 
-  private updateSetting(id: string, value: unknown): void {
+  private updateSetting(id: string, value: SettingsMapValue): void {
     this.selectedSettings.set(id, value);
     setParam(id, value);
     this.selectedSettings = new Map(this.selectedSettings);
-  }
-  private async updateSearch(event: CustomEvent<InputChangeEventDetail>): Promise<void> {
-    if (event.detail.value == '') {
-      if (this.debounceTimer != undefined) {
-        clearTimeout(this.debounceTimer);
-      }
-      if (this.searchPopover != undefined) {
-        await this.searchPopover.dismiss();
-      }
-      return;
-    }
-    const next = async () => {
-      const regex = new RegExp(event.detail.value, 'i');
-      const matchingSettings = Array.from(this.selectedSettings.keys())
-        // Filter only matching keys
-        .filter(e => e.match(regex))
-        // Filter Settings which are already shown
-        .filter(e => this.selectedSettings.get(e) == undefined);
-      if (this.searchPopover != undefined) {
-        await this.searchPopover.dismiss();
-      }
-      this.searchPopover = await popoverController.create({
-        component: 'dashjs-popover-select',
-        cssClass: 'settings-search-popover',
-        showBackdrop: false,
-        event: event,
-        keyboardClose: false,
-        leaveAnimation: undefined,
-        enterAnimation: undefined,
-        componentProps: {
-          options: matchingSettings.map(el => el.slice(9)),
-        },
-      });
-      await this.searchPopover.present();
-      this.searchElement.focus();
-      const { data } = await this.searchPopover.onWillDismiss();
-      if (data) {
-        this.tryAddSetting(data) ? (this.searchElement.value = '') : undefined;
-      }
-    };
-
-    if (this.debounceTimer != undefined) {
-      clearTimeout(this.debounceTimer);
-    }
-    this.debounceTimer = setTimeout(next, 500);
   }
 
   private tryAddSetting(key: string): boolean {
@@ -178,7 +125,7 @@ export class DashjsSettingsControl {
     if (this.selectedSettings.has(key)) {
       const setting = this.settingsList.find(el => el.id === key);
       this.updateSetting(key, setting != undefined ? (setting.example == undefined ? '' : setting.example) : undefined);
-      this.searchElement.value = '';
+      // this.searchElement.value = '';
       return true;
     }
     return false;
@@ -200,7 +147,7 @@ export class DashjsSettingsControl {
   }
 
   private updateSettingEvent(key) {
-    return (change: CustomEvent<unknown>) => {
+    return (change: CustomEvent<SettingsMapValue>) => {
       this.updateSetting(key, change.detail);
     };
   }
@@ -234,7 +181,7 @@ export class DashjsSettingsControl {
           <ion-grid>
             <ion-row>
               <ion-grid style={{ width: '100%' }}>
-                {this.settingsList == undefined ? (
+                {this.error ? (
                   <div>Error while Loading the Specified Version MetaDatafile</div>
                 ) : this.settingsList.length == 0 ? (
                   <div>Loading</div>
@@ -247,12 +194,16 @@ export class DashjsSettingsControl {
                   ></dashjs-tree>
                 )}
                 <ion-row>
-                  <ion-input
-                    ref={el => (this.searchElement = (el as unknown) as HTMLInputElement)}
+                  <dashjs-input-search
+                    style={{ flex: '1' }}
                     placeholder="Add more settings..."
-                    onIonChange={event => this.updateSearch(event)}
-                    onKeyPress={event => (event.code === 'Enter' ? this.tryAddSetting((event.target as HTMLInputElement).value) : null)}
-                  ></ion-input>
+                    searchItemList={
+                      // Filter Settings which are already shown
+                      Array.from(this.selectedSettings.keys()).filter(e => this.selectedSettings.get(e) == undefined)
+                    }
+                    displayFunction={str => str.slice(9)}
+                    onSearchItemSelected={event => this.tryAddSetting(event.detail)}
+                  ></dashjs-input-search>
                   <ion-button shape="round" color="dark" onClick={() => this.openSettings()}>
                     Browse Settings
                     <ion-icon slot="end" name="search"></ion-icon>
