@@ -15,7 +15,7 @@ const STATIC_TYPE_QUERY_PARAM = 'type';
 })
 export class DashjsReferenceUi {
   @State() versions: string[] = [];
-  @State() selectedVersion: string = DASHJS_PLAYER_VERSION;
+  @State() selectedVersion: string | undefined = undefined;
   @State() type: string[] = ['min', 'debug'];
   @State() selectedType: string = DASHJS_PLAYER_TYPE;
   @State() settings: dashjs.MediaPlayerSettingClass = {};
@@ -34,6 +34,15 @@ export class DashjsReferenceUi {
           this.selectedVersion = response[0];
         }
       });
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    this.darkModeActive = prefersDark.matches;
+    this.toggleDarkTheme(this.darkModeActive);
+
+    // Listen for changes to the prefers-color-scheme media query
+    prefersDark.addListener(mediaQuery => {
+      this.darkModeActive = mediaQuery.matches;
+      this.toggleDarkTheme(this.darkModeActive);
+    });
   }
   componentDidLoad(): void {
     // Prefetch Componentes that are needed immendiatley on user interaction later on
@@ -51,15 +60,6 @@ export class DashjsReferenceUi {
         }),
       );
     }
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    this.darkModeActive = prefersDark.matches;
-    this.toggleDarkTheme(this.darkModeActive);
-
-    // Listen for changes to the prefers-color-scheme media query
-    prefersDark.addListener(mediaQuery => {
-      this.darkModeActive = mediaQuery.matches;
-      this.toggleDarkTheme(this.darkModeActive);
-    });
   }
   private typeChange = (change: CustomEvent<SelectChangeEventDetail<unknown>>) => {
     change.stopPropagation();
@@ -103,10 +103,6 @@ export class DashjsReferenceUi {
                 width="150"
               ></iframe>
               <iframe id="fork-button" src="//ghbtns.com/github-btn.html?user=Dash-Industry-Forum&repo=dash.js&type=fork&count=true&size=large" height="30" width="150"></iframe>
-              <div style={centercss}>
-                Dark Mode
-                <ion-toggle checked={this.darkModeActive} onIonChange={change => this.toggleDarkTheme(change.detail.checked)}></ion-toggle>
-              </div>
             </div>
           </ion-title>
           <ion-buttons slot="end">
@@ -121,9 +117,24 @@ export class DashjsReferenceUi {
             Version:
             <ion-select interface="popover" value={this.selectedVersion} onIonChange={this.versionChange}>
               {this.versions.map(version => (
-                <ion-select-option value={version}>{version}</ion-select-option>
+                <ion-select-option id={version} value={version}>
+                  {version}
+                </ion-select-option>
               ))}
             </ion-select>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button
+              shape="round"
+              color="dark"
+              onClick={() => {
+                this.toggleDarkTheme(!this.darkModeActive);
+                this.darkModeActive = !this.darkModeActive;
+              }}
+              class="ion-float-right"
+            >
+              <ion-icon name={this.darkModeActive ? 'sunny-outline' : 'moon-outline'}></ion-icon>
+            </ion-button>
           </ion-buttons>
         </ion-toolbar>
         {this.selectedVersion != undefined ? (
