@@ -10,8 +10,8 @@ export interface Setting {
   required: boolean;
   description: string;
   type: Type;
-  enum?: any;
-  enumLabels?: any;
+  enum?: string[];
+  enumLabels?: string[];
   /**
    * If this element is selected to be displayed in the settings control panel
    */

@@ -131,6 +131,9 @@ export namespace Components {
         "tree": Tree;
     }
     interface IonAccordion {
+        /**
+          * The Title of the accordion. Can be left blank.
+         */
         "titleText": string;
     }
 }
@@ -388,6 +391,9 @@ declare namespace LocalJSX {
         "tree"?: Tree;
     }
     interface IonAccordion {
+        /**
+          * The Title of the accordion. Can be left blank.
+         */
         "titleText"?: string;
     }
     interface IntrinsicElements {
