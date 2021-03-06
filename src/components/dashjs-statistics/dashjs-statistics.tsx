@@ -106,24 +106,6 @@ export class DashjsStatistics {
     !this.audioDisable ? this.video_watcher(false, event.detail.audio, event.detail.currentTime) : null;
   }
 
-  private currentMetric(metrics: any, type: string) {
-    return (
-      <ion-row>
-        <ion-col size="12">
-          <ion-title>{type.charAt(0).toUpperCase() + type.slice(1)}</ion-title>
-          {Object.keys(metrics[type]).map(metric => (
-            <ion-item class="inline-item">
-              <ion-label class="rmv-b-border">
-                {metric}: {metrics[type][metric]}
-              </ion-label>
-              <ion-checkbox checked color="primary" slot="start" onIonChange={ev => this.chartVisibility(true, [metric], ev.detail.checked)}></ion-checkbox>
-            </ion-item>
-          ))}
-        </ion-col>
-      </ion-row>
-    );
-  }
-
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   componentDidLoad() {
     // Data Example
@@ -191,34 +173,44 @@ export class DashjsStatistics {
     toChange.update();
   }
 
+  private currentMetric(metrics: any, type: string, isVideo: boolean, disable: any) {
+    return (
+      <div>
+        <ion-row>
+          <ion-col size="12">
+            <ion-title>{type.charAt(0).toUpperCase() + type.slice(1)}</ion-title>
+            {Object.keys(metrics[type]).map(metric => (
+              <ion-item class="inline-item">
+                <ion-label class="rmv-b-border">
+                  {metric}: {metrics[type][metric]}
+                </ion-label>
+                <ion-checkbox checked color="primary" slot="start" onIonChange={ev => this.chartVisibility(isVideo, [metric], ev.detail.checked)}></ion-checkbox>
+              </ion-item>
+            ))}
+          </ion-col>
+        </ion-row>
+        <ion-card-content>
+          <ion-button onClick={() => this.clearChart(isVideo)}>Clear</ion-button>
+          <ion-button onClick={() => this.disableChart(isVideo)}>{disable ? 'Disabled' : 'Enabled'}</ion-button>
+          <ion-row>
+            <div class="display">
+              <canvas id={`${type}_canvas`}>{`${type} chart`}</canvas>
+            </div>
+          </ion-row>
+        </ion-card-content>
+      </div>
+    );
+  }
+
   protected render() {
     return (
       <Host>
         <ion-accordion titleText="Statistics">
           <ion-grid>
-            {this.currentMetric(this.metrics, 'video')}
+            {this.currentMetric(this.metrics, 'video', true, this.videoDisable)}
             <ion-item-divider></ion-item-divider>
-            <ion-card-content>
-              <ion-button onClick={() => this.clearChart(true)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(true)}>{this.videoDisable ? 'Disabled' : 'Enabled'}</ion-button>
-              <ion-row>
-                <div class="display">
-                  <canvas id="video_canvas">a chart</canvas>
-                </div>
-              </ion-row>
-            </ion-card-content>
+            {this.currentMetric(this.metrics, 'audio', false, this.audioDisable)}
             <ion-item-divider></ion-item-divider>
-            {this.currentMetric(this.metrics, 'audio')}
-            <ion-item-divider></ion-item-divider>
-            <ion-card-content>
-              <ion-button onClick={() => this.clearChart(false)}>Clear</ion-button>
-              <ion-button onClick={() => this.disableChart(false)}>{this.audioDisable ? 'Disabled' : 'Enabled'}</ion-button>
-              <ion-row>
-                <div class="display">
-                  <canvas id="audio_canvas">another chart</canvas>
-                </div>
-              </ion-row>
-            </ion-card-content>
           </ion-grid>
         </ion-accordion>
       </Host>
