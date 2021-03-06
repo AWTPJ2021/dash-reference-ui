@@ -234,8 +234,17 @@ declare namespace LocalJSX {
         "titleText"?: string;
     }
     interface DashjsPlayer {
+        /**
+          * Stream metrics: dashMetrcis & dashAdapter calculations
+         */
         "onMetricsEvent"?: (event: CustomEvent<string>) => void;
+        /**
+          * Player Event: initializes player, controlbar and starts stream metrics intervals
+         */
         "onPlayerEvent"?: (event: CustomEvent<any>) => void;
+        /**
+          * Player response: player api calls repsonse
+         */
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
         /**
           * The Settings of dashjs that should be used. e.g. v3.2.0

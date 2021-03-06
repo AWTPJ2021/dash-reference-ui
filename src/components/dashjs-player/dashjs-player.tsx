@@ -1,7 +1,6 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
-import { getMediaURL } from '../../utils/utils';
 import { calculateHTTPMetrics } from '../../utils/metrics';
 import { LocalVariableStore } from '../../utils/localStorage';
 declare const dashjs: any;
@@ -80,6 +79,10 @@ export class DashjsPlayer {
   @State()
   controlbar: any;
 
+  /**
+   * Player Event:
+   * initializes player, controlbar and starts stream metrics intervals
+   */
   @Event({
     composed: true,
     bubbles: true,
@@ -90,12 +93,12 @@ export class DashjsPlayer {
   playerEventHandler(event) {
     switch (event.detail.type) {
       case 'load':
-        if (this.player) {
+        if (this.player != undefined) {
           this.player.reset();
         }
         this.player = dashjs.MediaPlayer().create();
         this.player.updateSettings(this.settings);
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), event.detail.autoPlay == 'true');
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
         this.streamInterval && clearInterval(this.streamInterval);
@@ -108,7 +111,7 @@ export class DashjsPlayer {
         clearInterval(this.streamInterval);
         break;
       case 'function':
-        if (!this.player) {
+        if (this.player === undefined) {
           this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
           const returnValue = this.player[event.detail.name].apply(this, event.detail.param);
@@ -121,13 +124,17 @@ export class DashjsPlayer {
     }
   }
 
+  /**
+   * Player response:
+   * player api calls repsonse
+   */
   @Event({
     composed: true,
     bubbles: true,
   })
   playerResponse: EventEmitter<any>;
 
-  playerResponseHandler(todo: any) {
+  private playerResponseHandler(todo: any) {
     this.playerResponse.emit(todo);
   }
 
@@ -139,7 +146,10 @@ export class DashjsPlayer {
     });
   }
 
-  /* Stream Metrics */
+  /**
+   * Stream metrics:
+   * dashMetrcis & dashAdapter calculations
+   */
   @Event()
   metricsEvent: EventEmitter<string>;
 
@@ -177,7 +187,7 @@ export class DashjsPlayer {
       metrics.video['Frame Rate'] = videoAdaptation?.Representation_asArray?.find(function (rep) {
         return rep.id === videoRepSwitch?.to;
       })?.frameRate;
-      if (videoHttpMetrics) {
+      if (videoHttpMetrics != undefined) {
         metrics.video['Download'] =
           videoHttpMetrics.download['video'].low.toFixed(2) +
           ' | ' +
@@ -203,7 +213,7 @@ export class DashjsPlayer {
       metrics.audio['Bitrate Downloading'] = audioRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(audioRepSwitch?.to, periodIdx) / 1000) : NaN;
 
       metrics.audio['Max Index'] = dashAdapter?.getMaxIndexForBufferType('audio', periodIdx);
-      if (audioHttpMetrics) {
+      if (audioHttpMetrics != undefined) {
         metrics.audio['Download'] =
           audioHttpMetrics.download['audio'].low.toFixed(2) +
           ' | ' +
@@ -231,7 +241,7 @@ export class DashjsPlayer {
     if (this.version == undefined) {
       return;
     }
-    if (this.player) {
+    if (this.player != undefined) {
       this.player.reset();
     }
     const id_string = 'dashjssource';

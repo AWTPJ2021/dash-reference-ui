@@ -23,10 +23,6 @@ export class DashjsStatistics {
 
   @State() audioDisable: boolean = false;
 
-  @State()
-  audioChartInterval: any;
-  videoChartInterval: any;
-
   // DashMetrics properties
   @State()
   chartColors = {
@@ -106,7 +102,6 @@ export class DashjsStatistics {
     !this.audioDisable ? this.video_watcher(false, event.detail.audio, event.detail.currentTime) : null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   componentDidLoad() {
     // Data Example
     this.video_canvas = this.el.querySelector('#video_canvas');
@@ -173,7 +168,7 @@ export class DashjsStatistics {
     toChange.update();
   }
 
-  private currentMetric(metrics: any, type: string, isVideo: boolean, disable: any) {
+  private currentMetric(metrics: any, type: string, isVideo: boolean, disable: boolean) {
     return (
       <div>
         <ion-row>
