@@ -1,7 +1,8 @@
 import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
 import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
-import { getMediaURL, getStringLocally, calculateHTTPMetrics } from '../../utils/utils';
+import { getMediaURL } from '../../utils/utils';
+import { calculateHTTPMetrics } from '../../utils/metrics';
 import { LocalVariableStore } from '../../utils/localStorage';
 declare const dashjs: any;
 /**
@@ -93,6 +94,7 @@ export class DashjsPlayer {
           this.player.reset();
         }
         this.player = dashjs.MediaPlayer().create();
+        this.player.updateSettings(this.settings);
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), getMediaURL(), event.detail.autoPlay == 'true');
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
@@ -222,8 +224,7 @@ export class DashjsPlayer {
   }
 
   componentDidLoad() {
-    this.loadOrUpdateDashJsScript();
-    this.loadOrUpdateDashJsScript(getStringLocally('api_autostart') == 'true');
+    this.loadOrUpdateDashJsScript(LocalVariableStore.api_autostart);
   }
 
   private loadOrUpdateDashJsScript(autoPlay: boolean = false) {
@@ -286,7 +287,7 @@ export class DashjsPlayer {
                 <div id="bitrateListBtn" class="control-icon-layout" title="Bitrate List">
                   <span class="icon-bitrate"></span>
                 </div>
-                <input type="range" id="volumebar" class="volumebar" value="1" min="0" max="1" step=".01" />
+                <input type="range" id="volumebar" class="volumebar" min="0" max="1" step=".01" value="1" />
                 <div id="muteBtn" class="btn-mute control-icon-layout" title="Mute">
                   <span id="iconMute" class="icon-mute-off"></span>
                 </div>
@@ -300,7 +301,7 @@ export class DashjsPlayer {
                   00:00:00
                 </span>
                 <div class="seekContainer">
-                  <input type="range" id="seekbar" value="0" class="seekbar" min="0" step="0.01" />
+                  <input type="range" id="seekbar" class="seekbar" min="0" step="0.01" value="0" />
                 </div>
               </div>
             </div>

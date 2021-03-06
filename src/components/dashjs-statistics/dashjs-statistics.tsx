@@ -1,7 +1,7 @@
 import { Component, Host, h, Element, State, Listen } from '@stencil/core';
 import * as chartjs from 'chart.js';
 const { Chart } = chartjs.default.Chart;
-import { chartDataset, chartYAxisOptions } from '../../utils/utils';
+import { chartDataset, chartYAxisOptions } from '../../utils/metrics';
 
 @Component({
   tag: 'dashjs-statistics',
