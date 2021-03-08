@@ -1,4 +1,4 @@
-export function calculateHTTPMetrics(type, requests) {
+export function calculateHTTPMetrics(type: string, requests: any[]) {
   const latency = {},
     download = {},
     ratio = {};
