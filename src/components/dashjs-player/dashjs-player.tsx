@@ -79,18 +79,8 @@ export class DashjsPlayer {
   @State()
   controlbar: any;
 
-  /**
-   * Player Event:
-   * initializes player, controlbar and starts stream metrics intervals
-   */
-  @Event({
-    composed: true,
-    bubbles: true,
-  })
-  playerEvent: EventEmitter<any>;
-
   @Listen('playerEvent', { target: 'document' })
-  playerEventHandler(event) {
+  playerEventHandler(event): void {
     switch (event.detail.type) {
       case 'load':
         if (this.player != undefined) {
@@ -139,7 +129,7 @@ export class DashjsPlayer {
   }
 
   @Listen('settingsUpdated', { target: 'document' })
-  settingsUpdate(event) {
+  settingsUpdate(event): void {
     this.player?.updateSettings({
       debug: event?.detail?.debug,
       streaming: event?.detail?.streaming,
@@ -265,14 +255,14 @@ export class DashjsPlayer {
       script.setAttribute(versionAttribute_string, this.version);
       script.setAttribute(typeAttribute_string, this.type);
       script.onload = () => {
-        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+        this.playerEventHandler({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
       };
       script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
       document.head.appendChild(script);
     } else {
       if (typeof dashjs != 'undefined') {
-        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+        this.playerEventHandler({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
       }
     }
   }

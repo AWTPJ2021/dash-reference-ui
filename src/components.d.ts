@@ -239,10 +239,6 @@ declare namespace LocalJSX {
          */
         "onMetricsEvent"?: (event: CustomEvent<string>) => void;
         /**
-          * Player Event: initializes player, controlbar and starts stream metrics intervals
-         */
-        "onPlayerEvent"?: (event: CustomEvent<any>) => void;
-        /**
           * Player response: player api calls repsonse
          */
         "onPlayerResponse"?: (event: CustomEvent<any>) => void;
