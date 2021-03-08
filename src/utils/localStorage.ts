@@ -36,6 +36,7 @@ export class LocalStorage {
 const STRING_MEDIA_URL = 'mediaUrl';
 const STRING_API_AUTOSTART = 'api_autostart';
 const STRING_SETTINGS_AUTOUPDATE = 'settings_autoupdate';
+const STRING_DARKMODE_ACTIVE = 'settings_darkmode_active';
 export class LocalVariableStore {
   static set mediaUrl(value: string) {
     localStorage.setItem(STRING_MEDIA_URL, value);
@@ -63,5 +64,15 @@ export class LocalVariableStore {
   }
   static get settings_autoupdate(): boolean {
     return localStorage.getItem(STRING_SETTINGS_AUTOUPDATE) === null ? true : localStorage.getItem(STRING_SETTINGS_AUTOUPDATE) === 'true';
+  }
+
+  static set darkmode_active(value: boolean) {
+    localStorage.setItem(STRING_DARKMODE_ACTIVE, String(value));
+  }
+  static get darkmode_active(): boolean {
+    return localStorage.getItem(STRING_DARKMODE_ACTIVE) === null ? true : localStorage.getItem(STRING_DARKMODE_ACTIVE) === 'true';
+  }
+  static darkmode_activeSet(): boolean {
+    return localStorage.getItem(STRING_DARKMODE_ACTIVE) != undefined;
   }
 }
