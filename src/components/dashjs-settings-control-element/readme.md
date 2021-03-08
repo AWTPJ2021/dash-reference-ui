@@ -7,19 +7,20 @@
 
 ## Properties
 
-| Property       | Attribute       | Description | Type                                                                      | Default     |
-| -------------- | --------------- | ----------- | ------------------------------------------------------------------------- | ----------- |
-| `defaultValue` | `default-value` |             | `any`                                                                     | `undefined` |
-| `name`         | `name`          |             | `string`                                                                  | `undefined` |
-| `options`      | --              |             | `string[]`                                                                | `undefined` |
-| `type`         | `type`          |             | `Type.boolean \| Type.group \| Type.number \| Type.object \| Type.string` | `undefined` |
+| Property        | Attribute       | Description                                                                                                         | Type                                                                                                                                                | Default     |
+| --------------- | --------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `defaultValue`  | `default-value` | The default value of the Setting                                                                                    | `boolean \| number \| string \| undefined`                                                                                                          | `undefined` |
+| `name`          | `name`          | Displayed name of the Setting                                                                                       | `string`                                                                                                                                            | `undefined` |
+| `options`       | --              | A Select with the specified options will be displayed if supplied.                                                  | `string[]`                                                                                                                                          | `undefined` |
+| `optionsLabels` | --              | Optional: Labels that are displayed intead of the options value. Labels are displayed in the same order as options. | `string[] \| undefined`                                                                                                                             | `undefined` |
+| `type`          | `type`          | The Type of the Settings Control which should be displayed, e.g. 'number'                                           | `Type.HTML5MediaElement \| Type.MediaType \| Type.boolean \| Type.function \| Type.number \| Type.object \| Type.string \| Type.value \| Type.void` | `undefined` |
 
 
 ## Events
 
-| Event          | Description | Type               |
-| -------------- | ----------- | ------------------ |
-| `valueChanged` |             | `CustomEvent<any>` |
+| Event          | Description                                          | Type                                                    |
+| -------------- | ---------------------------------------------------- | ------------------------------------------------------- |
+| `valueChanged` | The value of the Settings wil be emitted if changed. | `CustomEvent<boolean \| number \| string \| undefined>` |
 
 
 ## Dependencies
@@ -30,24 +31,24 @@
 
 ### Depends on
 
-- ion-item
-- ion-label
 - ion-select
 - ion-select-option
 - ion-input
 - ion-toggle
+- ion-grid
+- ion-row
+- ion-col
 
 ### Graph
 ```mermaid
 graph TD;
-  dashjs-settings-control-element --> ion-item
-  dashjs-settings-control-element --> ion-label
   dashjs-settings-control-element --> ion-select
   dashjs-settings-control-element --> ion-select-option
   dashjs-settings-control-element --> ion-input
   dashjs-settings-control-element --> ion-toggle
-  ion-item --> ion-icon
-  ion-item --> ion-ripple-effect
+  dashjs-settings-control-element --> ion-grid
+  dashjs-settings-control-element --> ion-row
+  dashjs-settings-control-element --> ion-col
   dashjs-settings-control --> dashjs-settings-control-element
   style dashjs-settings-control-element fill:#f9f,stroke:#333,stroke-width:4px
 ```

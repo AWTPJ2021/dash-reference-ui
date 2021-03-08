@@ -7,23 +7,23 @@
 
 ## Properties
 
-| Property  | Attribute | Description | Type            | Default     |
-| --------- | --------- | ----------- | --------------- | ----------- |
-| `history` | --        |             | `RouterHistory` | `undefined` |
+| Property  | Attribute | Description                                         | Type                  | Default     |
+| --------- | --------- | --------------------------------------------------- | --------------------- | ----------- |
+| `version` | `version` | The version of which the settings should be loaded. | `string \| undefined` | `undefined` |
 
 
 ## Events
 
-| Event             | Description | Type                  |
-| ----------------- | ----------- | --------------------- |
-| `settingsUpdated` |             | `CustomEvent<Object>` |
+| Event             | Description                                | Type                                   |
+| ----------------- | ------------------------------------------ | -------------------------------------- |
+| `settingsUpdated` | Emitted everytime the Settings are updated | `CustomEvent<MediaPlayerSettingClass>` |
 
 
 ## Methods
 
 ### `resetSettings() => Promise<void>`
 
-Test
+Resets the internal Settings
 
 #### Returns
 
@@ -40,47 +40,51 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- ion-card
-- ion-card-header
-- ion-card-title
+- ion-row
+- ion-col
 - ion-button
 - ion-icon
-- ion-card-content
-- ion-grid
-- ion-row
-- ion-chip
-- ion-label
-- ion-input
-- ion-list
 - [dashjs-settings-control-element](../dashjs-settings-control-element)
+- [dashjs-help-button](../dashjs-help-button)
+- [ion-accordion](../ion-accordion)
+- ion-toggle
+- ion-grid
+- [dashjs-tree](../dashjs-tree)
+- [dashjs-input-search](../dashjs-input-search)
 
 ### Graph
 ```mermaid
 graph TD;
-  dashjs-settings-control --> ion-card
-  dashjs-settings-control --> ion-card-header
-  dashjs-settings-control --> ion-card-title
+  dashjs-settings-control --> ion-row
+  dashjs-settings-control --> ion-col
   dashjs-settings-control --> ion-button
   dashjs-settings-control --> ion-icon
-  dashjs-settings-control --> ion-card-content
-  dashjs-settings-control --> ion-grid
-  dashjs-settings-control --> ion-row
-  dashjs-settings-control --> ion-chip
-  dashjs-settings-control --> ion-label
-  dashjs-settings-control --> ion-input
-  dashjs-settings-control --> ion-list
   dashjs-settings-control --> dashjs-settings-control-element
-  ion-card --> ion-ripple-effect
+  dashjs-settings-control --> dashjs-help-button
+  dashjs-settings-control --> ion-accordion
+  dashjs-settings-control --> ion-toggle
+  dashjs-settings-control --> ion-grid
+  dashjs-settings-control --> dashjs-tree
+  dashjs-settings-control --> dashjs-input-search
   ion-button --> ion-ripple-effect
-  ion-chip --> ion-ripple-effect
-  dashjs-settings-control-element --> ion-item
-  dashjs-settings-control-element --> ion-label
   dashjs-settings-control-element --> ion-select
   dashjs-settings-control-element --> ion-select-option
   dashjs-settings-control-element --> ion-input
   dashjs-settings-control-element --> ion-toggle
-  ion-item --> ion-icon
-  ion-item --> ion-ripple-effect
+  dashjs-settings-control-element --> ion-grid
+  dashjs-settings-control-element --> ion-row
+  dashjs-settings-control-element --> ion-col
+  dashjs-help-button --> ion-button
+  dashjs-help-button --> ion-icon
+  ion-accordion --> ion-card
+  ion-accordion --> ion-card-header
+  ion-accordion --> ion-button
+  ion-accordion --> ion-icon
+  ion-accordion --> ion-card-content
+  ion-card --> ion-ripple-effect
+  dashjs-tree --> dashjs-tree
+  dashjs-tree --> ion-item-divider
+  dashjs-input-search --> ion-input
   dashjs-reference-ui --> dashjs-settings-control
   style dashjs-settings-control fill:#f9f,stroke:#333,stroke-width:4px
 ```

@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DashFunction, Setting, Tree, Type } from "./types/types";
+import { DashFunction, Setting, SettingsMap, SettingsMapValue, Tree, Type } from "./types/types";
 import { MediaPlayerSettingClass } from "dashjs";
 export namespace Components {
     interface DashjsApiControl {
@@ -29,12 +29,38 @@ export namespace Components {
         "sourceList": any[];
     }
     interface DashjsGenericModal {
-        "content": any;
+        /**
+          * Content displayed inside the modal, can be text or an HTMLElement
+         */
+        "content": HTMLElement | string;
+        /**
+          * Title displayed on Top of the Modal
+         */
         "textTitle": string;
     }
     interface DashjsHelpButton {
+        /**
+          * Informational text displayed in the Modal for help.
+         */
         "helperText": string;
-        "titleText": string;
+        /**
+          * title displayed on top of the Modal.
+         */
+        "titleText": string | undefined;
+    }
+    interface DashjsInputSearch {
+        /**
+          * Function applied before display of the Search Item
+         */
+        "displayFunction": (str: string) => string;
+        /**
+          * Placholder of the input element
+         */
+        "placeholder": string;
+        /**
+          * List of searched Items, single one will be emitted if selected during search
+         */
+        "searchItemList": string[];
     }
     interface DashjsPlayer {
         /**
@@ -70,26 +96,62 @@ export namespace Components {
         "version": string | undefined;
     }
     interface DashjsSettingsControlElement {
-        "defaultValue": any;
+        /**
+          * The default value of the Setting
+         */
+        "defaultValue": SettingsMapValue;
+        /**
+          * Displayed name of the Setting
+         */
         "name": string;
+        /**
+          * A Select with the specified options will be displayed if supplied.
+         */
         "options": string[];
-        "optionsLabels": string[];
+        /**
+          * Optional: Labels that are displayed intead of the options value. Labels are displayed in the same order as options.
+         */
+        "optionsLabels": string[] | undefined;
+        /**
+          * The Type of the Settings Control which should be displayed, e.g. 'number'
+         */
         "type": Type;
     }
     interface DashjsSettingsControlModal {
-        "selectedSettings": Map<string, any>;
+        "selectedSettings": SettingsMap;
         "settingsList": Setting[];
-        "settingsTree": Tree;
+        "settingsTree": Tree | undefined;
     }
     interface DashjsStatistics {
     }
     interface DashjsTree {
+        /**
+          * All Elements (for data access)
+         */
         "elements": string[];
+        /**
+          * States the current path for orientation
+         */
         "path": string[];
-        "renderFunc": (key) => void;
+        /**
+          * Functions which renders the elements of this node
+         */
+        "renderFunc": (key: string) => void;
+        /**
+          * Function which state whether the element has a suffix
+         */
         "renderFuncSuffix": () => void;
+        /**
+          * Functions which renders the the title of this node
+         */
         "renderFuncTitle": (path) => void;
+        /**
+          * Fill if this is the root of the Tree
+         */
         "root": boolean;
+        /**
+          * The Tree Element which is the current root.
+         */
         "tree": Tree;
     }
     interface IonAccordion {
@@ -98,7 +160,7 @@ export namespace Components {
          */
         "setExpandState": (state: boolean) => Promise<void>;
         /**
-          * Title for the accordion card
+          * The Title of the accordion. Can be left blank.
          */
         "titleText": string;
     }
@@ -139,6 +201,12 @@ declare global {
     var HTMLDashjsHelpButtonElement: {
         prototype: HTMLDashjsHelpButtonElement;
         new (): HTMLDashjsHelpButtonElement;
+    };
+    interface HTMLDashjsInputSearchElement extends Components.DashjsInputSearch, HTMLStencilElement {
+    }
+    var HTMLDashjsInputSearchElement: {
+        prototype: HTMLDashjsInputSearchElement;
+        new (): HTMLDashjsInputSearchElement;
     };
     interface HTMLDashjsPlayerElement extends Components.DashjsPlayer, HTMLStencilElement {
     }
@@ -201,6 +269,7 @@ declare global {
         "dashjs-api-link-selector": HTMLDashjsApiLinkSelectorElement;
         "dashjs-generic-modal": HTMLDashjsGenericModalElement;
         "dashjs-help-button": HTMLDashjsHelpButtonElement;
+        "dashjs-input-search": HTMLDashjsInputSearchElement;
         "dashjs-player": HTMLDashjsPlayerElement;
         "dashjs-popover-select": HTMLDashjsPopoverSelectElement;
         "dashjs-reference-ui": HTMLDashjsReferenceUiElement;
@@ -237,12 +306,42 @@ declare namespace LocalJSX {
         "sourceList"?: any[];
     }
     interface DashjsGenericModal {
-        "content"?: any;
+        /**
+          * Content displayed inside the modal, can be text or an HTMLElement
+         */
+        "content"?: HTMLElement | string;
+        /**
+          * Title displayed on Top of the Modal
+         */
         "textTitle"?: string;
     }
     interface DashjsHelpButton {
+        /**
+          * Informational text displayed in the Modal for help.
+         */
         "helperText"?: string;
-        "titleText"?: string;
+        /**
+          * title displayed on top of the Modal.
+         */
+        "titleText"?: string | undefined;
+    }
+    interface DashjsInputSearch {
+        /**
+          * Function applied before display of the Search Item
+         */
+        "displayFunction"?: (str: string) => string;
+        /**
+          * Search Item that was selected during the search.
+         */
+        "onSearchItemSelected"?: (event: CustomEvent<string>) => void;
+        /**
+          * Placholder of the input element
+         */
+        "placeholder"?: string;
+        /**
+          * List of searched Items, single one will be emitted if selected during search
+         */
+        "searchItemList"?: string[];
     }
     interface DashjsPlayer {
         /**
@@ -282,32 +381,71 @@ declare namespace LocalJSX {
         "version"?: string | undefined;
     }
     interface DashjsSettingsControlElement {
-        "defaultValue"?: any;
+        /**
+          * The default value of the Setting
+         */
+        "defaultValue"?: SettingsMapValue;
+        /**
+          * Displayed name of the Setting
+         */
         "name"?: string;
-        "onValueChanged"?: (event: CustomEvent<any>) => void;
+        /**
+          * The value of the Settings wil be emitted if changed.
+         */
+        "onValueChanged"?: (event: CustomEvent<SettingsMapValue>) => void;
+        /**
+          * A Select with the specified options will be displayed if supplied.
+         */
         "options"?: string[];
-        "optionsLabels"?: string[];
+        /**
+          * Optional: Labels that are displayed intead of the options value. Labels are displayed in the same order as options.
+         */
+        "optionsLabels"?: string[] | undefined;
+        /**
+          * The Type of the Settings Control which should be displayed, e.g. 'number'
+         */
         "type"?: Type;
     }
     interface DashjsSettingsControlModal {
-        "selectedSettings"?: Map<string, any>;
+        "selectedSettings"?: SettingsMap;
         "settingsList"?: Setting[];
-        "settingsTree"?: Tree;
+        "settingsTree"?: Tree | undefined;
     }
     interface DashjsStatistics {
     }
     interface DashjsTree {
+        /**
+          * All Elements (for data access)
+         */
         "elements"?: string[];
+        /**
+          * States the current path for orientation
+         */
         "path"?: string[];
-        "renderFunc"?: (key) => void;
+        /**
+          * Functions which renders the elements of this node
+         */
+        "renderFunc"?: (key: string) => void;
+        /**
+          * Function which state whether the element has a suffix
+         */
         "renderFuncSuffix"?: () => void;
+        /**
+          * Functions which renders the the title of this node
+         */
         "renderFuncTitle"?: (path) => void;
+        /**
+          * Fill if this is the root of the Tree
+         */
         "root"?: boolean;
+        /**
+          * The Tree Element which is the current root.
+         */
         "tree"?: Tree;
     }
     interface IonAccordion {
         /**
-          * Title for the accordion card
+          * The Title of the accordion. Can be left blank.
          */
         "titleText"?: string;
     }
@@ -318,6 +456,7 @@ declare namespace LocalJSX {
         "dashjs-api-link-selector": DashjsApiLinkSelector;
         "dashjs-generic-modal": DashjsGenericModal;
         "dashjs-help-button": DashjsHelpButton;
+        "dashjs-input-search": DashjsInputSearch;
         "dashjs-player": DashjsPlayer;
         "dashjs-popover-select": DashjsPopoverSelect;
         "dashjs-reference-ui": DashjsReferenceUi;
@@ -339,6 +478,7 @@ declare module "@stencil/core" {
             "dashjs-api-link-selector": LocalJSX.DashjsApiLinkSelector & JSXBase.HTMLAttributes<HTMLDashjsApiLinkSelectorElement>;
             "dashjs-generic-modal": LocalJSX.DashjsGenericModal & JSXBase.HTMLAttributes<HTMLDashjsGenericModalElement>;
             "dashjs-help-button": LocalJSX.DashjsHelpButton & JSXBase.HTMLAttributes<HTMLDashjsHelpButtonElement>;
+            "dashjs-input-search": LocalJSX.DashjsInputSearch & JSXBase.HTMLAttributes<HTMLDashjsInputSearchElement>;
             "dashjs-player": LocalJSX.DashjsPlayer & JSXBase.HTMLAttributes<HTMLDashjsPlayerElement>;
             "dashjs-popover-select": LocalJSX.DashjsPopoverSelect & JSXBase.HTMLAttributes<HTMLDashjsPopoverSelectElement>;
             "dashjs-reference-ui": LocalJSX.DashjsReferenceUi & JSXBase.HTMLAttributes<HTMLDashjsReferenceUiElement>;

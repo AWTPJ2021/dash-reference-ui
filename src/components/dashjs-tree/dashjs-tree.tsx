@@ -11,17 +11,38 @@ import { Tree } from '../../types/types';
  * Supply with a render Function and render anything you like inside
  */
 export class DashjsTree {
+  /**
+   * The Tree Element which is the current root.
+   */
   @Prop() tree: Tree;
+  /**
+   * All Elements (for data access)
+   */
   @Prop() elements: string[];
-  @Prop() renderFunc: (key) => void;
+  /**
+   * Functions which renders the elements of this node
+   */
+  @Prop() renderFunc: (key: string) => void;
+  /**
+   * Functions which renders the the title of this node
+   */
   @Prop() renderFuncTitle: (path) => void;
+  /**
+   * Function which state whether the element has a suffix
+   */
   @Prop() renderFuncSuffix: () => void;
 
+  /**
+   * Fill if this is the root of the Tree
+   */
   @Prop() root: boolean = false;
+  /**
+   * States the current path for orientation
+   */
   @Prop() path: string[] = [];
   @State() pathInitialized: boolean = false;
   @State() elementsOnRoot: string[];
-  componentWillRender() {
+  componentWillRender(): void {
     if (!this.root) {
       const regex = new RegExp(this.tree.name, 'i');
       this.elementsOnRoot = this.elements.filter(e => e.match(regex));
@@ -46,16 +67,18 @@ export class DashjsTree {
         {this.tree.elements.filter(el => this.elementsOnRoot.includes(el)).map(key => this.renderFunc(key))}
         {this.tree.child == undefined
           ? undefined
-          : Object.keys(this.tree.child).map(key => (
-              <dashjs-tree
-                tree={this.tree.child[key]}
-                elements={this.elementsOnRoot}
-                renderFunc={this.renderFunc}
-                renderFuncTitle={this.renderFuncTitle}
-                renderFuncSuffix={this.renderFuncSuffix}
-                path={this.path}
-              ></dashjs-tree>
-            ))}
+          : Object.keys(this.tree.child).map(key =>
+              this.tree.child != undefined ? (
+                <dashjs-tree
+                  tree={this.tree.child[key]}
+                  elements={this.elementsOnRoot}
+                  renderFunc={this.renderFunc}
+                  renderFuncTitle={this.renderFuncTitle}
+                  renderFuncSuffix={this.renderFuncSuffix}
+                  path={this.path}
+                ></dashjs-tree>
+              ) : undefined,
+            )}
         {this.root ? undefined : this.renderFuncSuffix == undefined ? <ion-item-divider></ion-item-divider> : this.renderFuncSuffix()}
       </Host>
     );

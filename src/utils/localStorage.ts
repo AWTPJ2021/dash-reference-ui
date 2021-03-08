@@ -1,17 +1,19 @@
+import { KeyValue } from '../types/types';
+
 export class LocalStorage {
   static deleteKeyInKeyValueObject(key: string, id: string): void {
-    const toUpdate = JSON.parse(localStorage.getItem(key));
+    const toUpdate = JSON.parse(localStorage.getItem(key) || '{}');
     delete toUpdate[id];
     localStorage.setItem(key, JSON.stringify(toUpdate));
   }
 
-  static updateKeyInKeyValueObject(key: string, id: string, value: any): void {
-    const toUpdate = JSON.parse(localStorage.getItem(key)) || {};
+  static updateKeyInKeyValueObject(key: string, id: string, value: unknown): void {
+    const toUpdate = JSON.parse(localStorage.getItem(key) || '{}');
     toUpdate[id] = value;
     localStorage.setItem(key, JSON.stringify(toUpdate));
   }
 
-  static saveMapToLocalKey(localKey: string, map: Map<string, any>): void {
+  static saveMapToLocalKey(localKey: string, map: Map<string, unknown>): void {
     const toSave = {};
     map.forEach((value, key) => {
       if (value != undefined) {
@@ -21,7 +23,7 @@ export class LocalStorage {
     localStorage.setItem(localKey, JSON.stringify(toSave));
   }
 
-  static getKeyValueObject(key: string): null | any {
+  static getKeyValueObject(key: string): null | KeyValue<unknown> {
     const info = localStorage.getItem(key);
     return info != null ? JSON.parse(info) : null;
   }
@@ -39,13 +41,14 @@ export class LocalVariableStore {
     localStorage.setItem(STRING_MEDIA_URL, value);
   }
   static get mediaUrl(): string {
-    if (localStorage.getItem(STRING_MEDIA_URL) != null && localStorage.getItem(STRING_MEDIA_URL) != '' && localStorage.getItem(STRING_MEDIA_URL) != 'null') {
-      return localStorage.getItem(STRING_MEDIA_URL);
+    const mediaUrl = localStorage.getItem(STRING_MEDIA_URL);
+    if (mediaUrl != null && mediaUrl != '' && mediaUrl != 'null') {
+      return mediaUrl;
     }
     return 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd';
   }
   static resetMediaUrl(): void {
-    LocalVariableStore.mediaUrl = null;
+    LocalVariableStore.mediaUrl = '';
   }
 
   static set api_autostart(value: boolean) {

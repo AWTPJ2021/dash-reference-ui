@@ -24,7 +24,7 @@ export class DashjsAPIControlElement {
     this.functionValue[counter] = val;
   }
 
-  componentWillLoad() {
+  componentWillLoad(): void {
     for (let i = 0; i < this.param.length; i++) {
       const index = i;
       switch (this.param[i].type) {
@@ -70,7 +70,7 @@ export class DashjsAPIControlElement {
   }
 
   render() {
-    const control = [];
+    const control: HTMLElement[] = [];
     if (this.param.length > 0) {
       for (let i = 0; i < this.param.length; i++) {
         const index = i;

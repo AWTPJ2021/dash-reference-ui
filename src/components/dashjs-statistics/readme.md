@@ -7,11 +7,9 @@
 
 ## Properties
 
-| Property        | Attribute        | Description | Type  | Default     |
-| --------------- | ---------------- | ----------- | ----- | ----------- |
-| `audio_data`    | `audio_data`     |             | `any` | `undefined` |
-| `videoInstance` | `video-instance` |             | `any` | `undefined` |
-| `video_data`    | `video_data`     |             | `any` | `undefined` |
+| Property     | Attribute    | Description | Type  | Default     |
+| ------------ | ------------ | ----------- | ----- | ----------- |
+| `video_data` | `video_data` |             | `any` | `undefined` |
 
 
 ## Dependencies
@@ -22,9 +20,7 @@
 
 ### Depends on
 
-- ion-card
-- ion-card-header
-- ion-card-title
+- [ion-accordion](../ion-accordion)
 - ion-grid
 - ion-row
 - ion-col
@@ -39,9 +35,7 @@
 ### Graph
 ```mermaid
 graph TD;
-  dashjs-statistics --> ion-card
-  dashjs-statistics --> ion-card-header
-  dashjs-statistics --> ion-card-title
+  dashjs-statistics --> ion-accordion
   dashjs-statistics --> ion-grid
   dashjs-statistics --> ion-row
   dashjs-statistics --> ion-col
@@ -52,10 +46,15 @@ graph TD;
   dashjs-statistics --> ion-item-divider
   dashjs-statistics --> ion-card-content
   dashjs-statistics --> ion-button
+  ion-accordion --> ion-card
+  ion-accordion --> ion-card-header
+  ion-accordion --> ion-button
+  ion-accordion --> ion-icon
+  ion-accordion --> ion-card-content
   ion-card --> ion-ripple-effect
+  ion-button --> ion-ripple-effect
   ion-item --> ion-icon
   ion-item --> ion-ripple-effect
-  ion-button --> ion-ripple-effect
   dashjs-reference-ui --> dashjs-statistics
   style dashjs-statistics fill:#f9f,stroke:#333,stroke-width:4px
 ```

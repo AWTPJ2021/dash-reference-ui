@@ -1,7 +1,7 @@
-import { Setting, DashFunction, Tree } from '../types/types';
+import { Setting, DashFunction, Tree, SettingsMap, KeyValue } from '../types/types';
 import * as objectPath from 'object-path';
 
-export function generateSettingsMapFromList(list: Setting[]): Map<string, any> {
+export function generateSettingsMapFromList(list: Setting[]): SettingsMap {
   const map = new Map();
   list.forEach(element => {
     map.set(element.id, undefined);
@@ -9,7 +9,7 @@ export function generateSettingsMapFromList(list: Setting[]): Map<string, any> {
   return map;
 }
 
-export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, any>): { [key: string]: any } {
+export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<string, unknown>): KeyValue<unknown> {
   const object = {
     settings: {},
   };
@@ -22,7 +22,7 @@ export function generateSettingsObjectFromListAndMap(list: Setting[], map: Map<s
   return object.settings;
 }
 
-export function generateFunctionsMapFromList(list: DashFunction[]): Map<string, any> {
+export function generateFunctionsMapFromList(list: DashFunction[]): Map<string, unknown> {
   const map = new Map();
   list.forEach(element => {
     map.set(element.name, undefined);
@@ -30,9 +30,9 @@ export function generateFunctionsMapFromList(list: DashFunction[]): Map<string, 
   return map;
 }
 
-export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map: Map<string, boolean>): { [key: string]: any } {
+export function generateFunctionsObjectFromListAndMap(list: DashFunction[], map: Map<string, boolean>): KeyValue<unknown> {
   const object = {
-    functions: undefined,
+    functions: {},
   };
   list.forEach(element => {
     objectPath.set(object, element.name, map.get(element.name));

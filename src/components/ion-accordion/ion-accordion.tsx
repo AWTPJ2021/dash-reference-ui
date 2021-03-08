@@ -7,7 +7,7 @@ import { Component, Host, h, Prop, State, Method } from '@stencil/core';
 })
 export class IonAccordion {
   /**
-   * Title for the accordion card
+   * The Title of the accordion. Can be left blank.
    */
   @Prop() titleText = '';
 
