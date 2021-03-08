@@ -11,7 +11,7 @@
     "@typescript-eslint/explicit-module-boundary-types": [
       "error",
       {
-        "allowedNames": ["render"]
+        "allowedNames": ["render", "componentWillLoad", "componentDidLoad"]
       }
     ],
     // Only for now
