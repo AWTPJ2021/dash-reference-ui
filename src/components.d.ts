@@ -42,6 +42,10 @@ export namespace Components {
          */
         "settings": MediaPlayerSettingClass;
         /**
+          * Request Video to be played in Picture in Picture Mode
+         */
+        "showPiP": () => Promise<void>;
+        /**
           * The Type of dashjs that should be loaded. e.g. debug or min
          */
         "type": string;
@@ -89,6 +93,13 @@ export namespace Components {
         "tree": Tree;
     }
     interface IonAccordion {
+        /**
+          * Set the expansion State
+         */
+        "setExpandState": (state: boolean) => Promise<void>;
+        /**
+          * Title for the accordion card
+         */
         "titleText": string;
     }
 }
@@ -295,6 +306,9 @@ declare namespace LocalJSX {
         "tree"?: Tree;
     }
     interface IonAccordion {
+        /**
+          * Title for the accordion card
+         */
         "titleText"?: string;
     }
     interface IntrinsicElements {

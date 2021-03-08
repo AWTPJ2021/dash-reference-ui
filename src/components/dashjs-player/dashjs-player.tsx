@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter, Method } from '@stencil/core';
 import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
 import { calculateHTTPMetrics } from '../../utils/metrics';
@@ -79,6 +79,13 @@ export class DashjsPlayer {
   @State()
   controlbar: any;
 
+  /**
+   * Request Video to be played in Picture in Picture Mode
+   */
+  @Method()
+  async showPiP(): Promise<void> {
+    (this.element.querySelector('#myMainVideoPlayer video') as any).requestPictureInPicture();
+  }
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event): void {
     switch (event.detail.type) {
@@ -255,14 +262,14 @@ export class DashjsPlayer {
       script.setAttribute(versionAttribute_string, this.version);
       script.setAttribute(typeAttribute_string, this.type);
       script.onload = () => {
-        this.playerEventHandler({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+        this.playerEventHandler({ detail: { type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay } });
       };
       script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
       document.head.appendChild(script);
     } else {
       if (typeof dashjs != 'undefined') {
-        this.playerEventHandler({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+        this.playerEventHandler({ detail: { type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay } });
       }
     }
   }

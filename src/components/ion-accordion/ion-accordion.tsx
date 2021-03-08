@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, State } from '@stencil/core';
+import { Component, Host, h, Prop, State, Method } from '@stencil/core';
 
 @Component({
   tag: 'ion-accordion',
@@ -6,7 +6,18 @@ import { Component, Host, h, Prop, State } from '@stencil/core';
   shadow: true,
 })
 export class IonAccordion {
+  /**
+   * Title for the accordion card
+   */
   @Prop() titleText = '';
+
+  /**
+   * Set the expansion State
+   */
+  @Method()
+  async setExpandState(state: boolean): Promise<void> {
+    this.expanded = state;
+  }
   @State() expanded = true;
   render() {
     return (

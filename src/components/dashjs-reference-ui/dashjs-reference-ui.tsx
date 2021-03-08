@@ -2,6 +2,7 @@ import { StencilComponentPrefetch } from '@beck24/stencil-component-prefetch/dis
 import { SelectChangeEventDetail } from '@ionic/core';
 import { Component, Host, h, Element, Build, getAssetPath, State } from '@stencil/core';
 import { setParam } from '../../utils/queryParams';
+import { DashjsPlayer } from '../dashjs-player/dashjs-player';
 import { contributors } from './contributors';
 const STATIC_VERSION_QUERY_PARAM = 'version';
 const STATIC_TYPE_QUERY_PARAM = 'type';
@@ -19,6 +20,8 @@ export class DashjsReferenceUi {
   @State() selectedType: string = 'min';
   @State() settings: any = {};
   @Element() prefetcher: HTMLDashjsReferenceUiElement;
+  private dashjsplayer: HTMLDashjsPlayerElement;
+  private dashjsplayer_accordion: HTMLIonAccordionElement;
 
   componentWillLoad() {
     fetch('/static/gen/versions.json')
@@ -118,7 +121,22 @@ export class DashjsReferenceUi {
         ) : undefined}
         <dashjs-api-control version={this.selectedVersion}></dashjs-api-control>
         <dashjs-settings-control version={this.selectedVersion} onSettingsUpdated={event => (this.settings = event.detail)}></dashjs-settings-control>
-        <dashjs-player version={this.selectedVersion} type={this.selectedType} settings={this.settings}></dashjs-player>
+        <ion-accordion titleText="Video Player" ref={el => (this.dashjsplayer_accordion = el)}>
+          <div slot="title" style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-end' }}>
+            <ion-button
+              size="small"
+              fill="clear"
+              onClick={event => {
+                event.stopPropagation();
+                this.dashjsplayer.showPiP();
+                this.dashjsplayer_accordion.setExpandState(false);
+              }}
+            >
+              <ion-icon slot="icon-only" color="dark" name="open-outline"></ion-icon>
+            </ion-button>
+          </div>
+          <dashjs-player version={this.selectedVersion} type={this.selectedType} settings={this.settings} ref={el => (this.dashjsplayer = el)}></dashjs-player>
+        </ion-accordion>
         <dashjs-statistics></dashjs-statistics>
         <div class="contributors-title">
           <text>Contributors</text>
