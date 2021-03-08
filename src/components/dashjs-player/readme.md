@@ -7,10 +7,20 @@
 
 ## Properties
 
-| Property    | Attribute    | Description | Type     | Default                                                       |
-| ----------- | ------------ | ----------- | -------- | ------------------------------------------------------------- |
-| `streamUrl` | `stream-url` |             | `string` | `undefined`                                                   |
-| `url`       | `url`        |             | `string` | `'https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd'` |
+| Property   | Attribute | Description                                                 | Type                      | Default                 |
+| ---------- | --------- | ----------------------------------------------------------- | ------------------------- | ----------------------- |
+| `settings` | --        | The Settings of dashjs that should be used. e.g. v3.2.0     | `MediaPlayerSettingClass` | `{}`                    |
+| `type`     | `type`    | The Type of dashjs that should be loaded. e.g. debug or min | `string`                  | `DASHJS_PLAYER_TYPE`    |
+| `version`  | `version` | The Version of dashjs that should be loaded. e.g. v3.2.0    | `string`                  | `DASHJS_PLAYER_VERSION` |
+
+
+## Events
+
+| Event                | Description | Type               |
+| -------------------- | ----------- | ------------------ |
+| `playerEvent`        |             | `CustomEvent<any>` |
+| `playerResponse`     |             | `CustomEvent<any>` |
+| `streamMetricsEvent` |             | `CustomEvent<any>` |
 
 
 ## Dependencies
@@ -19,15 +29,9 @@
 
  - [dashjs-reference-ui](../dashjs-reference-ui)
 
-### Depends on
-
-- ion-card
-
 ### Graph
 ```mermaid
 graph TD;
-  dashjs-player --> ion-card
-  ion-card --> ion-ripple-effect
   dashjs-reference-ui --> dashjs-player
   style dashjs-player fill:#f9f,stroke:#333,stroke-width:4px
 ```

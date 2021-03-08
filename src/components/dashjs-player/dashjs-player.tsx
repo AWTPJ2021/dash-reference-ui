@@ -2,6 +2,7 @@ import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEm
 import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
 import { LocalVariableStore } from '../../utils/localStorage';
+import { DASHJS_PLAYER_TYPE, DASHJS_PLAYER_VERSION } from '../../defaults.js';
 declare const dashjs: any;
 /**
  * Loads dashjs player.
@@ -21,7 +22,7 @@ export class DashjsPlayer {
    * The Version of dashjs that should be loaded.
    * e.g. v3.2.0
    */
-  @Prop() version: string = undefined;
+  @Prop() version: string = DASHJS_PLAYER_VERSION;
   @Watch('version')
   protected watchHandlerVersion(): void {
     this.loadOrUpdateDashJsScript();
@@ -30,7 +31,7 @@ export class DashjsPlayer {
    * The Type of dashjs that should be loaded.
    * e.g. debug or min
    */
-  @Prop() type: string = undefined;
+  @Prop() type: string = DASHJS_PLAYER_TYPE;
   @Watch('type')
   protected watchHandlerType(): void {
     this.loadOrUpdateDashJsScript();
@@ -39,13 +40,15 @@ export class DashjsPlayer {
    * The Settings of dashjs that should be used.
    * e.g. v3.2.0
    */
-  @Prop() settings: MediaPlayerSettingClass = undefined;
+  @Prop() settings: MediaPlayerSettingClass = {};
   @Watch('settings')
   protected watchHandlerSettings(): void {
     if (this.player != undefined) {
       this.player.updateSettings(this.settings);
     }
   }
+
+  @State() error = false;
 
   @State() streamInterval: any;
 
@@ -61,19 +64,20 @@ export class DashjsPlayer {
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event) {
     switch (event.detail.type) {
-      case 'load':
+      case 'load': {
         if (this.player) {
           this.player.reset();
         }
         this.player = dashjs.MediaPlayer().create();
         this.player.updateSettings(this.settings);
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video') as HTMLElement, LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
         this.streamInterval = setInterval(() => {
           this.streamMetricsEventHandler(this.player);
         }, 1000);
         break;
+      }
       case 'stop':
         this.player.reset();
         clearInterval(this.streamInterval);

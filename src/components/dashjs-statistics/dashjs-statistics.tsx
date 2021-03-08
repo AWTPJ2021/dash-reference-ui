@@ -207,10 +207,14 @@ export class DashjsStatistics {
 
   componentDidLoad() {
     // Data Example
+    // @ts-ignore
     this.video_canvas = this.el.querySelector('#video_canvas');
+    // @ts-ignore
     this.audio_canvas = this.el.querySelector('#audio_canvas');
 
+    // @ts-ignore
     this.video_context = this.video_canvas.getContext('2d');
+    // @ts-ignore
     this.audio_context = this.audio_canvas.getContext('2d');
     const dataExample = [
       {

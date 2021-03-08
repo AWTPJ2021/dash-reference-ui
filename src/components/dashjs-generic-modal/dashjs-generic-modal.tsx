@@ -7,28 +7,38 @@ import { modalController } from '@ionic/core';
   shadow: true,
 })
 export class DashjsGenericModal {
+  /**
+   * Title displayed on Top of the Modal
+   */
   @Prop() textTitle: string = '';
-  @Prop() content: any;
+  /**
+   * Content displayed inside the modal, can be text or an HTMLElement
+   */
+  @Prop() content: HTMLElement | string;
 
-close() {
-  modalController.dismiss();
-}
-  
+  private close = () => {
+    modalController.dismiss();
+  };
+
   render() {
     return (
       <Host>
         <ion-header translucent>
-        <ion-toolbar>
-              <ion-title>{this.textTitle}</ion-title>
-              <ion-buttons slot="end">
-                <ion-button onClick={() => this.close()}><ion-icon name="close-circle-outline"></ion-icon></ion-button>
-              </ion-buttons>
-            </ion-toolbar>
+          <ion-toolbar>
+            <ion-title>{this.textTitle}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button onClick={this.close}>
+                <ion-icon name="close-circle-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
         </ion-header>
         <ion-content fullscreen>
           <ion-grid>
-            <ion-item class="spacing" lines="none">{this.content}</ion-item>
-            </ion-grid>
+            <ion-item class="spacing" lines="none">
+              {this.content}
+            </ion-item>
+          </ion-grid>
         </ion-content>
       </Host>
     );
