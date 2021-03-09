@@ -62,7 +62,7 @@ export class DashjsAPIControlElement {
    * @param index 
    * @param value 
    */
-  private setAndSave(index : number, value : any) {
+  private setAndSave (index : number, value : any): void {
     functionValue[index] = value;
     LocalStorage.updateKeyInKeyValueObject(STRING_API_ELEM, this.name, JSON.stringify(functionValue));
   }

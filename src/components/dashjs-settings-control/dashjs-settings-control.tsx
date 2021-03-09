@@ -87,7 +87,7 @@ export class DashjsSettingsControl {
       this.loadSettingsMetaData();
     }
   }
-  private loadSettingsMetaData() {
+  private loadSettingsMetaData(): void {
     this.settingsList = [];
     fetch(`/static/gen/settingsMetaData-${this.version}.json`)
       .then((response: Response) => response.json())

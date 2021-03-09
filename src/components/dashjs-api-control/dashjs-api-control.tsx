@@ -64,7 +64,7 @@ export class DashjsApiControl {
   /**
    * Loads all supported api calls
    */
-  private loadSettingsMetaData() {
+  private loadSettingsMetaData(): void {
     fetch(`/static/gen/mediaPlayerFunctionsMetaData-${this.version}.json`)
       .then((response: Response) => response.json())
       .then(response => {
@@ -90,7 +90,7 @@ export class DashjsApiControl {
    * Checks for valid types
    * @param any 
    */
-  private validType(any) {
+  private validType(any): boolean {
     const types = ['boolean', 'number', 'string', 'MediaType'];
     for (const i in types) {
       if (types[i] == any) return true;
@@ -119,7 +119,7 @@ export class DashjsApiControl {
   /**
    * Sends a stop signal to the dashjs player
    */
-  private stopMedia() {
+  private stopMedia(): void {
     this.playerEventHandler({ type: 'stop' });
     LocalVariableStore.resetMediaUrl();
     this.mediaUrl = LocalVariableStore.mediaUrl;
@@ -128,7 +128,7 @@ export class DashjsApiControl {
   /**
    * Thends a load signal to the dashjs player
    */
-  private loadMedia() {
+  private loadMedia(): void {
     this.playerEventHandler({ type: 'load', url: this.mediaUrl, autoPlay: this.autostart });
   }
 
@@ -137,7 +137,7 @@ export class DashjsApiControl {
    * @param event 
    */
   @Listen('setStream', { target: 'document' })
-  setStreamEventHandler(event) {
+  setStreamEventHandler(event): void {
     this.mediaUrl = event.detail;
     LocalVariableStore.mediaUrl = event.detail;
     popoverController.dismiss();
@@ -148,7 +148,7 @@ export class DashjsApiControl {
    * Removes the api call from the selectedFunctions list and from the local storage
    * @param id 
    */
-  private removeFunction(id: string) {
+  private removeFunction(id: string): void {
     this.selectedFunctions.set(id, undefined);
     this.selectedFunctions = new Map(this.selectedFunctions);
     LocalStorage.deleteKeyInKeyValueObject(STRING_API_FUNCTIONS, id);
@@ -160,7 +160,7 @@ export class DashjsApiControl {
    * @param id 
    * @param value 
    */
-  private updateFunction(id: string, value: any) {
+  private updateFunction(id: string, value: any): void {
     this.selectedFunctions.set(id, value);
     this.selectedFunctions = new Map(this.selectedFunctions);
     this.playerEventHandler({ type: 'function', name: id, param: value });
@@ -184,7 +184,7 @@ export class DashjsApiControl {
     bubbles: true}) 
   playerEvent: EventEmitter<string>;
 
-  playerEventHandler(todo: any) {
+  playerEventHandler(todo: any): void {
     this.playerEvent.emit(todo);
   }
 
@@ -222,7 +222,7 @@ export class DashjsApiControl {
    * Updates the media url
    * @param event 
    */
-  private updateMediaUrl(event: any) {
+  private updateMediaUrl(event: any): void {
     LocalVariableStore.mediaUrl = event.detail.value;
     this.mediaUrl = event.detail.value;
   }
@@ -231,7 +231,7 @@ export class DashjsApiControl {
    * Adds an api function into the selectedFunction list
    * @param key 
    */
-  private tryAddApiFunction(key: string) {
+  private tryAddApiFunction(key: string): void {
     const matchingSettings = Array.from(this.selectedFunctions.keys()).filter(e => e === key);
     if (matchingSettings.length === 1) {
       key = matchingSettings[0];
