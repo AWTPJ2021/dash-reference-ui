@@ -1,9 +1,9 @@
 import { Component, EventEmitter, h, Prop, Event } from '@stencil/core';
-import { Type, MediaType } from '../../types/types';
+import { MediaType } from '../../types/types';
 import { toastController } from '@ionic/core';
 import { LocalStorage } from '../../utils/localStorage';
 
-let functionValue = [];
+let functionValue : any[] = [];
 const STRING_API_ELEM = 'api_element';
 
 @Component({
@@ -16,12 +16,19 @@ export class DashjsAPIControlElement {
    * The displayed name of the control element.
    */
   @Prop() name: string;
-  @Prop() options: string[];
-  @Prop() type: Type;
-  @Event() valueChanged: EventEmitter<any>;
+  /**
+   * Triggers the API call function
+   */
+  @Event() callFunction: EventEmitter<any>;
+  /**
+   * Contains the required parameters of the control element
+   */
   @Prop() param: any;
-  @Prop() paramDesc: any;
 
+  /**
+   * Emits the inputs for further processing if they passes the validation
+   * @param functionValue 
+   */
   async checkAndEmit(functionValue : any[]) {
     let error = false;
     for (let i = 0; i < this.param.length; i++) {
@@ -46,17 +53,22 @@ export class DashjsAPIControlElement {
       });
       toast.present();
     } else {
-      this.valueChanged.emit(functionValue);
+      this.callFunction.emit(functionValue);
     }
   }
 
-  setAndSave(index, value) {
+  /**
+   * Updates the stored API call parameter
+   * @param index 
+   * @param value 
+   */
+  private setAndSave(index : number, value : any) {
     functionValue[index] = value;
     LocalStorage.updateKeyInKeyValueObject(STRING_API_ELEM, this.name, JSON.stringify(functionValue));
   }
 
   render() {
-    const control = [];
+    const control : any = [];
 
     this.param.forEach( (curr, index) => {
       switch (curr.type) {
@@ -72,7 +84,10 @@ export class DashjsAPIControlElement {
       }
     });
 
-    const elem_values = LocalStorage.getKeyValueObject(STRING_API_ELEM);
+    /**
+     * Get the stored api call parameters if available
+     */
+    const elem_values : any = LocalStorage.getKeyValueObject(STRING_API_ELEM);
 
     if(elem_values) {
       if(elem_values[this.name] != null) {
@@ -86,7 +101,14 @@ export class DashjsAPIControlElement {
           switch (curr.type) {
             case 'string':
               control.push(
-                <ion-input class="input-border" debounce={300} value={functionValue[index]} onIonChange={change => { this.setAndSave(index, change.detail.value);}}></ion-input>,
+                <ion-input 
+                  class="input-border" 
+                  debounce={300} 
+                  value={functionValue[index]} 
+                  onIonChange={change => { 
+                    this.setAndSave(index, change.detail.value);
+                  }}
+                ></ion-input>,
               );
               control.push(<div class="gap"></div>);
               break;
@@ -97,7 +119,9 @@ export class DashjsAPIControlElement {
                   debounce={300}
                   type='number'
                   value={functionValue[index]}
-                  onIonChange={change => {this.setAndSave(index, Number(change.detail.value));}}
+                  onIonChange={change => {
+                    this.setAndSave(index, Number(change.detail.value));}
+                  }
                 ></ion-input>,
               );
               control.push(<div class="gap"></div>);

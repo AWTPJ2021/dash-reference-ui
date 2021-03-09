@@ -9,6 +9,9 @@ import { DashFunction, Setting, SettingsMap, SettingsMapValue, Tree, Type } from
 import { MediaPlayerSettingClass } from "dashjs";
 export namespace Components {
     interface DashjsApiControl {
+        /**
+          * The version of which the dashjs should be loaded.
+         */
         "version": string;
     }
     interface DashjsApiControlElement {
@@ -16,10 +19,10 @@ export namespace Components {
           * The displayed name of the control element.
          */
         "name": string;
-        "options": string[];
+        /**
+          * Contains the required parameters of the control element
+         */
         "param": any;
-        "paramDesc": any;
-        "type": Type;
     }
     interface DashjsApiControlModal {
         "functionList": DashFunction[];
@@ -283,7 +286,13 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DashjsApiControl {
+        /**
+          * Emits an event to the player
+         */
         "onPlayerEvent"?: (event: CustomEvent<string>) => void;
+        /**
+          * The version of which the dashjs should be loaded.
+         */
         "version"?: string;
     }
     interface DashjsApiControlElement {
@@ -291,11 +300,14 @@ declare namespace LocalJSX {
           * The displayed name of the control element.
          */
         "name"?: string;
-        "onValueChanged"?: (event: CustomEvent<any>) => void;
-        "options"?: string[];
+        /**
+          * Triggers the API call function
+         */
+        "onCallFunction"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the required parameters of the control element
+         */
         "param"?: any;
-        "paramDesc"?: any;
-        "type"?: Type;
     }
     interface DashjsApiControlModal {
         "functionList"?: DashFunction[];
