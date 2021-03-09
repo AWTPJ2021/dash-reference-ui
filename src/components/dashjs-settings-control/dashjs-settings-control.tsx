@@ -2,10 +2,11 @@ import { modalController } from '@ionic/core';
 import { Component, Host, h, Watch, Method, Event, EventEmitter, State, Prop, Element } from '@stencil/core';
 import { MediaPlayerSettingClass } from 'dashjs';
 import { Setting, SettingsMap, SettingsMapValue, Tree } from '../../types/types';
-import { LocalVariableStore } from '../../utils/localStorage';
+import { LocalStorage, LocalVariableStore } from '../../utils/localStorage';
 import { updateMapWithQueryParams, removeQueryParams, setParam } from '../../utils/queryParams';
 import { generateSettingsMapFromList, generateSettingsObjectFromListAndMap, settingsListToTree } from '../../utils/utils';
 
+const STRING_SETTINGS = 'settings';
 @Component({
   tag: 'dashjs-settings-control',
   styleUrl: 'dashjs-settings-control.css',
@@ -31,6 +32,7 @@ export class DashjsSettingsControl {
   @State() selectedSettings: SettingsMap = new Map();
   @Watch('selectedSettings')
   settingsUpdate(force: boolean = false): void {
+    LocalStorage.saveMapToLocalKey(STRING_SETTINGS, this.selectedSettings);
     if (this.autoUpdate || force === true) {
       this.settingsUpdated.emit(generateSettingsObjectFromListAndMap(this.settingsList, this.selectedSettings));
     }
@@ -92,7 +94,8 @@ export class DashjsSettingsControl {
       .then((response: Response) => response.json())
       .then(response => {
         this.settingsList = response;
-        const settings = generateSettingsMapFromList(this.settingsList);
+        let settings = generateSettingsMapFromList(this.settingsList);
+        settings = new Map([...settings, ...LocalStorage.getMapFromLocalKey(STRING_SETTINGS)]);
         this.selectedSettings = updateMapWithQueryParams(settings);
         this.settingsTree = settingsListToTree(this.settingsList);
       })

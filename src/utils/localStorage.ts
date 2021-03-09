@@ -23,6 +23,17 @@ export class LocalStorage {
     localStorage.setItem(localKey, JSON.stringify(toSave));
   }
 
+  static getMapFromLocalKey(key: string): Map<string, string> {
+    const info = JSON.parse(localStorage.getItem(key) || '{}');
+    const map = new Map();
+    Object.keys(info).forEach(key => {
+      if (info[key] != undefined) {
+        map.set(key, info[key]);
+      }
+    });
+    return map;
+  }
+
   static getKeyValueObject(key: string): null | KeyValue<unknown> {
     const info = localStorage.getItem(key);
     return info != null ? JSON.parse(info) : null;
