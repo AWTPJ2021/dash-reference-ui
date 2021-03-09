@@ -1,17 +1,19 @@
+import { KeyValue } from '../types/types';
+
 export class LocalStorage {
   static deleteKeyInKeyValueObject(key: string, id: string): void {
-    const toUpdate = JSON.parse(localStorage.getItem(key));
+    const toUpdate = JSON.parse(localStorage.getItem(key) || '{}');
     delete toUpdate[id];
     localStorage.setItem(key, JSON.stringify(toUpdate));
   }
 
-  static updateKeyInKeyValueObject(key: string, id: string, value: any): void {
-    const toUpdate = JSON.parse(localStorage.getItem(key)) || {};
+  static updateKeyInKeyValueObject(key: string, id: string, value: unknown): void {
+    const toUpdate = JSON.parse(localStorage.getItem(key) || '{}');
     toUpdate[id] = value;
     localStorage.setItem(key, JSON.stringify(toUpdate));
   }
 
-  static saveMapToLocalKey(localKey: string, map: Map<string, any>): void {
+  static saveMapToLocalKey(localKey: string, map: Map<string, unknown>): void {
     const toSave = {};
     map.forEach((value, key) => {
       if (value != undefined) {
@@ -21,7 +23,18 @@ export class LocalStorage {
     localStorage.setItem(localKey, JSON.stringify(toSave));
   }
 
-  static getKeyValueObject(key: string): null | any {
+  static getMapFromLocalKey(key: string): Map<string, string> {
+    const info = JSON.parse(localStorage.getItem(key) || '{}');
+    const map = new Map();
+    Object.keys(info).forEach(key => {
+      if (info[key] != undefined) {
+        map.set(key, info[key]);
+      }
+    });
+    return map;
+  }
+
+  static getKeyValueObject(key: string): null | KeyValue<unknown> {
     const info = localStorage.getItem(key);
     return info != null ? JSON.parse(info) : null;
   }
@@ -34,18 +47,20 @@ export class LocalStorage {
 const STRING_MEDIA_URL = 'mediaUrl';
 const STRING_API_AUTOSTART = 'api_autostart';
 const STRING_SETTINGS_AUTOUPDATE = 'settings_autoupdate';
+const STRING_DARKMODE_ACTIVE = 'settings_darkmode_active';
 export class LocalVariableStore {
   static set mediaUrl(value: string) {
     localStorage.setItem(STRING_MEDIA_URL, value);
   }
   static get mediaUrl(): string {
-    if (localStorage.getItem(STRING_MEDIA_URL) != null && localStorage.getItem(STRING_MEDIA_URL) != '' && localStorage.getItem(STRING_MEDIA_URL) != 'null') {
-      return localStorage.getItem(STRING_MEDIA_URL);
+    const mediaUrl = localStorage.getItem(STRING_MEDIA_URL);
+    if (mediaUrl != null && mediaUrl != '' && mediaUrl != 'null') {
+      return mediaUrl;
     }
     return 'https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd';
   }
   static resetMediaUrl(): void {
-    LocalVariableStore.mediaUrl = null;
+    LocalVariableStore.mediaUrl = '';
   }
 
   static set api_autostart(value: boolean) {
@@ -60,5 +75,15 @@ export class LocalVariableStore {
   }
   static get settings_autoupdate(): boolean {
     return localStorage.getItem(STRING_SETTINGS_AUTOUPDATE) === null ? true : localStorage.getItem(STRING_SETTINGS_AUTOUPDATE) === 'true';
+  }
+
+  static set darkmode_active(value: boolean) {
+    localStorage.setItem(STRING_DARKMODE_ACTIVE, String(value));
+  }
+  static get darkmode_active(): boolean {
+    return localStorage.getItem(STRING_DARKMODE_ACTIVE) === null ? true : localStorage.getItem(STRING_DARKMODE_ACTIVE) === 'true';
+  }
+  static darkmode_activeSet(): boolean {
+    return localStorage.getItem(STRING_DARKMODE_ACTIVE) != undefined;
   }
 }

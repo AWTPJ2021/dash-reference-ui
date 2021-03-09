@@ -2,16 +2,19 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "extends": [
-    // TODO: add later in order to be consistent
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@stencil/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:@stencil/recommended"],
   "rules": {
 	 "@stencil/decorators-style": ["error", { "event": "ignore" }],
     "@stencil/render-returns-host": "warn",
     "no-console": "error",
-    "@typescript-eslint/no-inferrable-types": "off"
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": [
+      "error",
+      {
+        "allowedNames": ["render", "componentWillLoad", "componentDidLoad"]
+      }
+    ],
+    // Only for now
+    "react/jsx-no-bind": "off"
   }
 }

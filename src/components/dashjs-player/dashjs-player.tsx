@@ -1,7 +1,9 @@
-import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch, Listen, Event, EventEmitter, Method } from '@stencil/core';
 import { MediaPlayerClass, MediaPlayerSettingClass } from 'dashjs';
 import ControlBar from './ControlBar.js';
+import { calculateHTTPMetrics } from '../../utils/metrics';
 import { LocalVariableStore } from '../../utils/localStorage';
+import { DASHJS_PLAYER_TYPE, DASHJS_PLAYER_VERSION } from '../../defaults.js';
 declare const dashjs: any;
 /**
  * Loads dashjs player.
@@ -21,7 +23,7 @@ export class DashjsPlayer {
    * The Version of dashjs that should be loaded.
    * e.g. v3.2.0
    */
-  @Prop() version: string = undefined;
+  @Prop() version: string = DASHJS_PLAYER_VERSION;
   @Watch('version')
   protected watchHandlerVersion(): void {
     this.loadOrUpdateDashJsScript();
@@ -30,7 +32,7 @@ export class DashjsPlayer {
    * The Type of dashjs that should be loaded.
    * e.g. debug or min
    */
-  @Prop() type: string = undefined;
+  @Prop() type: string = DASHJS_PLAYER_TYPE;
   @Watch('type')
   protected watchHandlerType(): void {
     this.loadOrUpdateDashJsScript();
@@ -39,7 +41,7 @@ export class DashjsPlayer {
    * The Settings of dashjs that should be used.
    * e.g. v3.2.0
    */
-  @Prop() settings: MediaPlayerSettingClass = undefined;
+  @Prop() settings: MediaPlayerSettingClass = {};
   @Watch('settings')
   protected watchHandlerSettings(): void {
     if (this.player != undefined) {
@@ -47,34 +49,70 @@ export class DashjsPlayer {
     }
   }
 
+  @State() error = false;
+
   @State() streamInterval: any;
 
-  @State() controlbar: any;
-  // TODO: Really Bad practice! Use a better flow to get updates to statistics
-  @Event({ composed: true, bubbles: true, }) playerEvent: EventEmitter<any>;
+  @State()
+  metrics = {
+    video: {
+      'Buffer Length': 0,
+      'Bitrate Downloading': 0,
+      'Dropped Frames': 0,
+      'Frame Rate': 0,
+      'Index': 0,
+      'Max Index': 0,
+      'Live Latency': 0,
+      'Latency': '0|0|0',
+      'Download': '0|0|0',
+      'Ratio': '0|0|0',
+    },
+    audio: {
+      'Buffer Length': 0,
+      'Bitrate Downloading': 0,
+      'Dropped Frames': 0,
+      'Max Index': 0,
+      'Latency': '0|0|0',
+      'Download': '0|0|0',
+      'Ratio': '0|0|0',
+    },
+    currentTime: '00:00',
+  };
 
+  @State()
+  controlbar: any;
+
+  /**
+   * Request Video to be played in Picture in Picture Mode
+   */
+  @Method()
+  async showPiP(): Promise<void> {
+    (this.element.querySelector('#myMainVideoPlayer video') as any).requestPictureInPicture();
+  }
   @Listen('playerEvent', { target: 'document' })
-  playerEventHandler(event) {
+  playerEventHandler(event): void {
     switch (event.detail.type) {
-      case 'load':
-        if (this.player) {
+      case 'load': {
+        if (this.player != undefined) {
           this.player.reset();
         }
         this.player = dashjs.MediaPlayer().create();
         this.player.updateSettings(this.settings);
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video'), LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video') as HTMLElement, LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
+        this.streamInterval && clearInterval(this.streamInterval);
         this.streamInterval = setInterval(() => {
-          this.streamMetricsEventHandler(this.player);
+          this.metricsWatch();
         }, 1000);
         break;
+      }
       case 'stop':
         this.player.reset();
         clearInterval(this.streamInterval);
         break;
       case 'function':
-        if (!this.player) {
+        if (this.player === undefined) {
           this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
           const returnValue = this.player[event.detail.name].apply(this, event.detail.param);
@@ -87,24 +125,113 @@ export class DashjsPlayer {
     }
   }
 
-  @Event({ composed: true, bubbles: true, }) playerResponse: EventEmitter<any>;
+  /**
+   * Player response:
+   * player api calls repsonse
+   */
+  @Event({
+    composed: true,
+    bubbles: true,
+  })
+  playerResponse: EventEmitter<any>;
 
-  playerResponseHandler(todo: any) {
+  private playerResponseHandler(todo: any) {
     this.playerResponse.emit(todo);
   }
 
   @Listen('settingsUpdated', { target: 'document' })
-  settingsUpdate(event) {
+  settingsUpdate(event): void {
     this.player?.updateSettings({
       debug: event?.detail?.debug,
       streaming: event?.detail?.streaming,
     });
   }
 
-  @Event() streamMetricsEvent: EventEmitter<any>;
+  /**
+   * Stream metrics:
+   * dashMetrcis & dashAdapter calculations
+   */
+  @Event()
+  metricsEvent: EventEmitter<string>;
 
-  streamMetricsEventHandler(player: any) {
-    player && this.streamMetricsEvent.emit(player);
+  private metricsWatch() {
+    this.player && this.metricsEvent.emit(this.streamMetrics(this.player, this.metrics));
+  }
+
+  private streamMetrics(player: any, metrics: any) {
+    const streamInfo = player?.getActiveStream()?.getStreamInfo();
+    const dashMetrics = player?.getDashMetrics();
+    const dashAdapter = player?.getDashAdapter();
+
+    if (dashMetrics && streamInfo) {
+      const periodIdx = streamInfo?.index;
+      const currentTimeInSec = player?.time().toFixed(0);
+
+      const currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
+      metrics.currentTime = currentTime;
+      metrics.video['Live Latency'] = Number(
+        setTimeout(() => {
+          player?.getCurrentLiveLatency();
+        }, 1000),
+      );
+
+      // Video Metrics
+      const videoRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('video');
+      const videoAdaptation = dashAdapter?.getAdaptationForType(periodIdx, 'video', streamInfo);
+      const videoHttpMetrics = calculateHTTPMetrics('video', dashMetrics?.getHttpRequests('video'));
+
+      metrics.video['Buffer Length'] = dashMetrics?.getCurrentBufferLevel('video');
+      metrics.video['Dropped Frames'] = dashMetrics?.getCurrentDroppedFrames('video')?.droppedFrames;
+      metrics.video['Bitrate Downloading'] = videoRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(videoRepSwitch?.to, periodIdx) / 1000) : NaN;
+      metrics.video['Index'] = dashAdapter?.getIndexForRepresentation(videoRepSwitch?.to, periodIdx);
+      metrics.video['Max Index'] = dashAdapter?.getMaxIndexForBufferType('video', periodIdx);
+      metrics.video['Frame Rate'] = videoAdaptation?.Representation_asArray?.find(function (rep) {
+        return rep.id === videoRepSwitch?.to;
+      })?.frameRate;
+      if (videoHttpMetrics != undefined) {
+        metrics.video['Download'] =
+          videoHttpMetrics.download['video'].low.toFixed(2) +
+          ' | ' +
+          videoHttpMetrics.download['video'].average.toFixed(2) +
+          ' | ' +
+          videoHttpMetrics.download['video'].high.toFixed(2);
+        metrics.video['Latency'] =
+          videoHttpMetrics.latency['video'].low.toFixed(2) +
+          ' | ' +
+          videoHttpMetrics.latency['video'].average.toFixed(2) +
+          ' | ' +
+          videoHttpMetrics.latency['video'].high.toFixed(2);
+        metrics.video['Ratio'] =
+          videoHttpMetrics.ratio['video'].low.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].average.toFixed(2) + ' | ' + videoHttpMetrics.ratio['video'].high.toFixed(2);
+      }
+
+      // Audio Metrics
+      const audioRepSwitch = dashMetrics?.getCurrentRepresentationSwitch('audio');
+      const audioHttpMetrics = calculateHTTPMetrics('audio', dashMetrics?.getHttpRequests('audio'));
+
+      metrics.audio['Buffer Length'] = dashMetrics?.getCurrentBufferLevel('audio');
+      metrics.audio['Dropped Frames'] = dashMetrics?.getCurrentDroppedFrames('audio')?.droppedFrames;
+      metrics.audio['Bitrate Downloading'] = audioRepSwitch ? Math.round(dashAdapter?.getBandwidthForRepresentation(audioRepSwitch?.to, periodIdx) / 1000) : NaN;
+
+      metrics.audio['Max Index'] = dashAdapter?.getMaxIndexForBufferType('audio', periodIdx);
+      if (audioHttpMetrics != undefined) {
+        metrics.audio['Download'] =
+          audioHttpMetrics.download['audio'].low.toFixed(2) +
+          ' | ' +
+          audioHttpMetrics.download['audio'].average.toFixed(2) +
+          ' | ' +
+          audioHttpMetrics.download['audio'].high.toFixed(2);
+        metrics.audio['Latency'] =
+          audioHttpMetrics.latency['audio'].low.toFixed(2) +
+          ' | ' +
+          audioHttpMetrics.latency['audio'].average.toFixed(2) +
+          ' | ' +
+          audioHttpMetrics.latency['audio'].high.toFixed(2);
+        metrics.audio['Ratio'] =
+          audioHttpMetrics.ratio['audio'].low.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].average.toFixed(2) + ' | ' + audioHttpMetrics.ratio['audio'].high.toFixed(2);
+      }
+    }
+    return metrics;
   }
 
   componentDidLoad() {
@@ -115,7 +242,7 @@ export class DashjsPlayer {
     if (this.version == undefined) {
       return;
     }
-    if (this.player) {
+    if (this.player != undefined) {
       this.player.reset();
     }
     const id_string = 'dashjssource';
@@ -139,14 +266,14 @@ export class DashjsPlayer {
       script.setAttribute(versionAttribute_string, this.version);
       script.setAttribute(typeAttribute_string, this.type);
       script.onload = () => {
-        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+        this.playerEventHandler({ detail: { type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay } });
       };
       script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
       document.head.appendChild(script);
     } else {
       if (typeof dashjs != 'undefined') {
-        this.playerEvent.emit({ type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay });
+        this.playerEventHandler({ detail: { type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay } });
       }
     }
   }

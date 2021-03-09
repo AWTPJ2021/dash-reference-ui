@@ -1,7 +1,7 @@
 export interface Setting {
   name: string;
   id: string;
-  parent: string;
+  parent: string | undefined;
   /**
    * Includes all parent nodes, but not the Setting itself.
    */
@@ -10,12 +10,19 @@ export interface Setting {
   required: boolean;
   description: string;
   type: Type;
-  enum?: any;
-  enumLabels?: any;
+  enum?: string[];
+  enumLabels?: string[];
   /**
    * If this element is selected to be displayed in the settings control panel
    */
   activated: boolean;
+}
+
+export type SettingsMap = Map<string, SettingsMapValue>;
+
+export type SettingsMapValue = boolean | string | number | undefined;
+export interface KeyValue<T> {
+  [key: string]: T;
 }
 
 export interface DashFunction {
@@ -51,7 +58,6 @@ export enum Type {
   number = 'number',
   object = 'Object',
   boolean = 'boolean',
-  group = 'group',
   HTML5MediaElement = 'HTMLElement',
   function = '(e: any) => void',
   value = 'value',

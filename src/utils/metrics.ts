@@ -1,4 +1,4 @@
-export function calculateHTTPMetrics(type, requests) {
+export function calculateHTTPMetrics(type: string, requests: any[]) {
   const latency = {},
     download = {},
     ratio = {};
@@ -100,6 +100,7 @@ export function chartYAxisOptions(metricsData: any, colors: any) {
         beginAtZero: true,
       },
     };
+    // @ts-ignore
     yAxesArray.push(newEntry);
   });
   return yAxesArray;
@@ -117,6 +118,7 @@ export function chartDataset(metricsData: any, colors: any) {
       yAxisID: 'y' + index,
       fill: false,
     };
+    // @ts-ignore
     dataset.push(newEntry);
   });
   return dataset;
