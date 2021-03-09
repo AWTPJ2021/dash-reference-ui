@@ -2,6 +2,7 @@ import { StencilComponentPrefetch } from '@beck24/stencil-component-prefetch/dis
 import { SelectChangeEventDetail } from '@ionic/core';
 import { Component, Host, h, Element, Build, getAssetPath, State } from '@stencil/core';
 import { DASHJS_PLAYER_TYPE } from '../../defaults';
+import { LocalVariableStore } from '../../utils/localStorage';
 import { setParam } from '../../utils/queryParams';
 import { contributors } from './contributors';
 const STATIC_VERSION_QUERY_PARAM = 'version';
@@ -19,7 +20,7 @@ export class DashjsReferenceUi {
   @State() type: string[] = ['min', 'debug'];
   @State() selectedType: string = DASHJS_PLAYER_TYPE;
   @State() settings: dashjs.MediaPlayerSettingClass = {};
-  @State() darkModeActive = false;
+  @State() darkModeActive = LocalVariableStore.darkmode_active;
   @Element() prefetcher: HTMLDashjsReferenceUiElement;
   private dashjsplayer: HTMLDashjsPlayerElement;
   private dashjsplayer_accordion: HTMLIonAccordionElement;
@@ -36,15 +37,11 @@ export class DashjsReferenceUi {
           this.selectedVersion = response[0];
         }
       });
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    this.darkModeActive = prefersDark.matches;
+    if (!LocalVariableStore.darkmode_activeSet()) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      this.darkModeActive = prefersDark.matches;
+    }
     this.toggleDarkTheme(this.darkModeActive);
-
-    // Listen for changes to the prefers-color-scheme media query
-    prefersDark.addListener(mediaQuery => {
-      this.darkModeActive = mediaQuery.matches;
-      this.toggleDarkTheme(this.darkModeActive);
-    });
   }
   componentDidLoad(): void {
     // Prefetch Componentes that are needed immendiatley on user interaction later on
@@ -130,8 +127,9 @@ export class DashjsReferenceUi {
               shape="round"
               color="dark"
               onClick={() => {
-                this.toggleDarkTheme(!this.darkModeActive);
                 this.darkModeActive = !this.darkModeActive;
+                LocalVariableStore.darkmode_active = this.darkModeActive;
+                this.toggleDarkTheme(this.darkModeActive);
               }}
               class="ion-float-right"
             >
