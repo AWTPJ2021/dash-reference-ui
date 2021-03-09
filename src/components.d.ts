@@ -25,7 +25,13 @@ export namespace Components {
         "param": any;
     }
     interface DashjsApiControlModal {
+        /**
+          * List of all available dashjs api calls
+         */
         "functionList": DashFunction[];
+        /**
+          * List of all selected dashjs api calls
+         */
         "selectedFunctions": Map<string, any>;
     }
     interface DashjsApiLinkSelector {
@@ -289,7 +295,7 @@ declare namespace LocalJSX {
         /**
           * Emits an event to the player
          */
-        "onPlayerEvent"?: (event: CustomEvent<string>) => void;
+        "onPlayerEvent"?: (event: CustomEvent<any>) => void;
         /**
           * The version of which the dashjs should be loaded.
          */
@@ -310,7 +316,13 @@ declare namespace LocalJSX {
         "param"?: any;
     }
     interface DashjsApiControlModal {
+        /**
+          * List of all available dashjs api calls
+         */
         "functionList"?: DashFunction[];
+        /**
+          * List of all selected dashjs api calls
+         */
         "selectedFunctions"?: Map<string, any>;
     }
     interface DashjsApiLinkSelector {

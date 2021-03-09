@@ -91,6 +91,7 @@ export class DashjsPlayer {
   }
   @Listen('playerEvent', { target: 'document' })
   playerEventHandler(event): void {
+    console.log(event);
     switch (event.detail.type) {
       case 'load': {
         if (this.player != undefined) {
@@ -98,7 +99,7 @@ export class DashjsPlayer {
         }
         this.player = dashjs.MediaPlayer().create();
         this.player.updateSettings(this.settings);
-        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video') as HTMLElement, LocalVariableStore.mediaUrl, event.detail.autoPlay == 'true');
+        this.player.initialize(this.element.querySelector('#myMainVideoPlayer video') as HTMLElement, LocalVariableStore.mediaUrl, event.detail.autoPlay);
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
         this.streamInterval && clearInterval(this.streamInterval);

@@ -29,7 +29,7 @@ export class DashjsApiControl {
    */
   @State() autostart: boolean;
   @Watch('autostart')
-  protected watchHandlerAutostart(value): void {
+  protected watchHandlerAutostart(value : any): void {
     LocalVariableStore.api_autostart = value;
   }
 
@@ -90,10 +90,10 @@ export class DashjsApiControl {
    * Checks for valid types
    * @param any 
    */
-  private validType(any): boolean {
+  private validType(check : string): boolean {
     const types = ['boolean', 'number', 'string', 'MediaType'];
     for (const i in types) {
-      if (types[i] == any) return true;
+      if (types[i] == check) return true;
     }
     return false;
   }
@@ -137,7 +137,7 @@ export class DashjsApiControl {
    * @param event 
    */
   @Listen('setStream', { target: 'document' })
-  setStreamEventHandler(event): void {
+  setStreamEventHandler(event : any): void {
     this.mediaUrl = event.detail;
     LocalVariableStore.mediaUrl = event.detail;
     popoverController.dismiss();
@@ -182,9 +182,9 @@ export class DashjsApiControl {
   @Event({
     composed: true,
     bubbles: true}) 
-  playerEvent: EventEmitter<string>;
+  playerEvent: EventEmitter<any>;
 
-  playerEventHandler(todo: any): void {
+  playerEventHandler(todo): void {
     this.playerEvent.emit(todo);
   }
 
@@ -207,7 +207,7 @@ export class DashjsApiControl {
    * @param event 
    */
   @Listen('playerResponse', { target: 'document' })
-  async playerResponseHandler(event) {
+  async playerResponseHandler(event : any): Promise<void> {
     const toast = await toastController.create({
       message:
         event.detail.return === null

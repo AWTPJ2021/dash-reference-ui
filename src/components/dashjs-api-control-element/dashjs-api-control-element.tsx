@@ -29,7 +29,7 @@ export class DashjsAPIControlElement {
    * Emits the inputs for further processing if they passes the validation
    * @param functionValue 
    */
-  async checkAndEmit(functionValue : any[]) {
+  async checkAndEmit(functionValue : any[]): Promise<void> {
     let error = false;
     for (let i = 0; i < this.param.length; i++) {
       const index = i;
