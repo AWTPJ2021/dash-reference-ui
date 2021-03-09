@@ -90,8 +90,7 @@ export class DashjsPlayer {
     (this.element.querySelector('#myMainVideoPlayer video') as any).requestPictureInPicture();
   }
   @Listen('playerEvent', { target: 'document' })
-  playerEventHandler(event): void {
-    console.log(event);
+  playerEventHandler(event: any): void {
     switch (event.detail.type) {
       case 'load': {
         if (this.player != undefined) {
@@ -141,7 +140,7 @@ export class DashjsPlayer {
   }
 
   @Listen('settingsUpdated', { target: 'document' })
-  settingsUpdate(event): void {
+  settingsUpdate(event: any): void {
     this.player?.updateSettings({
       debug: event?.detail?.debug,
       streaming: event?.detail?.streaming,

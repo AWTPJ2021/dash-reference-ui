@@ -184,7 +184,7 @@ export class DashjsApiControl {
     bubbles: true}) 
   playerEvent: EventEmitter<any>;
 
-  playerEventHandler(todo): void {
+  playerEventHandler(todo: any): void {
     this.playerEvent.emit(todo);
   }
 
