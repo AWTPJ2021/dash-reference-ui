@@ -90,7 +90,7 @@ export class DashjsPlayer {
     (this.element.querySelector('#myMainVideoPlayer video') as any).requestPictureInPicture();
   }
   @Listen('playerEvent', { target: 'document' })
-  playerEventHandler(event: any): void {
+  playerEventHandler(event: CustomEvent): void {
     switch (event.detail.type) {
       case 'load': {
         if (this.player != undefined) {
@@ -99,6 +99,9 @@ export class DashjsPlayer {
         this.player = dashjs.MediaPlayer().create();
         this.player.updateSettings(this.settings);
         this.player.initialize(this.element.querySelector('#myMainVideoPlayer video') as HTMLElement, LocalVariableStore.mediaUrl, event.detail.autoPlay);
+        if (this.controlbar != undefined) {
+          this.controlbar.destroy();
+        }
         this.controlbar = new ControlBar(this.player);
         this.controlbar.initialize();
         this.streamInterval && clearInterval(this.streamInterval);
@@ -266,14 +269,14 @@ export class DashjsPlayer {
       script.setAttribute(versionAttribute_string, this.version);
       script.setAttribute(typeAttribute_string, this.type);
       script.onload = () => {
-        this.playerEventHandler({ detail: { type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay } });
+        this.playerEventHandler({ detail: { type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay } } as CustomEvent);
       };
       script.src = `https://cdn.dashjs.org/${this.version}/dash.all.${this.type}.js`;
 
       document.head.appendChild(script);
     } else {
       if (typeof dashjs != 'undefined') {
-        this.playerEventHandler({ detail: { type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay } });
+        this.playerEventHandler({ detail: { type: 'load', url: LocalVariableStore.mediaUrl, autoPlay: autoPlay } } as CustomEvent);
       }
     }
   }
