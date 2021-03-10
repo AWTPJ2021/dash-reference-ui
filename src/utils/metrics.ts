@@ -80,6 +80,7 @@ export function calculateHTTPMetrics(type: string, requests: any[]): any {
   return null;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function chartYAxisOptions(metricsData: any, colors: Colors): any {
   const yAxesArray = [] as  any;
   Object.keys(metricsData).map((metric, index) => {
@@ -107,6 +108,7 @@ export function chartYAxisOptions(metricsData: any, colors: Colors): any {
   return yAxesArray;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function chartDataset(metricsData: any, colors: Colors): any {
   const dataset = [] as  any;
   Object.keys(metricsData).map((metric, index) => {
