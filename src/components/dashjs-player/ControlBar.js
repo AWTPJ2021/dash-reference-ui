@@ -371,7 +371,7 @@
   //************************************************************************************
   var setDuration = function (value) {
     if (self.player.isDynamic()) {
-      durationDisplay.textContent = 'â— LIVE';
+      durationDisplay.textContent = '● LIVE';
       if (!durationDisplay.onclick) {
         durationDisplay.onclick = seekLive;
         durationDisplay.classList.add('live-icon');

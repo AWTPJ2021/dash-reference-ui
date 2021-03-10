@@ -11,12 +11,27 @@ export class DashjsSettingsControlModal {
   componentWillLoad() {
     this.viewedFunctions = this.functionList;
   }
+  /**
+   * List of all available dashjs api calls
+   */
   @Prop() functionList: DashFunction[] = [];
+
+  /**
+   * List of all selected dashjs api calls
+   */
   @Prop() selectedFunctions: Map<string, any> = new Map();
+
+  /**
+   * List of all viewed dashjs api calls
+   */
   @State() viewedFunctions: DashFunction[] = [];
+
+  /**
+   * variable to trigger a re-render
+   */
   @State() triggerRerender = 0;
 
-  filterSettings(str: string) {
+  filterSettings(str: string): void {
     if (str === '') {
       this.viewedFunctions = this.functionList;
       return;
@@ -24,11 +39,11 @@ export class DashjsSettingsControlModal {
     this.viewedFunctions = this.functionList.filter(s => (s.name as string).includes(str));
   }
 
-  save() {
+  save(): void {
     modalController.dismiss(this.selectedFunctions);
   }
 
-  cancel() {
+  cancel(): void {
     modalController.dismiss();
   }
   render() {

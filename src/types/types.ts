@@ -70,3 +70,41 @@ export interface Tree {
   child?: { [name: string]: Tree };
   elements: string[];
 }
+
+export interface Metrics {
+  video: {
+    'Buffer Length': number,
+    'Bitrate Downloading': number,
+    'Dropped Frames': number,
+    'Frame Rate': number,
+    'Index': number,
+    'Max Index': number,
+    'Live Latency': number,
+    'Latency': string,
+    'Download': string,
+    'Ratio': string,
+  },
+  audio: {
+    'Buffer Length': number,
+    'Bitrate Downloading': number,
+    'Dropped Frames': number,
+    'Max Index': number,
+    'Latency': string,
+    'Download': string,
+    'Ratio': string,
+  },
+  currentTime: string,
+}
+
+export interface Colors {
+  'Buffer Length': string,
+  'Bitrate Downloading': string,
+  'Dropped Frames': string,
+  'Frame Rate': string,
+  'Index': string,
+  'Max Index': string,
+  'Live Latency': string,
+  'Latency': string,
+  'Download': string,
+  'Ratio': string,
+}

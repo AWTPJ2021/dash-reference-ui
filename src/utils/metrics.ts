@@ -1,4 +1,6 @@
-export function calculateHTTPMetrics(type: string, requests: any[]) {
+import { Colors } from '../types/types';
+
+export function calculateHTTPMetrics(type: string, requests: any[]): any {
   const latency = {},
     download = {},
     ratio = {};
@@ -78,8 +80,9 @@ export function calculateHTTPMetrics(type: string, requests: any[]) {
   return null;
 }
 
-export function chartYAxisOptions(metricsData: any, colors: any) {
-  const yAxesArray = [];
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function chartYAxisOptions(metricsData: any, colors: Colors): any {
+  const yAxesArray = [] as  any;
   Object.keys(metricsData).map((metric, index) => {
     const newEntry = {
       gridLines: {
@@ -100,14 +103,14 @@ export function chartYAxisOptions(metricsData: any, colors: any) {
         beginAtZero: true,
       },
     };
-    // @ts-ignore
     yAxesArray.push(newEntry);
   });
   return yAxesArray;
 }
 
-export function chartDataset(metricsData: any, colors: any) {
-  const dataset = [];
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function chartDataset(metricsData: any, colors: Colors): any {
+  const dataset = [] as  any;
   Object.keys(metricsData).map((metric, index) => {
     const newEntry = {
       data: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -118,7 +121,6 @@ export function chartDataset(metricsData: any, colors: any) {
       yAxisID: 'y' + index,
       fill: false,
     };
-    // @ts-ignore
     dataset.push(newEntry);
   });
   return dataset;
