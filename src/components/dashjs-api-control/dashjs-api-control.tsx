@@ -120,7 +120,7 @@ export class DashjsApiControl {
    * Sends a stop signal to the dashjs player
    */
   private stopMedia(): void {
-    this.playerEventHandler({ type: 'stop' });
+    this.playerEventHandler({ type: 'stop'});
     LocalVariableStore.resetMediaUrl();
     this.mediaUrl = LocalVariableStore.mediaUrl;
   }
@@ -184,7 +184,7 @@ export class DashjsApiControl {
     bubbles: true}) 
   playerEvent: EventEmitter<any>;
 
-  playerEventHandler(todo): void {
+  playerEventHandler(todo: { type: string , url?: string, autoPlay?:boolean, name?:string, param?:any}): void {
     this.playerEvent.emit(todo);
   }
 
