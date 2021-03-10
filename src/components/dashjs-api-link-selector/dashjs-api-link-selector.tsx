@@ -6,15 +6,17 @@ import { Component, h, EventEmitter, Event, Prop } from '@stencil/core';
   shadow: false,
 })
 export class PagePopover {
+  /**
+   * List of all links
+   */
   @Prop() sourceList: any[];
 
-  @Event({
-    composed: true,
-    bubbles: true,
-  })
-  setStream: EventEmitter<string>;
+  /**
+   * Emits the selected media url to the api control component
+   */
+  @Event({ composed: true, bubbles: true, }) setStream: EventEmitter<string>;
 
-  setStreamHandler(todo: any) {
+  setStreamHandler(todo: string): void{
     this.setStream.emit(todo);
   }
 

@@ -9,6 +9,9 @@ import { DashFunction, Metrics, Setting, SettingsMap, SettingsMapValue, Tree, Ty
 import { MediaPlayerSettingClass } from "dashjs";
 export namespace Components {
     interface DashjsApiControl {
+        /**
+          * The version of which the dashjs should be loaded.
+         */
         "version": string;
     }
     interface DashjsApiControlElement {
@@ -16,16 +19,25 @@ export namespace Components {
           * The displayed name of the control element.
          */
         "name": string;
-        "options": string[];
+        /**
+          * Contains the required parameters of the control element
+         */
         "param": any;
-        "paramDesc": any;
-        "type": Type;
     }
     interface DashjsApiControlModal {
+        /**
+          * List of all available dashjs api calls
+         */
         "functionList": DashFunction[];
+        /**
+          * List of all selected dashjs api calls
+         */
         "selectedFunctions": Map<string, any>;
     }
     interface DashjsApiLinkSelector {
+        /**
+          * List of all links
+         */
         "sourceList": any[];
     }
     interface DashjsGenericModal {
@@ -283,7 +295,13 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DashjsApiControl {
-        "onPlayerEvent"?: (event: CustomEvent<string>) => void;
+        /**
+          * Emits an event to the player
+         */
+        "onPlayerEvent"?: (event: CustomEvent<any>) => void;
+        /**
+          * The version of which the dashjs should be loaded.
+         */
         "version"?: string;
     }
     interface DashjsApiControlElement {
@@ -291,18 +309,33 @@ declare namespace LocalJSX {
           * The displayed name of the control element.
          */
         "name"?: string;
-        "onValueChanged"?: (event: CustomEvent<any>) => void;
-        "options"?: string[];
+        /**
+          * Triggers the API call function
+         */
+        "onCallFunction"?: (event: CustomEvent<any>) => void;
+        /**
+          * Contains the required parameters of the control element
+         */
         "param"?: any;
-        "paramDesc"?: any;
-        "type"?: Type;
     }
     interface DashjsApiControlModal {
+        /**
+          * List of all available dashjs api calls
+         */
         "functionList"?: DashFunction[];
+        /**
+          * List of all selected dashjs api calls
+         */
         "selectedFunctions"?: Map<string, any>;
     }
     interface DashjsApiLinkSelector {
+        /**
+          * Emits the selected media url to the api control component
+         */
         "onSetStream"?: (event: CustomEvent<string>) => void;
+        /**
+          * List of all links
+         */
         "sourceList"?: any[];
     }
     interface DashjsGenericModal {

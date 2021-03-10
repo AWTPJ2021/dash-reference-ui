@@ -21,12 +21,10 @@ export class DashjsStatistics {
   private audioInstance: any;
 
   @State() videoDisable: boolean = false;
-
   @State() audioDisable: boolean = false;
 
   // DashMetrics properties
-  @State()
-  chartColors = {
+  @State() chartColors = {
     'Buffer Length': '#003f5c',
     'Bitrate Downloading': '#374c80',
     'Dropped Frames': '#7a5195',
@@ -97,7 +95,7 @@ export class DashjsStatistics {
   }
 
   @Listen('metricsEvent', { target: 'document' })
-  metricsWatch(event: CustomEvent) {
+  metricsWatch(event: CustomEvent): void {
     this.metrics = { ...event.detail };
     !this.videoDisable ? this.video_watcher(true, event.detail.video, event.detail.currentTime) : null;
     !this.audioDisable ? this.video_watcher(false, event.detail.audio, event.detail.currentTime) : null;
