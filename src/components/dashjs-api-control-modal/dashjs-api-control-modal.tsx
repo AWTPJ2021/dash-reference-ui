@@ -31,7 +31,7 @@ export class DashjsSettingsControlModal {
    */
   @State() triggerRerender = 0;
 
-  filterSettings(str: string): void {
+  private filterSettings(str: string): void {
     if (str === '') {
       this.viewedFunctions = this.functionList;
       return;
@@ -39,13 +39,34 @@ export class DashjsSettingsControlModal {
     this.viewedFunctions = this.functionList.filter(s => (s.name as string).includes(str));
   }
 
-  save(): void {
+  private save(): void {
     modalController.dismiss(this.selectedFunctions);
   }
 
-  cancel(): void {
+  private cancel(): void {
     modalController.dismiss();
   }
+
+  private defaultValues(param: any): any[]{
+    let functionValue : any = [];
+    param.forEach( (curr, index) => {
+      switch (curr.type) {
+        case 'string':
+          functionValue[index] = '';
+          break;
+        case 'number':
+          functionValue[index] = 0;
+          break;
+        case 'boolean':
+          functionValue[index] = false;
+          break;
+        default:
+          functionValue[index] = null;
+      }
+    });
+    return functionValue;
+  }
+
   render() {
     return [
       <ion-searchbar
@@ -64,7 +85,7 @@ export class DashjsSettingsControlModal {
           <ion-grid>
           {this.viewedFunctions.map(item => item.parameters.length <= 1 ? (
             <ion-row onClick={() => {
-              this.selectedFunctions.set(item.name, this.selectedFunctions.get(item.name) === undefined ? item.parameters : undefined);
+              this.selectedFunctions.set(item.name, this.selectedFunctions.get(item.name) === undefined ? this.defaultValues(item.parameters) : undefined);
               this.triggerRerender++;
             }}>
                 <ion-col size="1">

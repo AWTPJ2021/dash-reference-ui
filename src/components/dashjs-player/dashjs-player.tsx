@@ -119,12 +119,22 @@ export class DashjsPlayer {
         if (this.player === undefined) {
           this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
-          const returnValue = this.player[event.detail.name].apply(this, event.detail.param);
-          const toSend = {
-            event: event.detail.name,
-            return: returnValue,
-          };
-          this.playerResponseHandler(toSend);
+          console.log(event.detail);
+          console.log(event.detail.param);
+          try {
+            const returnValue = this.player[event.detail.name].apply(this, event.detail.param);
+            const toSend = {
+              event: event.detail.name,
+              return: returnValue,
+            };
+            this.playerResponseHandler(toSend);
+          } catch (e) {
+            const toSend = {
+              event: event.detail.name,
+              return: e,
+            };
+            this.playerResponseHandler(toSend);
+          }         
         }
     }
   }

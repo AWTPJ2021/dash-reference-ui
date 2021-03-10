@@ -59,6 +59,7 @@ export class DashjsApiControl {
     }
     this.mediaUrl = LocalVariableStore.mediaUrl;
     this.autostart = LocalVariableStore.api_autostart;
+    
   }
   
   /**
@@ -156,14 +157,26 @@ export class DashjsApiControl {
   }
   
   /**
+   * Calls the api function
+   * @param id 
+   * @param value 
+   */
+  private callFunction(id: string, value: any): void {
+    console.log(value);
+    this.selectedFunctions.set(id, value);
+    this.selectedFunctions = new Map(this.selectedFunctions);
+    this.playerEventHandler({ type: 'function', name: id, param: value });
+    LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, id, value);
+  }
+
+  /**
    * Updates the parameters of a selected function and updates it in the local storage
    * @param id 
    * @param value 
    */
-  private updateFunction(id: string, value: any): void {
+   private updateFunction(id: string, value: any): void {
     this.selectedFunctions.set(id, value);
     this.selectedFunctions = new Map(this.selectedFunctions);
-    this.playerEventHandler({ type: 'function', name: id, param: value });
     LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, id, value);
   }
 
@@ -239,9 +252,24 @@ export class DashjsApiControl {
       return;
     }
     if (this.selectedFunctions.has(key)) {
-      this.selectedFunctions.set(key, []);
+      const currFunction = this.functionList.filter(s => s.name === key)[0];
+      let functionValue : any = [];
+      currFunction.parameters.forEach( (curr, index) => {
+        switch (curr.type) {
+          case 'string':
+            functionValue[index] = '';
+            break;
+          case 'number':
+            functionValue[index] = 0;
+            break;
+          case 'boolean':
+            functionValue[index] = false;
+            break;
+        }
+      });
+      this.selectedFunctions.set(key, functionValue);
       this.selectedFunctions = new Map(this.selectedFunctions);
-      LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, key, this.functionList.filter(s => s.name === key)[0].parameters);
+      LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, key, functionValue);
     }
   }
 
@@ -338,7 +366,11 @@ export class DashjsApiControl {
                           <dashjs-api-control-element 
                             name={currFunction.name} 
                             param={currFunction.parameters}
+                            value={this.selectedFunctions.get(key)}
                             onCallFunction={change => {
+                              this.callFunction(key, change.detail);}
+                            } 
+                            onUpdateFunction={change => {
                               this.updateFunction(key, change.detail);}
                             } 
                           ></dashjs-api-control-element>
