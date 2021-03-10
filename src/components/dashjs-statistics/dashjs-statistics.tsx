@@ -2,6 +2,7 @@ import { Component, Host, h, Element, State, Listen } from '@stencil/core';
 import * as chartjs from 'chart.js';
 const { Chart } = chartjs.default.Chart;
 import { chartDataset, chartYAxisOptions } from '../../utils/metrics';
+import { Metrics } from '../../types/types';
 
 @Component({
   tag: 'dashjs-statistics',
@@ -104,15 +105,11 @@ export class DashjsStatistics {
 
   componentDidLoad() {
     // Data Example
-    // @ts-ignore
-    this.video_canvas = this.el.querySelector('#video_canvas');
-    // @ts-ignore
-    this.audio_canvas = this.el.querySelector('#audio_canvas');
+    this.video_canvas = this.el.querySelector('#video_canvas') as HTMLCanvasElement;
+    this.audio_canvas = this.el.querySelector('#audio_canvas') as HTMLCanvasElement;
 
-    // @ts-ignore
-    this.video_context = this.video_canvas.getContext('2d');
-    // @ts-ignore
-    this.audio_context = this.audio_canvas.getContext('2d');
+    this.video_context = this.video_canvas.getContext('2d') as CanvasRenderingContext2D;
+    this.audio_context = this.audio_canvas.getContext('2d') as CanvasRenderingContext2D;
     const dataExample = [
       {
         labels: ['00:00', '00:00', '00:00', '00:00', '00:00', '00:00', '00:00', '00:00'],
@@ -157,7 +154,7 @@ export class DashjsStatistics {
     this.audioInstance = new Chart(this.audio_context, audioChartOptions);
   }
 
-  private video_watcher(isVideo: boolean, newData: any, newLabels: any) {
+  private video_watcher(isVideo: boolean, newData: any, newLabels: string) {
     const toChange = isVideo ? this.videoInstance : this.audioInstance;
     Object.keys(newData).map((metric, index) => {
       toChange.data.datasets[index].data.shift();
@@ -172,7 +169,7 @@ export class DashjsStatistics {
     toChange.update();
   }
 
-  private currentMetric(metrics: any, type: string, isVideo: boolean, disable: boolean) {
+  private currentMetric(metrics: Metrics, type: string, isVideo: boolean, disable: boolean) {
     return (
       <div>
         <ion-row>

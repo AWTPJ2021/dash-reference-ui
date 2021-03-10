@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { DashFunction, Setting, SettingsMap, SettingsMapValue, Tree, Type } from "./types/types";
+import { DashFunction, Metrics, Setting, SettingsMap, SettingsMapValue, Tree, Type } from "./types/types";
 import { MediaPlayerSettingClass } from "dashjs";
 export namespace Components {
     interface DashjsApiControl {
@@ -347,7 +347,7 @@ declare namespace LocalJSX {
         /**
           * Stream metrics: dashMetrcis & dashAdapter calculations
          */
-        "onMetricsEvent"?: (event: CustomEvent<string>) => void;
+        "onMetricsEvent"?: (event: CustomEvent<Metrics>) => void;
         /**
           * Player response: player api calls repsonse
          */

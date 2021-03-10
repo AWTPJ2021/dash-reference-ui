@@ -4,6 +4,7 @@ import ControlBar from './ControlBar.js';
 import { calculateHTTPMetrics } from '../../utils/metrics';
 import { LocalVariableStore } from '../../utils/localStorage';
 import { DASHJS_PLAYER_TYPE, DASHJS_PLAYER_VERSION } from '../../defaults.js';
+import { Metrics } from '../../types/types';
 declare const dashjs: any;
 /**
  * Loads dashjs player.
@@ -152,20 +153,20 @@ export class DashjsPlayer {
    * dashMetrcis & dashAdapter calculations
    */
   @Event()
-  metricsEvent: EventEmitter<string>;
+  metricsEvent: EventEmitter<Metrics>;
 
   private metricsWatch() {
     this.player && this.metricsEvent.emit(this.streamMetrics(this.player, this.metrics));
   }
 
-  private streamMetrics(player: any, metrics: any) {
+  private streamMetrics(player: any, metrics: Metrics) {
     const streamInfo = player?.getActiveStream()?.getStreamInfo();
     const dashMetrics = player?.getDashMetrics();
     const dashAdapter = player?.getDashAdapter();
 
     if (dashMetrics && streamInfo) {
       const periodIdx = streamInfo?.index;
-      const currentTimeInSec = player?.time().toFixed(0);
+      const currentTimeInSec = Number(player?.time().toFixed(0));
 
       const currentTime = new Date(currentTimeInSec * 1000).toISOString().substr(11, 8);
       metrics.currentTime = currentTime;
