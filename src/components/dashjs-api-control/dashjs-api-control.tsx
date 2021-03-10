@@ -29,7 +29,7 @@ export class DashjsApiControl {
    */
   @State() autostart: boolean;
   @Watch('autostart')
-  protected watchHandlerAutostart(value : any): void {
+  protected watchHandlerAutostart(value : boolean): void {
     LocalVariableStore.api_autostart = value;
   }
 
@@ -137,7 +137,7 @@ export class DashjsApiControl {
    * @param event 
    */
   @Listen('setStream', { target: 'document' })
-  setStreamEventHandler(event : any): void {
+  setStreamEventHandler(event : CustomEvent): void {
     this.mediaUrl = event.detail;
     LocalVariableStore.mediaUrl = event.detail;
     popoverController.dismiss();
@@ -184,7 +184,7 @@ export class DashjsApiControl {
     bubbles: true}) 
   playerEvent: EventEmitter<any>;
 
-  playerEventHandler(todo: any): void {
+  playerEventHandler(todo): void {
     this.playerEvent.emit(todo);
   }
 
@@ -207,7 +207,7 @@ export class DashjsApiControl {
    * @param event 
    */
   @Listen('playerResponse', { target: 'document' })
-  async playerResponseHandler(event : any): Promise<void> {
+  async playerResponseHandler(event : CustomEvent): Promise<void> {
     const toast = await toastController.create({
       message:
         event.detail.return === null
@@ -222,7 +222,7 @@ export class DashjsApiControl {
    * Updates the media url
    * @param event 
    */
-  private updateMediaUrl(event: any): void {
+  private updateMediaUrl(event: CustomEvent): void {
     LocalVariableStore.mediaUrl = event.detail.value;
     this.mediaUrl = event.detail.value;
   }

@@ -140,7 +140,7 @@ export class DashjsPlayer {
   }
 
   @Listen('settingsUpdated', { target: 'document' })
-  settingsUpdate(event: any): void {
+  settingsUpdate(event: CustomEvent): void {
     this.player?.updateSettings({
       debug: event?.detail?.debug,
       streaming: event?.detail?.streaming,

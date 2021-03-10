@@ -35,6 +35,9 @@ export namespace Components {
         "selectedFunctions": Map<string, any>;
     }
     interface DashjsApiLinkSelector {
+        /**
+          * List of all links
+         */
         "sourceList": any[];
     }
     interface DashjsGenericModal {
@@ -326,7 +329,13 @@ declare namespace LocalJSX {
         "selectedFunctions"?: Map<string, any>;
     }
     interface DashjsApiLinkSelector {
+        /**
+          * Emits the selected media url to the api control component
+         */
         "onSetStream"?: (event: CustomEvent<string>) => void;
+        /**
+          * List of all links
+         */
         "sourceList"?: any[];
     }
     interface DashjsGenericModal {
