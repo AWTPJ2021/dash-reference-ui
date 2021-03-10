@@ -97,7 +97,7 @@ export class DashjsStatistics {
   }
 
   @Listen('metricsEvent', { target: 'document' })
-  metricsWatch(event) {
+  metricsWatch(event: CustomEvent) {
     this.metrics = { ...event.detail };
     !this.videoDisable ? this.video_watcher(true, event.detail.video, event.detail.currentTime) : null;
     !this.audioDisable ? this.video_watcher(false, event.detail.audio, event.detail.currentTime) : null;
@@ -154,7 +154,7 @@ export class DashjsStatistics {
     this.audioInstance = new Chart(this.audio_context, audioChartOptions);
   }
 
-  private video_watcher(isVideo: boolean, newData: any, newLabels: string) {
+  private video_watcher(isVideo: boolean, newData: any, newLabels: string): void {
     const toChange = isVideo ? this.videoInstance : this.audioInstance;
     Object.keys(newData).map((metric, index) => {
       toChange.data.datasets[index].data.shift();
