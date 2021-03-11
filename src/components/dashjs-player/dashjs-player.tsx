@@ -119,8 +119,6 @@ export class DashjsPlayer {
         if (this.player === undefined) {
           this.playerResponseHandler({ event: event.detail.name, return: null });
         } else {
-          console.log(event.detail);
-          console.log(event.detail.param);
           try {
             const returnValue = this.player[event.detail.name].apply(this, event.detail.param);
             const toSend = {

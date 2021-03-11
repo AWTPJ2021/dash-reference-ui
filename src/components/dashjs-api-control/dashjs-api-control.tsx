@@ -162,7 +162,6 @@ export class DashjsApiControl {
    * @param value 
    */
   private callFunction(id: string, value: any): void {
-    console.log(value);
     this.selectedFunctions.set(id, value);
     this.selectedFunctions = new Map(this.selectedFunctions);
     this.playerEventHandler({ type: 'function', name: id, param: value });
@@ -253,7 +252,7 @@ export class DashjsApiControl {
     }
     if (this.selectedFunctions.has(key)) {
       const currFunction = this.functionList.filter(s => s.name === key)[0];
-      let functionValue : any = [];
+      const functionValue : any = [];
       currFunction.parameters.forEach( (curr, index) => {
         switch (curr.type) {
           case 'string':

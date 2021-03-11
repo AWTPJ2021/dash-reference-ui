@@ -48,7 +48,7 @@ export class DashjsSettingsControlModal {
   }
 
   private defaultValues(param: any): any[]{
-    let functionValue : any = [];
+    const functionValue : any = [];
     param.forEach( (curr, index) => {
       switch (curr.type) {
         case 'string':
