@@ -7,16 +7,16 @@
 
 ## Properties
 
-| Property  | Attribute | Description | Type     | Default                 |
-| --------- | --------- | ----------- | -------- | ----------------------- |
-| `version` | `version` |             | `string` | `DASHJS_PLAYER_VERSION` |
+| Property  | Attribute | Description                                       | Type     | Default                 |
+| --------- | --------- | ------------------------------------------------- | -------- | ----------------------- |
+| `version` | `version` | The version of which the dashjs should be loaded. | `string` | `DASHJS_PLAYER_VERSION` |
 
 
 ## Events
 
-| Event         | Description | Type                  |
-| ------------- | ----------- | --------------------- |
-| `playerEvent` |             | `CustomEvent<string>` |
+| Event         | Description                  | Type               |
+| ------------- | ---------------------------- | ------------------ |
+| `playerEvent` | Emits an event to the player | `CustomEvent<any>` |
 
 
 ## Dependencies

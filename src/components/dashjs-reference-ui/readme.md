@@ -15,9 +15,11 @@
 - ion-buttons
 - ion-select
 - ion-select-option
+- ion-button
 - ion-icon
 - [dashjs-api-control](../dashjs-api-control)
 - [dashjs-settings-control](../dashjs-settings-control)
+- [ion-accordion](../ion-accordion)
 - [dashjs-player](../dashjs-player)
 - [dashjs-statistics](../dashjs-statistics)
 
@@ -30,11 +32,14 @@ graph TD;
   dashjs-reference-ui --> ion-buttons
   dashjs-reference-ui --> ion-select
   dashjs-reference-ui --> ion-select-option
+  dashjs-reference-ui --> ion-button
   dashjs-reference-ui --> ion-icon
   dashjs-reference-ui --> dashjs-api-control
   dashjs-reference-ui --> dashjs-settings-control
+  dashjs-reference-ui --> ion-accordion
   dashjs-reference-ui --> dashjs-player
   dashjs-reference-ui --> dashjs-statistics
+  ion-button --> ion-ripple-effect
   dashjs-api-control --> ion-title
   dashjs-api-control --> ion-buttons
   dashjs-api-control --> ion-button
@@ -50,7 +55,6 @@ graph TD;
   dashjs-api-control --> dashjs-api-control-element
   dashjs-api-control --> dashjs-help-button
   dashjs-api-control --> dashjs-input-search
-  ion-button --> ion-ripple-effect
   ion-accordion --> ion-card
   ion-accordion --> ion-card-header
   ion-accordion --> ion-button
@@ -91,17 +95,17 @@ graph TD;
   dashjs-settings-control-element --> ion-col
   dashjs-tree --> dashjs-tree
   dashjs-tree --> ion-item-divider
-  dashjs-statistics --> ion-accordion
-  dashjs-statistics --> ion-grid
   dashjs-statistics --> ion-row
   dashjs-statistics --> ion-col
   dashjs-statistics --> ion-title
   dashjs-statistics --> ion-item
   dashjs-statistics --> ion-label
   dashjs-statistics --> ion-checkbox
-  dashjs-statistics --> ion-item-divider
   dashjs-statistics --> ion-card-content
   dashjs-statistics --> ion-button
+  dashjs-statistics --> ion-accordion
+  dashjs-statistics --> ion-grid
+  dashjs-statistics --> ion-item-divider
   style dashjs-reference-ui fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
