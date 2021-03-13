@@ -23,8 +23,6 @@ async function main() {
     outputFolder: workingFolder,
     github_token: process.env.GITHUB_TOKEN,
   }).then(async () => {
-    // TODO: Await finihes before all requests are finished.
-
     let versions = fs.readdirSync(workingFolder).reverse();
     versions.forEach(async version => {
       if (first == true) {

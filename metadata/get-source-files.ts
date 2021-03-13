@@ -82,7 +82,6 @@ async function fetchFile(config: DownloadSourceFilesConfig, octokit: Octokit, re
     })
     .then(
       result => {
-        // content will be base64 encoded
         const content = Buffer.from((result.data as any).content, 'base64').toString();
         fs.writeFileSync(out, content);
       },
@@ -91,5 +90,3 @@ async function fetchFile(config: DownloadSourceFilesConfig, octokit: Octokit, re
       },
     );
 }
-
-// downloadSourceFiles(defaults);
