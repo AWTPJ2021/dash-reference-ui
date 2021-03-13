@@ -43,6 +43,8 @@ npm run build
 
 ```
 
+> Each Component is documented in its own folder see [`dashjs-player` for example](/src/components/dashjs-player/readme.md).
+
 > Need more help with Stencil? Look [here](https://stenciljs.com/docs).
 
 ### Metadata Generation
