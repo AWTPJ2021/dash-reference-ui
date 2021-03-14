@@ -23,6 +23,10 @@ export namespace Components {
           * Contains the required parameters of the control element
          */
         "param": any;
+        /**
+          * Contains the parameter values
+         */
+        "value": any;
     }
     interface DashjsApiControlModal {
         /**
@@ -314,9 +318,17 @@ declare namespace LocalJSX {
          */
         "onCallFunction"?: (event: CustomEvent<any>) => void;
         /**
+          * Update the api call's function
+         */
+        "onUpdateFunction"?: (event: CustomEvent<any>) => void;
+        /**
           * Contains the required parameters of the control element
          */
         "param"?: any;
+        /**
+          * Contains the parameter values
+         */
+        "value"?: any;
     }
     interface DashjsApiControlModal {
         /**

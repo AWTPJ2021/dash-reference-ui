@@ -1,6 +1,7 @@
 import { modalController } from '@ionic/core';
 import { Component, h, Prop, State } from '@stencil/core';
 import { DashFunction } from '../../types/types';
+import { initializeParam } from '../../utils/utils';
 
 @Component({
   tag: 'dashjs-api-control-modal',
@@ -31,7 +32,7 @@ export class DashjsSettingsControlModal {
    */
   @State() triggerRerender = 0;
 
-  filterSettings(str: string): void {
+  private filterSettings(str: string): void {
     if (str === '') {
       this.viewedFunctions = this.functionList;
       return;
@@ -39,13 +40,14 @@ export class DashjsSettingsControlModal {
     this.viewedFunctions = this.functionList.filter(s => (s.name as string).includes(str));
   }
 
-  save(): void {
+  private save(): void {
     modalController.dismiss(this.selectedFunctions);
   }
 
-  cancel(): void {
+  private cancel(): void {
     modalController.dismiss();
   }
+
   render() {
     return [
       <ion-searchbar
@@ -64,7 +66,7 @@ export class DashjsSettingsControlModal {
           <ion-grid>
           {this.viewedFunctions.map(item => item.parameters.length <= 1 ? (
             <ion-row onClick={() => {
-              this.selectedFunctions.set(item.name, this.selectedFunctions.get(item.name) === undefined ? item.parameters : undefined);
+              this.selectedFunctions.set(item.name, this.selectedFunctions.get(item.name) === undefined ? initializeParam(item.parameters) : undefined);
               this.triggerRerender++;
             }}>
                 <ion-col size="1">

@@ -1,10 +1,6 @@
 import { Component, EventEmitter, h, Prop, Event } from '@stencil/core';
 import { MediaType } from '../../types/types';
 import { toastController } from '@ionic/core';
-import { LocalStorage } from '../../utils/localStorage';
-
-let functionValue : any[] = [];
-const STRING_API_ELEM = 'api_element';
 
 @Component({
   tag: 'dashjs-api-control-element',
@@ -21,27 +17,36 @@ export class DashjsAPIControlElement {
    */
   @Event() callFunction: EventEmitter<any>;
   /**
+   * Update the api call's function
+   */
+  @Event() updateFunction: EventEmitter<any>;
+  /**
    * Contains the required parameters of the control element
    */
   @Prop() param: any;
 
   /**
+   * Contains the parameter values
+   */
+  @Prop() value: any;
+
+  /**
    * Emits the inputs for further processing if they passes the validation
    * @param functionValue 
    */
-  async checkAndEmit(functionValue : any[]): Promise<void> {
+  async checkAndEmit(): Promise<void> {
     let error = false;
     for (let i = 0; i < this.param.length; i++) {
       const index = i;
       switch (this.param[i].type) {
         case 'string':
-          if (!(functionValue[index] instanceof String)) error = true;
+          if (!(this.value[index] instanceof String)) error = true;
           break;
         case 'number':
-          if (isNaN(functionValue[index])) error = true;
+          if (isNaN(this.value[index])) error = true;
           break;
         case 'MediaType':
-          if (!Object.values(MediaType).includes(functionValue[index])) error = true;
+          if (!Object.values(MediaType).includes(this.value[index])) error = true;
           break;
       }
       if (error) break;
@@ -53,7 +58,7 @@ export class DashjsAPIControlElement {
       });
       toast.present();
     } else {
-      this.callFunction.emit(functionValue);
+      this.callFunction.emit(this.value);
     }
   }
 
@@ -63,37 +68,12 @@ export class DashjsAPIControlElement {
    * @param value 
    */
   private setAndSave (index : number, value : any): void {
-    functionValue[index] = value;
-    LocalStorage.updateKeyInKeyValueObject(STRING_API_ELEM, this.name, JSON.stringify(functionValue));
+    this.value[index] = value;
+    this.updateFunction.emit(this.value);
   }
 
   render() {
     const control : any = [];
-
-    this.param.forEach( (curr, index) => {
-      switch (curr.type) {
-        case 'string':
-          functionValue[index] = '';
-          break;
-        case 'number':
-          functionValue[index] = 0;
-          break;
-        case 'boolean':
-          functionValue[index] = false;
-          break;
-      }
-    });
-
-    /**
-     * Get the stored api call parameters if available
-     */
-    const elem_values : any = LocalStorage.getKeyValueObject(STRING_API_ELEM);
-
-    if(elem_values) {
-      if(elem_values[this.name] != null) {
-        functionValue = this.param.length > 0 ? JSON.parse(elem_values[this.name]).length == this.param.length ? JSON.parse(elem_values[this.name]) : functionValue : elem_values[this.name];
-      }
-    }
 
     if (this.param.length > 0) {
       this.param.forEach( (curr, index) => {
@@ -104,7 +84,7 @@ export class DashjsAPIControlElement {
                 <ion-input 
                   class="input-border" 
                   debounce={300} 
-                  value={functionValue[index]} 
+                  value={this.value[index]} 
                   onIonChange={change => { 
                     this.setAndSave(index, change.detail.value);
                   }}
@@ -118,7 +98,7 @@ export class DashjsAPIControlElement {
                   class='input-border'
                   debounce={300}
                   type='number'
-                  value={functionValue[index]}
+                  value={this.value[index]}
                   onIonChange={change => {
                     this.setAndSave(index, Number(change.detail.value));}
                   }
@@ -127,12 +107,12 @@ export class DashjsAPIControlElement {
               control.push(<div class="gap"></div>);
               break;
             case 'boolean':
-              control.push(<ion-toggle checked={functionValue[index]} onIonChange={change => {this.setAndSave(index, change.detail.checked);}}></ion-toggle>);
+              control.push(<ion-toggle checked={this.value[index]} onIonChange={change => {this.setAndSave(index, change.detail.checked);}}></ion-toggle>);
               control.push(<div class="gap"></div>);
               break;
             case 'MediaType':
               control.push(
-                <ion-select class="input-border" value={functionValue[index]} placeholder="Select MediaType" interface="popover" onIonChange={change => {this.setAndSave(index, change.detail.value);}}>
+                <ion-select class="input-border" value={this.value[index]} placeholder="Select MediaType" interface="popover" onIonChange={change => {this.setAndSave(index, change.detail.value);}}>
                   {Object.keys(MediaType).map(val => (
                     <ion-select-option value={MediaType[val]}>{MediaType[val]}</ion-select-option>
                   ))}
@@ -145,7 +125,7 @@ export class DashjsAPIControlElement {
       });
     }
     control.push(
-      <ion-button shape="round" size="small" onClick={() => this.checkAndEmit(functionValue)}>
+      <ion-button shape="round" size="small" onClick={() => this.checkAndEmit()}>
         Call
       </ion-button>,
     );

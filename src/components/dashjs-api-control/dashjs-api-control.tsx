@@ -2,7 +2,7 @@ import { Component, Host, h, State, Event, EventEmitter, Listen, Prop, Watch } f
 import { DashFunction } from '../../types/types';
 import { modalController, popoverController, toastController } from '@ionic/core';
 import { LocalStorage, LocalVariableStore } from '../../utils/localStorage';
-import { generateFunctionsMapFromList } from '../../utils/utils';
+import { generateFunctionsMapFromList, initializeParam } from '../../utils/utils';
 import { DASHJS_PLAYER_VERSION } from '../../defaults';
 
 const STRING_API_ELEM = 'api_element';
@@ -59,6 +59,7 @@ export class DashjsApiControl {
     }
     this.mediaUrl = LocalVariableStore.mediaUrl;
     this.autostart = LocalVariableStore.api_autostart;
+    
   }
   
   /**
@@ -156,14 +157,25 @@ export class DashjsApiControl {
   }
   
   /**
+   * Calls the api function
+   * @param id 
+   * @param value 
+   */
+  private callFunction(id: string, value: any): void {
+    this.selectedFunctions.set(id, value);
+    this.selectedFunctions = new Map(this.selectedFunctions);
+    this.playerEventHandler({ type: 'function', name: id, param: value });
+    LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, id, value);
+  }
+
+  /**
    * Updates the parameters of a selected function and updates it in the local storage
    * @param id 
    * @param value 
    */
-  private updateFunction(id: string, value: any): void {
+   private updateFunction(id: string, value: any): void {
     this.selectedFunctions.set(id, value);
     this.selectedFunctions = new Map(this.selectedFunctions);
-    this.playerEventHandler({ type: 'function', name: id, param: value });
     LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, id, value);
   }
 
@@ -239,9 +251,11 @@ export class DashjsApiControl {
       return;
     }
     if (this.selectedFunctions.has(key)) {
-      this.selectedFunctions.set(key, []);
+      const currFunction = this.functionList.filter(s => s.name === key)[0];
+      const functionValue = initializeParam(currFunction.parameters);
+      this.selectedFunctions.set(key, functionValue);
       this.selectedFunctions = new Map(this.selectedFunctions);
-      LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, key, this.functionList.filter(s => s.name === key)[0].parameters);
+      LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, key, functionValue);
     }
   }
 
@@ -338,7 +352,11 @@ export class DashjsApiControl {
                           <dashjs-api-control-element 
                             name={currFunction.name} 
                             param={currFunction.parameters}
+                            value={this.selectedFunctions.get(key)}
                             onCallFunction={change => {
+                              this.callFunction(key, change.detail);}
+                            } 
+                            onUpdateFunction={change => {
                               this.updateFunction(key, change.detail);}
                             } 
                           ></dashjs-api-control-element>
