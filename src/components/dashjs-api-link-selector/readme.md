@@ -7,16 +7,16 @@
 
 ## Properties
 
-| Property     | Attribute | Description | Type    | Default     |
-| ------------ | --------- | ----------- | ------- | ----------- |
-| `sourceList` | --        |             | `any[]` | `undefined` |
+| Property     | Attribute | Description       | Type    | Default     |
+| ------------ | --------- | ----------------- | ------- | ----------- |
+| `sourceList` | --        | List of all links | `any[]` | `undefined` |
 
 
 ## Events
 
-| Event       | Description | Type                  |
-| ----------- | ----------- | --------------------- |
-| `setStream` |             | `CustomEvent<string>` |
+| Event       | Description                                               | Type                  |
+| ----------- | --------------------------------------------------------- | --------------------- |
+| `setStream` | Emits the selected media url to the api control component | `CustomEvent<string>` |
 
 
 ## Dependencies

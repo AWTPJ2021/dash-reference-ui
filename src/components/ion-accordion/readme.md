@@ -12,11 +12,25 @@
 | `titleText` | `title-text` | The Title of the accordion. Can be left blank. | `string` | `''`    |
 
 
+## Methods
+
+### `setExpandState(state: boolean) => Promise<void>`
+
+Set the expansion State
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by
 
  - [dashjs-api-control](../dashjs-api-control)
+ - [dashjs-reference-ui](../dashjs-reference-ui)
  - [dashjs-settings-control](../dashjs-settings-control)
  - [dashjs-statistics](../dashjs-statistics)
 
@@ -39,6 +53,7 @@ graph TD;
   ion-card --> ion-ripple-effect
   ion-button --> ion-ripple-effect
   dashjs-api-control --> ion-accordion
+  dashjs-reference-ui --> ion-accordion
   dashjs-settings-control --> ion-accordion
   dashjs-statistics --> ion-accordion
   style ion-accordion fill:#f9f,stroke:#333,stroke-width:4px

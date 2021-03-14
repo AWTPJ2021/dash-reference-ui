@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import * as TJS from 'typescript-json-schema';
 const fs = require('fs');
+const jsdoc = require('jsdoc-api');
 
 // optionally pass argument to schema generator
 const settings: TJS.PartialArgs = {
@@ -18,22 +19,12 @@ export async function generateSettingsMetaData(baseDir: string = './metadata/bui
 
   try {
     const program = TJS.getProgramFromFiles([resolve(`${workFolder}index.d.ts`)], compilerOptions, baseDir);
-
-    // ... or a generator that lets us incrementally get more schemas
-
     const generator = TJS.buildGenerator(program, settings);
     const schema = generator.getSchemaForSymbol('dashjs.MediaPlayerSettingClass');
-
-    // debug for symbols
-    // const symbols = generator.getUserSymbols();
-    // console.log(symbols);
-
-    const jsdoc = require('jsdoc-api');
 
     let file = fs.readFileSync(`${workFolder}settings.js`);
 
     let explain = jsdoc.explainSync({ source: file.toString() }) as any[];
-    // fs.writeFileSync(`${workFolder}explain-settings.json`, JSON.stringify(explain, null, 2));
 
     let allprops = explain;
     explain.forEach(e => {
@@ -47,10 +38,8 @@ export async function generateSettingsMetaData(baseDir: string = './metadata/bui
     let ast = treeToAST(annotate(schema, jsDocComments, 'Settings'), 'settings', null);
 
     fs.writeFileSync(`${workFolder}settingsMetaData.json`, JSON.stringify(ast, null, 2));
-    // fs.writeFileSync('./src/static/settingsMetaData.json', JSON.stringify(ast, null, 2));
   } catch (error) {
     console.warn(`WARNING: SettingsMetaData for ${version} could not be parsed!`);
-    // console.warn(error)
   }
 }
 
@@ -65,7 +54,6 @@ function treeToAST(tree: any, name: string, parent: string, path: string[] = [])
   } else {
     ast = ast.concat({ ...tree, id, path, name, parent });
   }
-  // console.log(ast);
   return ast;
 }
 
@@ -73,13 +61,10 @@ function annotate(jsonSchemaObject: any, jsDocComments: any, name: string): any 
   if (jsonSchemaObject.properties) {
     Object.keys(jsonSchemaObject.properties).forEach(o => {
       annotate(jsonSchemaObject.properties[o], jsDocComments, o);
-      // console.log(o);
     });
   }
   let match = jsDocComments.find(e => e.name === name);
   if (match) {
-    // console.log(name);
-    // console.log(match);
     jsonSchemaObject.description = match.description;
     jsonSchemaObject.required = !match.optional;
     jsonSchemaObject.example = match.defaultvalue;

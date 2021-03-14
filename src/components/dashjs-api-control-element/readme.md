@@ -7,20 +7,17 @@
 
 ## Properties
 
-| Property    | Attribute    | Description                                | Type                                                                                                                                                | Default     |
-| ----------- | ------------ | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `name`      | `name`       | The displayed name of the control element. | `string`                                                                                                                                            | `undefined` |
-| `options`   | --           |                                            | `string[]`                                                                                                                                          | `undefined` |
-| `param`     | `param`      |                                            | `any`                                                                                                                                               | `undefined` |
-| `paramDesc` | `param-desc` |                                            | `any`                                                                                                                                               | `undefined` |
-| `type`      | `type`       |                                            | `Type.HTML5MediaElement \| Type.MediaType \| Type.boolean \| Type.function \| Type.number \| Type.object \| Type.string \| Type.value \| Type.void` | `undefined` |
+| Property | Attribute | Description                                             | Type     | Default     |
+| -------- | --------- | ------------------------------------------------------- | -------- | ----------- |
+| `name`   | `name`    | The displayed name of the control element.              | `string` | `undefined` |
+| `param`  | `param`   | Contains the required parameters of the control element | `any`    | `undefined` |
 
 
 ## Events
 
-| Event          | Description | Type               |
-| -------------- | ----------- | ------------------ |
-| `valueChanged` |             | `CustomEvent<any>` |
+| Event          | Description                    | Type               |
+| -------------- | ------------------------------ | ------------------ |
+| `callFunction` | Triggers the API call function | `CustomEvent<any>` |
 
 
 ## Dependencies

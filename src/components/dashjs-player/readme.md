@@ -16,11 +16,23 @@
 
 ## Events
 
-| Event                | Description | Type               |
-| -------------------- | ----------- | ------------------ |
-| `playerEvent`        |             | `CustomEvent<any>` |
-| `playerResponse`     |             | `CustomEvent<any>` |
-| `streamMetricsEvent` |             | `CustomEvent<any>` |
+| Event            | Description                                            | Type                   |
+| ---------------- | ------------------------------------------------------ | ---------------------- |
+| `metricsEvent`   | Stream metrics: dashMetrcis & dashAdapter calculations | `CustomEvent<Metrics>` |
+| `playerResponse` | Player response: player api calls repsonse             | `CustomEvent<any>`     |
+
+
+## Methods
+
+### `showPiP() => Promise<void>`
+
+Request Video to be played in Picture in Picture Mode
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

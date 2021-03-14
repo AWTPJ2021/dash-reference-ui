@@ -7,10 +7,10 @@
 
 ## Properties
 
-| Property            | Attribute | Description | Type               | Default     |
-| ------------------- | --------- | ----------- | ------------------ | ----------- |
-| `functionList`      | --        |             | `DashFunction[]`   | `[]`        |
-| `selectedFunctions` | --        |             | `Map<string, any>` | `new Map()` |
+| Property            | Attribute | Description                            | Type               | Default     |
+| ------------------- | --------- | -------------------------------------- | ------------------ | ----------- |
+| `functionList`      | --        | List of all available dashjs api calls | `DashFunction[]`   | `[]`        |
+| `selectedFunctions` | --        | List of all selected dashjs api calls  | `Map<string, any>` | `new Map()` |
 
 
 ## Dependencies

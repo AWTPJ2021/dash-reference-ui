@@ -1,87 +1,110 @@
-# dash-reference-ui
+[Demo](https://awtpj.z16.web.core.windows.net/) | [Previous Version](https://reference.dashif.org/dash.js/v3.1.3/samples/dash-if-reference-player/index.html)
 
-New Version: https://awtpj.z16.web.core.windows.net/
+# dashjs-reference-ui
 
-- Original: https://github.com/Dash-Industry-Forum/dash.js/blob/development/samples/dash-if-reference-player/app/main.js
-- Running Version: https://reference.dashif.org/dash.js/v3.1.3/samples/dash-if-reference-player/index.html
+This is a reference implementation of the [dash-js](https://github.com/Dash-Industry-Forum/dash.js/wiki) player, which features all settings, api calls and statistics to try out all functionalities. Its main features are:
 
-- settings: https://github.com/Dash-Industry-Forum/dash.js/blob/development/src/core/Settings.js
-- API calls: http://cdn.dashjs.org/latest/jsdoc/module-MediaPlayer.html
+- Up to date anytime - all settings and api calls are retrieved from the latest version
+- Customizable - only show settings and api calls you currently need
+- Memorable - all customizations are saved locally for you convenience
+- Knwoledgeable - the Documentation is integrated and just one click away
+- Shareable - you can share your current settings by copying the link
+- Developer Friendly - the debug build of dashjs or another version are just one click away
+- Dark Mode - for the late hours
+- Production Ready - use the same player we use in you Vue/React/Angular App
 
-Maybe use:
+## Development
 
-- https://www.npmjs.com/package/@stencil/sass
-- https://github.com/apexcharts/stencil-apexcharts
-- stencil.js
+### Getting Started
 
-- https://ionicframework.com/docs/api/
-  We cant use duet because of its terms:
-  https://github.com/material-components/material-components-web-components
-
-# Stencil
-
-Stencil is a compiler for building fast web apps using Web Components.
-
-Stencil combines the best concepts of the most popular frontend frameworks into a compile-time rather than run-time tool. Stencil takes TypeScript, JSX, a tiny virtual DOM layer, efficient one-way data binding, an asynchronous rendering pipeline (similar to React Fiber), and lazy-loading out of the box, and generates 100% standards-based Web Components that run in any browser supporting the Custom Elements v1 spec.
-
-Stencil components are just Web Components, so they work in any major framework or with no framework at all.
-
-## Getting Started
-
-To start building a new web component using Stencil, clone this repo to a new directory:
+To start developing this app, clone this repo to a new directory:
 
 ```bash
-git clone https://github.com/ionic-team/stencil-component-starter.git my-component
-cd my-component
-git remote rm origin
-```
+git clone https://github.com/AWTPJ2021/dash-reference-ui
+cd dash-reference-ui
 
-and run:
-
-```bash
+# Install the dependencies
 npm install
+
+# Generate the Metadata files for the app
+# For more information read the next chapter "Usage and Development"
+npm run gen-meta
+
+
+# Start the app locally in development mode
 npm start
-```
 
-To build the component for production, run:
+# Run Tests or Lint the app
+npm run test # or test.watch for continuous testing
+npm run lint
 
-```bash
+# To build the app for production and update the documentation
 npm run build
+
 ```
 
-To run the unit tests for the components, run:
+> Each Component is documented in its own folder see [`dashjs-player` for example](/src/components/dashjs-player/readme.md).
 
-```bash
-npm test
-```
+> Need more help with Stencil? Look [here](https://stenciljs.com/docs).
 
-Need help? Check out our docs [here](https://stenciljs.com/docs/my-first-component).
+### Metadata Generation
 
-## Naming Components
+In order to display all settings and api calls and their documentation we extract information from the dash-js repository. We go through the following steps:
 
-When creating new component tags, we recommend _not_ using `stencil` in the component name (ex: `<stencil-datepicker>`). This is because the generated component has little to nothing to do with Stencil; it's just a web component!
+1. [Retrieve the versions and source files](/metadata/get-source-files.ts)
+2. For the API Functions information of the `index.d.ts` and `MediaPlayer.js` are used to parse Typescript and JSDoc Comments to Metadata information. ([generateAPIMetadata](/metadata/generateAPIMetaData.ts))
+3. The Settings are generated from `index.d.ts` and `settings.js` source files of the dash.js Player. It extracts the Interfaces from the index file and annotates them with JSDoc explanations. ([generateSettingsMetadata](/metadata/generateSettingsMetaData.ts))
+4. [The generated files are merged with the overwrite files](/metadata/merge-files.ts)
 
-Instead, use a prefix that fits your company or any name for a group of related components. For example, all of the Ionic generated web components use the prefix `ion`.
+All those steps are bundled in the [generate-metadata](/generate-metadata.ts) script.
 
-## Using this component
+### Usage and Development
+
+In general you can just run `npm run gen-meta` to generate the Metadata files for the latest version.
+
+- To generate the files for all versions you have to set the environment variable `ONLY_FIRST=0`.
+- For caching purposes the file `DELETEMETORELOAD` is created in this directory. Remove it in order to get the newest files from GitHub.
+- If you are running into throtteling issues with GitHub create a Token and make it available as environment variable `GITHUB_TOKEN=<Your Token>`
+
+#### Change or Overwrite Metadata files
+
+The files Metadata files are generated to do the main work of extracting all possibilities from the DashJS Source and to auto generate a up to date version on publish. However auto generation leads to two main problems:
+
+1. Quality issues (like Options shown as numbers instead of pretty text)
+2. Unusable Components (e.g. some functions require complex objects which can't be supplied via the UI)
+
+Thats why they can be overwritten. In order to do so simply create or update a file in the [`/metadata/overwrites`](/metadata/overwrites) folder with the schema `<version>/[settingsMetaData|mediaPlayerFunctionsMetaData].json` (e.g. `v3.2.0/settingsMetaData.json` to overwrite settings of the dashjs version 3.2.0).
+
+The Schema of the JSON follows the same schema as those the [generated files](/metadata/build) or the [Typescript defintions](/src/types/types.ts).
+
+> Note that the `id` is required to map the attributes to the according field.
+
+### Using a component
 
 There are three strategies we recommend for using web components built with Stencil.
 
 The first step for all three of these strategies is to [publish to NPM](https://docs.npmjs.com/getting-started/publishing-npm-packages).
 
-### Script tag
+#### Script tag
 
 - Put a script tag similar to this `<script src='https://unpkg.com/my-component@0.0.1/dist/mycomponent.js'></script>` in the head of your index.html
 - Then you can use the element anywhere in your template, JSX, html etc
 
-### Node Modules
+#### Node Modules
 
 - Run `npm install my-component --save`
 - Put a script tag similar to this `<script src='node_modules/my-component/dist/mycomponent.js'></script>` in the head of your index.html
 - Then you can use the element anywhere in your template, JSX, html etc
 
-### In a stencil-starter app
+#### In a stencil-starter app
 
 - Run `npm install my-component --save`
 - Add an import to the npm packages `import my-component;`
 - Then you can use the element anywhere in your template, JSX, html etc
+
+## Used Frameworks
+
+We use [Stencil](https://stenciljs.com/docs) - a compiler for building fast web apps using Web Components, with the following main components:
+
+- [Ionic](https://ionicframework.com/docs/api/)
+- chart.js
