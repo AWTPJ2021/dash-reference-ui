@@ -2,7 +2,7 @@ import { Component, Host, h, State, Event, EventEmitter, Listen, Prop, Watch } f
 import { DashFunction } from '../../types/types';
 import { modalController, popoverController, toastController } from '@ionic/core';
 import { LocalStorage, LocalVariableStore } from '../../utils/localStorage';
-import { generateFunctionsMapFromList } from '../../utils/utils';
+import { generateFunctionsMapFromList, initializeParam } from '../../utils/utils';
 import { DASHJS_PLAYER_VERSION } from '../../defaults';
 
 const STRING_API_ELEM = 'api_element';
@@ -252,20 +252,7 @@ export class DashjsApiControl {
     }
     if (this.selectedFunctions.has(key)) {
       const currFunction = this.functionList.filter(s => s.name === key)[0];
-      const functionValue : any = [];
-      currFunction.parameters.forEach( (curr, index) => {
-        switch (curr.type) {
-          case 'string':
-            functionValue[index] = '';
-            break;
-          case 'number':
-            functionValue[index] = 0;
-            break;
-          case 'boolean':
-            functionValue[index] = false;
-            break;
-        }
-      });
+      const functionValue = initializeParam(currFunction.parameters);
       this.selectedFunctions.set(key, functionValue);
       this.selectedFunctions = new Map(this.selectedFunctions);
       LocalStorage.updateKeyInKeyValueObject(STRING_API_FUNCTIONS, key, functionValue);

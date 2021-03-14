@@ -1,4 +1,4 @@
-import { Setting, DashFunction, Tree, SettingsMap, KeyValue } from '../types/types';
+import { Setting, DashFunction, Tree, SettingsMap, KeyValue, DashPara } from '../types/types';
 import * as objectPath from 'object-path';
 
 export function generateSettingsMapFromList(list: Setting[]): SettingsMap {
@@ -63,4 +63,24 @@ export function settingsListToTree(list: Setting[]): Tree {
     nav.elements.push(element.id);
   });
   return root;
+}
+
+export function initializeParam(param: DashPara[]): any[] {
+  const functionValue : any = [];
+  param.forEach( (curr, index) => {
+    switch (curr.type) {
+      case 'string':
+        functionValue[index] = '';
+        break;
+      case 'number':
+        functionValue[index] = 0;
+        break;
+      case 'boolean':
+        functionValue[index] = false;
+        break;
+      default:
+        functionValue[index] = null;
+    }
+  });
+  return functionValue;
 }
